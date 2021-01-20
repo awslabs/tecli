@@ -1,0 +1,210 @@
+/*
+Copyright © 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+package cmd
+
+// func TestRenderWithNoArgAndNoFlags(t *testing.T) {
+// 	rootCmd, _ := helper.InitRootAndChildCmd(RootCmd(), RenderCmd())
+// 	output, err := helper.ExecuteCommand(rootCmd, "render")
+
+// 	assert.Contains(t, output, "one the following arguments are required")
+// 	assert.Contains(t, err.Error(), "one the following arguments are required")
+// }
+
+// func TestRenderWithInvalidArgAndNoFlags(t *testing.T) {
+// 	rootCmd, _ := helper.InitRootAndChildCmd(RootCmd(), RenderCmd())
+// 	output, err := helper.ExecuteCommand(rootCmd, "render", "null")
+
+// 	assert.Contains(t, output, "invalid argument")
+// 	assert.Contains(t, err.Error(), "invalid argument")
+// }
+
+// func TestRenderWithValidArgAndNoFlags(t *testing.T) {
+// 	rootCmd, _ := helper.InitRootAndChildCmd(RootCmd(), RenderCmd())
+// 	output, err := helper.ExecuteCommand(rootCmd, "render", "template")
+
+// 	assert.Contains(t, output, "required flag name not set")
+// 	assert.Contains(t, err.Error(), "required flag name not set")
+// }
+
+// func TestRenderWithNameOnly(t *testing.T) {
+// 	rootCmd, renderCmd := helper.InitRootAndChildCmd(RootCmd(), RenderCmd())
+// 	renderCmd.Flags().StringP("name", "n", "readme", "Template name to be rendered")
+// 	output, err := helper.ExecuteCommand(rootCmd, "render", "template")
+
+// 	assert.Contains(t, output, "Missing database at tfe-cli/readme.yaml")
+// 	assert.Contains(t, err.Error(), "Missing database at tfe-cli/readme.yaml")
+// }
+
+// func TestRenderWithInitBasicProject(t *testing.T) {
+
+// 	// init a basic project
+// 	pwd, nwd := helper.Setup(t)
+
+// 	rootCmd, initCmd := helper.InitRootAndChildCmd(RootCmd(), InitCmd())
+// 	initCmd.Flags().StringP("name", "n", "generated-project", "The project name.")
+// 	initCmd.Flags().StringP("type", "t", "basic", "The project type.")
+// 	output, err := helper.ExecuteCommand(rootCmd, "init", "project")
+
+// 	if err != nil {
+// 		t.Errorf("Project wasn't able to initialize: %v", output)
+// 		t.Errorf("Unexpected error: %v", err)
+// 	}
+
+// 	rootCmd, renderCmd := helper.InitRootAndChildCmd(RootCmd(), RenderCmd())
+// 	renderCmd.Flags().StringP("name", "n", "readme", "Template name to be rendered")
+// 	output, err = helper.ExecuteCommand(rootCmd, "render", "template")
+
+// 	// Ensure project was initialized correctly
+// 	assert.Equal(t, output, "")
+// 	assert.Equal(t, err, nil)
+
+// 	if !helper.FileExists("tfe-cli/readme.tmpl") {
+// 		t.Error("tfe-cli/readme.tmpl not found, project initialization failed")
+// 	}
+
+// 	if !helper.FileExists("tfe-cli/readme.yaml") {
+// 		t.Error("tfe-cli/readme.yaml not found, project initialization failed")
+// 	}
+
+// 	if !helper.FileExists("README.md") {
+// 		t.Error("README.md not found, rendering failed")
+// 	}
+
+// 	helper.Teardown(pwd, nwd)
+// }
+
+// func TestRenderWithInitTerraformProject(t *testing.T) {
+
+// 	// init a basic project
+// 	pwd, nwd := helper.Setup(t)
+
+// 	rootCmd, initCmd := helper.InitRootAndChildCmd(RootCmd(), InitCmd())
+// 	initCmd.Flags().StringP("name", "n", "generated-project", "The project name.")
+// 	initCmd.Flags().StringP("type", "t", "terraform", "The project type.")
+// 	output, err := helper.ExecuteCommand(rootCmd, "init", "project")
+
+// 	if err != nil {
+// 		t.Errorf("Project wasn't able to initialize: %v", output)
+// 		t.Errorf("Unexpected error: %v", err)
+// 	}
+
+// 	rootCmd, renderCmd := helper.InitRootAndChildCmd(RootCmd(), RenderCmd())
+// 	renderCmd.Flags().StringP("name", "n", "hld", "Template name to be rendered")
+// 	output, err = helper.ExecuteCommand(rootCmd, "render", "template")
+
+// 	// Ensure project was initialized correctly
+// 	assert.Equal(t, output, "")
+// 	assert.Equal(t, err, nil)
+
+// 	if !helper.FileExists("tfe-cli/hld.tmpl") {
+// 		t.Error("tfe-cli/hld.tmpl not found, project initialization failed")
+// 	}
+
+// 	if !helper.FileExists("tfe-cli/hld.yaml") {
+// 		t.Error("tfe-cli/hld.yaml not found, project initialization failed")
+// 	}
+
+// 	if !helper.FileExists("HLD.md") {
+// 		t.Error("HLD.md not found, rendering failed")
+// 	}
+
+// 	helper.Teardown(pwd, nwd)
+// }
+
+// func TestRenderWithInitCloudFormationProject(t *testing.T) {
+
+// 	// init a basic project
+// 	pwd, nwd := helper.Setup(t)
+
+// 	rootCmd, initCmd := helper.InitRootAndChildCmd(RootCmd(), InitCmd())
+// 	initCmd.Flags().StringP("name", "n", "generated-project", "The project name.")
+// 	initCmd.Flags().StringP("type", "t", "cloudformation", "The project type.")
+// 	output, err := helper.ExecuteCommand(rootCmd, "init", "project")
+
+// 	if err != nil {
+// 		t.Errorf("Project wasn't able to initialize: %v", output)
+// 		t.Errorf("Unexpected error: %v", err)
+// 	}
+
+// 	rootCmd, renderCmd := helper.InitRootAndChildCmd(RootCmd(), RenderCmd())
+// 	renderCmd.Flags().StringP("name", "n", "hld", "Template name to be rendered")
+// 	output, err = helper.ExecuteCommand(rootCmd, "render", "template")
+
+// 	// Ensure project was initialized correctly
+// 	assert.Equal(t, output, "")
+// 	assert.Equal(t, err, nil)
+
+// 	if !helper.FileExists("tfe-cli/hld.tmpl") {
+// 		t.Error("tfe-cli/hld.tmpl not found, project initialization failed")
+// 	}
+
+// 	if !helper.FileExists("tfe-cli/hld.yaml") {
+// 		t.Error("tfe-cli/hld.yaml not found, project initialization failed")
+// 	}
+
+// 	if !helper.FileExists("HLD.md") {
+// 		t.Error("HLD.md not found, rendering failed")
+// 	}
+
+// 	helper.Teardown(pwd, nwd)
+// }
+
+// // TODO: find a way to use secret keys on Github Actions
+
+// // func TestRenderWithUpdatedTheme(t *testing.T) {
+
+// // 	pwd, nwd := helper.Setup(t)
+
+// // 	// init a basic project
+// // 	rootCmd, initCmd := helper.InitRootAndChildCmd(RootCmd(), InitCmd())
+// // 	initCmd.Flags().StringP("name", "n", "generated-project", "The project name.")
+// // 	initCmd.Flags().StringP("type", "t", "basic", "The project type.")
+// // 	output, err := helper.ExecuteCommand(rootCmd, "init", "project")
+
+// // 	if err != nil {
+// // 		t.Errorf("Project wasn't able to initialize: %v", output)
+// // 		t.Errorf("Unexpected error: %v", err)
+// // 	}
+
+// // 	readme, err := helper.GetLocalReadMeConfig()
+// // 	if err != nil {
+// // 		t.Errorf("Unexpected error \n%v", err)
+// // 	}
+
+// // 	// if theme is set, URL must change
+// // 	readme.Logo.Theme = "dogs"
+// // 	err = helper.MarshallAndSaveReadMe(readme)
+// // 	if err != nil {
+// // 		t.Errorf("Unexpected error \n%v", err)
+// // 	}
+
+// // 	rootCmd, renderCmd := helper.InitRootAndChildCmd(RootCmd(), RenderCmd())
+// // 	renderCmd.Flags().StringP("name", "n", "readme", "Template name to be rendered")
+// // 	output, err = helper.ExecuteCommand(rootCmd, "render", "template")
+
+// // 	// Ensure project was initialized correctly
+// // 	assert.Equal(t, output, "")
+// // 	assert.Equal(t, err, nil)
+
+// // 	readme, err = helper.GetLocalReadMeConfig()
+// // 	if err != nil {
+// // 		t.Errorf("Unexpected error \n%v", err)
+// // 	}
+
+// // 	assert.NotEqual(t, readme.Logo.URL, "")
+
+// // 	helper.Teardown(pwd, nwd)
+// // }

@@ -1,0 +1,108 @@
+# Show at a high level how:
+#   * Users interact with the app as a whole
+#   * Data lifecycle is managed
+#   * Integrations with and dependencies on other systems
+#   * Use numbers/letters on diagram to populate table showing what each object does."
+#   * Do not include deployment mechanism in same diagram as high-level application design.
+architecture:
+  description: Blandit massa enim nec dui nunc mattis.
+  currentstate:
+    description:  Lorem ipsum dolor sit amet.
+    diagram:
+      label: Dui ut ornare lectus sit amet est.
+      url: https://via.placeholder.com/512x512.png
+  targetstate:
+    description: Senectus et netus et malesuada fames ac turpis.
+    diagram:
+      label: Elementum curabitur vitae nunc sed velit.
+      url: https://via.placeholder.com/512x512.png
+
+# List applicable automation techniques used in the solution:
+#   * OS
+#   * Application bootstrap/packaging
+automation: |-
+  Gravida arcu ac tortor dignissim. Magna etiam tempor orci eu lobortis. Magna sit amet purus gravida.
+  * aliquet
+  * risus
+  * feugiat
+
+# What is the overall availability achieved as a result on individual components availability targets. 
+# Include exceptions where a single point-of-failure exists
+availability: |-
+  Sagittis purus sit amet volutpat consequat mauris nunc congue nisi.
+  Congue quisque egestas diam in.
+  Vulputate eu scelerisque felis imperdiet.
+  Blandit massa enim nec dui nunc mattis.
+
+# requirements: details of any compliance requirements to be adhered by the solution
+compliance:
+  requirements: Fermentum leo vel orci porta non.
+
+# category: application's criticality rating. RTO/RPO
+criticality:
+  category: Volutpat blandit aliquam etiam erat velit scelerisque.
+
+data:
+  classification: In tellus integer feugiat scelerisque varius morbi.
+
+decisions:
+- context: Tellus at urna condimentum mattis.Nisl nisi scelerisque eu ultrices vitae auctor.
+  date: January 1st, 2019
+  description: Adipiscing enim eu turpis egestas pretium aenean.
+  status: backlog
+- context: Integer malesuada nunc vel risus commodo.
+  date: January 1st, 2020
+  description: In metus vulputate eu scelerisque felis imperdiet proin.
+  status: in-progress
+
+devops:
+- label: code
+  url: https://
+- label: build
+  url: https://
+- label: release
+  url: https://
+- label: artifacts
+  url: https://
+
+environments:
+  - name: Development
+    identifier: dev
+  - name: Test
+    identifier: tst
+  - name: Production
+    identifier: prd
+
+#  List all systems the solution will integrate with:
+#    * AD
+#    * NAS Filer
+#    * Logging solution
+#    * Batch system
+#    * Alarming system
+#    * ITSM tool
+integration: |-
+  * Leo - integer malesuada nunc vel.
+  * Gravida - neque convallis a cras semper.
+
+# What level of reliability is achieved for the data hosted in cloud (e.g. s3 reliability)  
+reliability: Viverra vitae congue eu consequat ac.
+
+# List components that are re-used from others services:
+# * AD
+# * OS Images
+# * Backups
+# * Internet Proxy
+# * Anti-virus Agents
+# * AWS CloudTrail
+# * Naming Standards
+# * Tagging Standards
+reusable: |-
+  * Hendrerit - dolor magna eget.
+  * Integer - malesuada nunc vel risus commodo.
+
+# Describe how the solution components meet scalability standards, 
+# include if it does not need/meet any scalability targets.
+scalability: Pretium vulputate sapien nec sagittis.
+
+target:
+  golive: dd/mm/yyyy

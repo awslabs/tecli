@@ -1,0 +1,45 @@
+{
+    "StackName": "",
+    "TemplateBody": "",
+    "TemplateURL": "",
+    "Parameters": [
+        {
+            "ParameterKey": "",
+            "ParameterValue": "",
+            "UsePreviousValue": true,
+            "ResolvedValue": ""
+        }
+    ],
+    "DisableRollback": true,
+    "RollbackConfiguration": {
+        "RollbackTriggers": [
+            {
+                "Arn": "",
+                "Type": ""
+            }
+        ],
+        "MonitoringTimeInMinutes": 0
+    },
+    "TimeoutInMinutes": 0,
+    "NotificationARNs": [
+        ""
+    ],
+    "Capabilities": [
+        "CAPABILITY_IAM"
+    ],
+    "ResourceTypes": [
+        ""
+    ],
+    "RoleARN": "",
+    "OnFailure": "DELETE",
+    "StackPolicyBody": "",
+    "StackPolicyURL": "",
+    "Tags": [
+        {
+            "Key": "",
+            "Value": ""
+        }
+    ],
+    "ClientRequestToken": "",
+    "EnableTerminationProtection": true
+}

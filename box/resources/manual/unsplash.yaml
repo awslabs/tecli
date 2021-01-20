@@ -1,0 +1,3 @@
+use: unsplash [options]
+short: Downloads random photos from Unsplash.com
+long: Retrieve a single random photo, given optional filters.

@@ -1,0 +1,194 @@
+# High Level Design
+
+## Table of contents
+
+{{ if (file.Exists "tfe-cli/hld.yaml") }}
+
+{{ if (file.Exists "INPUTS.md") }} - [Inputs](#inputs) {{end}}
+{{ if (file.Exists "OUTPUTS.md") }} - [Outputs](#outputs) {{end}}
+
+{{ if has (ds "db") "architecture" }} - [Architecture](#architecture) {{end}}
+{{ if has (ds "db") "automation" }} - [Automation](#automation) {{end}}
+{{ if has (ds "db") "availability" }} - [Availability](#availability) {{end}}
+{{ if has (ds "db") "compliance" }} - [Compliance](#compliance) {{end}}
+{{ if has (ds "db") "criticality" }} - [Criticality](#criticality) {{end}}
+{{ if has (ds "db") "data" }} - [Data](#data) {{end}}
+{{ if has (ds "db") "decisions" }} - [Decisions](#decisions) {{end}}
+{{ if has (ds "db") "devops" }} - [Devops](#devops) {{end}}
+{{ if has (ds "db") "environments" }} - [Environments](#environments) {{end}}
+{{ if has (ds "db") "integration" }} - [integration](#integration) {{end}}
+{{ if has (ds "db") "reliability" }} - [Reliability](#reliability) {{end}}
+{{ if has (ds "db") "reusable" }} - [Reusable](#Reusable) {{end}}
+{{ if has (ds "db") "scalability" }} - [Scalability](#scalability) {{end}}
+{{ if has (ds "db") "target" }} - [Target](#target) {{end}}
+{{ if has (ds "db") "team" }} - [Team](#team) {{end}}
+
+{{end}}
+
+{{ if (file.Exists "tfe-cli/hld.yaml") }}
+<!-- CLOUD SOLUTION DESIGN SECTION -->
+{{ if has (ds "db") "architecture" }}
+## Architecture
+---
+<details>
+  <summary>Expand</summary>
+
+{{ (ds "db").architecture.description }}
+
+### Current state
+---
+{{ (ds "db").architecture.currentstate.description }}
+
+| ![{{ (ds "db").architecture.currentstate.diagram.label }}]({{ (ds "db").architecture.currentstate.diagram.url }}) |
+|:--:| 
+| *{{ (ds "db").architecture.currentstate.diagram.label }}* |
+
+### Target state
+---
+{{ (ds "db").architecture.targetstate.description }}
+
+| ![{{ (ds "db").architecture.targetstate.diagram.label }}]({{ (ds "db").architecture.targetstate.diagram.url }}) |
+|:--:| 
+| *{{ (ds "db").architecture.targetstate.diagram.label }}* |
+
+</details>
+{{end}}
+
+{{ if has (ds "db") "automation" }}
+## Automation
+---
+<details>
+  <summary>Expand</summary>
+
+{{ (ds "db").automation }}
+</details>
+{{end}}
+
+{{ if has (ds "db") "availability" }}
+## Availability
+---
+<details>
+  <summary>Expand</summary>
+
+{{ (ds "db").availability }}
+</details>
+{{end}}
+
+{{ if has (ds "db").compliance "requirements" }}
+## Compliance
+---
+<details>
+  <summary>Expand</summary>
+
+{{ (ds "db").compliance.requirements }}
+</details>
+{{end}}
+
+{{ if has (ds "db").criticality "category" }}
+## Criticality
+---
+<details>
+  <summary>Expand</summary>
+
+{{ (ds "db").criticality.category }}
+</details>
+{{end}}
+
+{{ if has (ds "db").data "classification" }}
+## Data
+---
+<details>
+  <summary>Expand</summary>
+
+{{ (ds "db").data.classification }}
+</details>
+{{end}}
+
+{{ if has (ds "db") "decisions" }}
+## Decisions
+---
+<details>
+  <summary>Expand</summary>
+
+All known decisions:
+{{ range $decision := (ds "db").decisions }}
+{{ printf " * %s - *%s* - %s\n ```\n%s\n```" $decision.date $decision.status $decision.context $decision.description  }}
+
+{{end}}
+</details>
+{{end}}
+
+{{ if has (ds "db") "devops" }}
+## Devops
+---
+<details>
+  <summary>Expand</summary>
+
+{{ range $devop := (ds "db").devops }}
+{{ printf "  * [%s](%s)" $devop.label $devop.url }}{{end}}
+</details>
+{{end}}
+
+{{ if has (ds "db") "environments" }}
+## Environments
+---
+<details>
+  <summary>Expand</summary>
+
+|     Name     |         Identifier        |
+|:------------:|:--------------------:|
+{{ range $env := (ds "db").environments }}{{ printf "|  %s  |  %s  |\n" $env.name $env.identifier }}{{end}}
+</details>
+{{end}}
+
+{{ if has (ds "db") "integration" }}
+## Integration
+---
+<details>
+  <summary>Expand</summary>
+
+{{ (ds "db").integration }}
+</details>
+{{end}}
+
+{{ if has (ds "db") "reliability" }}
+## Reliability
+---
+<details>
+  <summary>Expand</summary>
+
+{{ (ds "db").reliability }}
+</details>
+{{end}}
+
+{{ if has (ds "db") "reusable" }}
+## Reusable
+---
+<details>
+  <summary>Expand</summary>
+
+{{ (ds "db").reusable }}
+</details>
+{{end}}
+
+{{ if has (ds "db") "scalability" }}
+## Scalability
+---
+<details>
+  <summary>Expand</summary>
+
+{{ (ds "db").scalability }}
+</details>
+{{end}}
+
+{{ if has (ds "db").target "golive" }}
+## Target
+---
+<details>
+  <summary>Expand</summary>
+
+Go-Live Date: {{ (ds "db").target.golive }}
+</details>
+{{end}}
+
+{{end}}

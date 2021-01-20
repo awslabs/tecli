@@ -1,0 +1,9 @@
+use: configure [delete]
+example: >
+  If you want to create a new named profile:
+    tfe-cli configure --profile work
+    
+  If you want to delete a named profile:
+    tfe-cli configure delete --profile work
+short: Configures tfe-cli global settings
+long: Configures tfe-cli global credentials and configurations used by commands
