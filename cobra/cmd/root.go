@@ -21,8 +21,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/awslabs/tfe-cli/cobra/aid"
-	"github.com/awslabs/tfe-cli/cobra/controller"
+	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/aid"
+	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/controller"
 
 	"github.com/spf13/viper"
 )

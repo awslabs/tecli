@@ -17,7 +17,7 @@ package model
 
 import "os"
 
-// App represents the all the necessary information about tfe-cli
+// App represents the all the necessary information about tecli
 type App struct {
 	// Name of file to look for inside the path
 	Name                      string

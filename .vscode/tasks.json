@@ -6,12 +6,12 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "make tfe-cli/build"
+            "command": "make tecli/build"
         },
         {
             "label": "teste",
             "type": "shell",
-            "command": "make tfe-cli/test"
+            "command": "make tecli/test"
         }
     ]
 }

@@ -12,7 +12,7 @@ import (
 	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/awslabs/tfe-cli/box"
+	"gitlab.aws.dev/devops-aws/terraform-ce-cli/box"
 )
 
 // BuildPath changes the given path to a more cross platform friendly format

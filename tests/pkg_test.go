@@ -6,10 +6,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/awslabs/tfe-cli/cobra/controller"
-	"github.com/awslabs/tfe-cli/helper"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/controller"
+	"gitlab.aws.dev/devops-aws/terraform-ce-cli/helper"
 )
 
 /* SETUP */
@@ -18,7 +18,7 @@ func beforeSetup() {
 	format := "2006-01-02-15-04-05.000000000"
 	dt := time.Now().Format(format)
 
-	dir := helper.CreateTempDir(os.TempDir(), "tfe-cli-"+dt)
+	dir := helper.CreateTempDir(os.TempDir(), "tecli-"+dt)
 
 	// enter the new directory
 	err := os.Chdir(dir)

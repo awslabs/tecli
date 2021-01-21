@@ -1,15 +1,15 @@
 use: init [project] [--project-name <value> ] [ --project-type [basic|cloudformation|terraform] ]
 example: >
   If you want to initialize a basic project:
-    tfe-cli init project --project-name foo
+    tecli init project --project-name foo
 
   If you want to generate a cloud project:
-    tfe-cli init project --project-name foo --project-type cloud    
+    tecli init project --project-name foo --project-type cloud    
 
   If you want to generate a cloudFormation project:
-    tfe-cli init project --project-name foo --project-type cloudformation
+    tecli init project --project-name foo --project-type cloudformation
 
   If you want to generate a terraform project:
-    tfe-cli init project --project-name foo --project-type terraform    
+    tecli init project --project-name foo --project-type terraform    
 short: Initialize a project
 long: Initialize a project with code structure and templates

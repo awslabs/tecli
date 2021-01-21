@@ -1,13 +1,13 @@
 use: gitignore
 example: >
   if you want to see a list of valid project types:
-    tfe-cli gitignore list
+    tecli gitignore list
 
   If you want to create a .gitignore file for your terraform project:
-    tfe-cli gitignore --input terraform
+    tecli gitignore --input terraform
 
   If you want to create a .gitignore file for your project with multiple rules:
-    tfe-cli gitignore --input terraform,vscode
+    tecli gitignore --input terraform,vscode
 
 short: Download .gitignore based on the given input
 long: Download .gitignore based on the given input

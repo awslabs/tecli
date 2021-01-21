@@ -20,13 +20,13 @@ import (
 	"os"
 	"runtime"
 
-	"github.com/awslabs/tfe-cli/box"
-	"github.com/awslabs/tfe-cli/helper"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"gitlab.aws.dev/devops-aws/terraform-ce-cli/box"
+	"gitlab.aws.dev/devops-aws/terraform-ce-cli/helper"
 )
 
-// VersionCmd command to display tfe-cli current version
+// VersionCmd command to display tecli current version
 func VersionCmd() *cobra.Command {
 	man, err := helper.GetManual("version")
 	if err != nil {
@@ -56,7 +56,7 @@ func versionRun(cmd *cobra.Command, args []string) error {
 	goVersion := runtime.Version()
 	goArch := runtime.GOARCH
 
-	cmd.Printf("tfe-cli v%s %s %s %s\n", version, goVersion, goOS, goArch)
+	cmd.Printf("tecli v%s %s %s %s\n", version, goVersion, goOS, goArch)
 
 	return nil
 }

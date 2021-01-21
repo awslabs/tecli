@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "github.com/awslabs/tfe-cli/cobra/cmd"
+import "gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/cmd"
 
 func main() {
 	cmd.Execute()

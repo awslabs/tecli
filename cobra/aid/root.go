@@ -19,16 +19,16 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/awslabs/tfe-cli/cobra/model"
 	"github.com/mitchellh/go-homedir"
 	"github.com/sirupsen/logrus"
+	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/model"
 )
 
-// GetAppInfo return information about tfe-cli settings
+// GetAppInfo return information about tecli settings
 func GetAppInfo() model.App {
 	var err error
 	var app model.App
-	app.Name = "tfe-cli"
+	app.Name = "tecli"
 	app.HomeDir = getHomeDir()
 	app.ConfigurationsDir = app.HomeDir + "/" + "." + app.Name
 	app.ConfigurationsName = "configurations"

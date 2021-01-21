@@ -1,7 +1,7 @@
 .PHONY: go/build
 go/build: ## Compile packages and dependencies
 	mkdir -p build
-	go build -o build/tfe-cli
+	go build -o build/tecli
 
 .PHONY: go/install
 go/install: ## Compile and install packages and dependencies
@@ -17,7 +17,7 @@ endif
 
 .PHONY: go/fmt
 go/fmt: ## gofmt (reformat) package sources
-	go fmt github.com/awslabs/tfe-cli/...
+	go fmt gitlab.aws.dev/devops-aws/terraform-ce-cli/...
 	go fmt ./...
 	gofmt -s -w .
 

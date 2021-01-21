@@ -15,7 +15,7 @@ limitations under the License.
 
 package cmd
 
-import controller "github.com/awslabs/tfe-cli/cobra/controller"
+import controller "gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/controller"
 
 var versionCmd = controller.VersionCmd()
 

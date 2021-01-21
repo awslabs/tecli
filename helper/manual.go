@@ -3,8 +3,8 @@ package helper
 import (
 	"fmt"
 
-	"github.com/awslabs/tfe-cli/box"
 	"github.com/sirupsen/logrus"
+	"gitlab.aws.dev/devops-aws/terraform-ce-cli/box"
 	yaml "gopkg.in/yaml.v2"
 )
 

@@ -2,7 +2,7 @@
 
 ## Table of contents
 
-{{ if (file.Exists "tfe-cli/hld.yaml") }}
+{{ if (file.Exists "tecli/hld.yaml") }}
 
 {{ if (file.Exists "INPUTS.md") }} - [Inputs](#inputs) {{end}}
 {{ if (file.Exists "OUTPUTS.md") }} - [Outputs](#outputs) {{end}}
@@ -25,7 +25,7 @@
 
 {{end}}
 
-{{ if (file.Exists "tfe-cli/hld.yaml") }}
+{{ if (file.Exists "tecli/hld.yaml") }}
 <!-- CLOUD SOLUTION DESIGN SECTION -->
 {{ if has (ds "db") "architecture" }}
 ## Architecture

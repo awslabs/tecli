@@ -44,8 +44,8 @@ package cmd
 // 	renderCmd.Flags().StringP("name", "n", "readme", "Template name to be rendered")
 // 	output, err := helper.ExecuteCommand(rootCmd, "render", "template")
 
-// 	assert.Contains(t, output, "Missing database at tfe-cli/readme.yaml")
-// 	assert.Contains(t, err.Error(), "Missing database at tfe-cli/readme.yaml")
+// 	assert.Contains(t, output, "Missing database at tecli/readme.yaml")
+// 	assert.Contains(t, err.Error(), "Missing database at tecli/readme.yaml")
 // }
 
 // func TestRenderWithInitBasicProject(t *testing.T) {
@@ -71,12 +71,12 @@ package cmd
 // 	assert.Equal(t, output, "")
 // 	assert.Equal(t, err, nil)
 
-// 	if !helper.FileExists("tfe-cli/readme.tmpl") {
-// 		t.Error("tfe-cli/readme.tmpl not found, project initialization failed")
+// 	if !helper.FileExists("tecli/readme.tmpl") {
+// 		t.Error("tecli/readme.tmpl not found, project initialization failed")
 // 	}
 
-// 	if !helper.FileExists("tfe-cli/readme.yaml") {
-// 		t.Error("tfe-cli/readme.yaml not found, project initialization failed")
+// 	if !helper.FileExists("tecli/readme.yaml") {
+// 		t.Error("tecli/readme.yaml not found, project initialization failed")
 // 	}
 
 // 	if !helper.FileExists("README.md") {
@@ -109,12 +109,12 @@ package cmd
 // 	assert.Equal(t, output, "")
 // 	assert.Equal(t, err, nil)
 
-// 	if !helper.FileExists("tfe-cli/hld.tmpl") {
-// 		t.Error("tfe-cli/hld.tmpl not found, project initialization failed")
+// 	if !helper.FileExists("tecli/hld.tmpl") {
+// 		t.Error("tecli/hld.tmpl not found, project initialization failed")
 // 	}
 
-// 	if !helper.FileExists("tfe-cli/hld.yaml") {
-// 		t.Error("tfe-cli/hld.yaml not found, project initialization failed")
+// 	if !helper.FileExists("tecli/hld.yaml") {
+// 		t.Error("tecli/hld.yaml not found, project initialization failed")
 // 	}
 
 // 	if !helper.FileExists("HLD.md") {
@@ -147,12 +147,12 @@ package cmd
 // 	assert.Equal(t, output, "")
 // 	assert.Equal(t, err, nil)
 
-// 	if !helper.FileExists("tfe-cli/hld.tmpl") {
-// 		t.Error("tfe-cli/hld.tmpl not found, project initialization failed")
+// 	if !helper.FileExists("tecli/hld.tmpl") {
+// 		t.Error("tecli/hld.tmpl not found, project initialization failed")
 // 	}
 
-// 	if !helper.FileExists("tfe-cli/hld.yaml") {
-// 		t.Error("tfe-cli/hld.yaml not found, project initialization failed")
+// 	if !helper.FileExists("tecli/hld.yaml") {
+// 		t.Error("tecli/hld.yaml not found, project initialization failed")
 // 	}
 
 // 	if !helper.FileExists("HLD.md") {

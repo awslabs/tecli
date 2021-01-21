@@ -1,5 +1,5 @@
 use: version [options]
-short: Displays the version of tfe-cli and all installed plugins
+short: Displays the version of tecli and all installed plugins
 long: |
   Displays the version of Terraform and all installed plugins in the following format:
-  tfe-cli/{git-tag} {golang-version} {architecture} {source}
+  tecli/{git-tag} {golang-version} {architecture} {source}

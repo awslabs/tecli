@@ -60,11 +60,9 @@ type ConfigurationProfile struct {
 
 // Configuration model
 type Configuration struct {
-	Name           string `yaml:"name,omitempty"`
-	Description    string `yaml:"description,omitempty"`
-	Enabled        bool   `yaml:"enabled"`
-	CreatedAt      string `yaml:"createdAt"`
-	UpdatedAt      string `yaml:"updatedAt"`
-	Initialization `yaml:"initialization,omitempty"`
-	Unsplash       `yaml:"unsplash,omitempty"`
+	Name        string `yaml:"name,omitempty"`
+	Description string `yaml:"description,omitempty"`
+	Enabled     bool   `yaml:"enabled"`
+	CreatedAt   string `yaml:"createdAt"`
+	UpdatedAt   string `yaml:"updatedAt"`
 }

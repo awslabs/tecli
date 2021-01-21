@@ -18,8 +18,8 @@ package tests
 import (
 	"testing"
 
-	"github.com/awslabs/tfe-cli/cobra/controller"
 	"github.com/stretchr/testify/assert"
+	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/controller"
 )
 
 func TestRootWithNoArgAndNoFlags(t *testing.T) {

@@ -19,10 +19,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/awslabs/tfe-cli/cobra/aid"
-	"github.com/awslabs/tfe-cli/helper"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/aid"
+	"gitlab.aws.dev/devops-aws/terraform-ce-cli/helper"
 )
 
 var profile string
@@ -53,10 +53,10 @@ func RootCmd() *cobra.Command {
 	// Cobra supports persistent flags, which, if defined here will be global for your application.
 	cmd.PersistentFlags().StringVarP(&profile, "profile", "p", "default", "Use a specific profile from your credentials and configurations file.")
 
-	// TODO: allow users to pass their prefer location for tfe-cli's configurations directory
+	// TODO: allow users to pass their prefer location for tecli's configurations directory
 
 	cmd.PersistentFlags().StringVarP(&verbosity, "verbosity", "v", logrus.ErrorLevel.String(), "Valid log level:panic,fatal,error,warn,info,debug,trace).")
-	cmd.PersistentFlags().StringVarP(&log, "log", "l", "disable", "Enable or disable logs (found at $HOME/.tfe-cli/logs.json). Log outputs will be shown on default output.")
+	cmd.PersistentFlags().StringVarP(&log, "log", "l", "disable", "Enable or disable logs (found at $HOME/.tecli/logs.json). Log outputs will be shown on default output.")
 	cmd.PersistentFlags().StringVar(&logFilePath, "log-file-path", aid.GetAppInfo().LogsPath, "Log file path.")
 
 	// Cobra also supports local flags, which will only run when this action is called directly.

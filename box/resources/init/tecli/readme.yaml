@@ -43,7 +43,7 @@ acknowledgments:
   role: Job Role
 references:
 - description: Cloud Engineer CLI
-  name: tfe-cli
-  url: https://github.com/awslabs/tfe-cli
+  name: tecli
+  url: https://gitlab.aws.dev/devops-aws/terraform-ce-cli
 license: This project is licensed under the Apache License 2.0.
 copyright: Company, Inc. or its affiliates. All Rights Reserved.

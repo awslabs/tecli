@@ -25,9 +25,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/awslabs/tfe-cli/helper"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"gitlab.aws.dev/devops-aws/terraform-ce-cli/helper"
 	"gopkg.in/yaml.v2"
 )
 
@@ -83,10 +83,10 @@ func ReadConfigAsViper(configPath string, configName string, configType string) 
 	return v, err
 }
 
-// ReadTemplate read the given template under tfe-cli/*.yaml
+// ReadTemplate read the given template under tecli/*.yaml
 func ReadTemplate(fileName string) (*viper.Viper, error) {
 	c := viper.New()
-	c.AddConfigPath("tfe-cli")
+	c.AddConfigPath("tecli")
 	c.SetConfigName(fileName)
 	c.SetConfigType("yaml")
 	c.SetConfigPermissions(os.ModePerm)

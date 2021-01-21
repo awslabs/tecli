@@ -19,16 +19,16 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/awslabs/tfe-cli/cobra/aid"
-	"github.com/awslabs/tfe-cli/cobra/dao"
-	"github.com/awslabs/tfe-cli/cobra/view"
-	"github.com/awslabs/tfe-cli/helper"
 	"github.com/spf13/cobra"
+	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/aid"
+	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/dao"
+	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/view"
+	"gitlab.aws.dev/devops-aws/terraform-ce-cli/helper"
 )
 
 var configureValidArgs = []string{"delete"}
 
-// ConfigureCmd command to display tfe-cli current version
+// ConfigureCmd command to display tecli current version
 func ConfigureCmd() *cobra.Command {
 	man, err := helper.GetManual("configure")
 	if err != nil {
@@ -52,7 +52,7 @@ func ConfigureCmd() *cobra.Command {
 func configureRun(cmd *cobra.Command, args []string) error {
 	if !aid.ConfigurationsDirectoryExist() {
 		if created, dir := aid.CreateConfigurationsDirectory(); created {
-			cmd.Printf("tfe-cli configuration directory created at %s\n", dir)
+			cmd.Printf("tecli configuration directory created at %s\n", dir)
 			createCredentials(cmd)
 			createConfigurations(cmd)
 		}

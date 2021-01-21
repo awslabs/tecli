@@ -17,11 +17,9 @@ package dao
 
 import (
 	"fmt"
-	"os"
 
-	"github.com/awslabs/tfe-cli/cobra/aid"
-	"github.com/awslabs/tfe-cli/cobra/model"
-	"github.com/awslabs/tfe-cli/helper"
+	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/aid"
+	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/model"
 )
 
 // GetConfigurations read the current configurations file and return its model
@@ -40,31 +38,6 @@ func GetConfigurations() (model.Configurations, error) {
 	return confs, err
 }
 
-// GetReadMe TODO...
-func GetReadMe() (model.ReadMe, error) {
-	var readMe model.ReadMe
-	wd, err := os.Getwd()
-	if err != nil {
-		return readMe, fmt.Errorf("unable to get the current working directory:\n%v", err)
-	}
-
-	configPath := helper.BuildPath(wd + "/tfe-cli")
-	configName := "readme"
-	configType := "yaml"
-
-	v, err := aid.ReadConfigAsViper(configPath, configName, configType)
-	if err != nil {
-		return readMe, fmt.Errorf("unable to read configurations\n%v", err)
-	}
-
-	err = v.Unmarshal(&readMe)
-	if err != nil {
-		return readMe, fmt.Errorf("unable to unmarshall configurations\n%v", err)
-	}
-
-	return readMe, err
-}
-
 // GetConfigurationProfile returns credentials of a profile
 func GetConfigurationProfile(name string) (model.ConfigurationProfile, error) {
 	configurations, err := GetConfigurations()
@@ -80,23 +53,6 @@ func GetConfigurationProfile(name string) (model.ConfigurationProfile, error) {
 	}
 
 	return (model.ConfigurationProfile{}), err
-}
-
-// GetUnsplashRandomPhotoParameters TODO ...
-func GetUnsplashRandomPhotoParameters(name string) model.UnsplashRandomPhotoParameters {
-	profile, _ := GetConfigurationProfile(name)
-
-	if len(profile.Configurations) > 0 {
-		for _, conf := range profile.Configurations {
-			if conf.Unsplash.Enabled == true {
-				if conf.Unsplash.RandomPhoto.Enabled {
-					return conf.Unsplash.RandomPhoto.Parameters
-				}
-			}
-		}
-	}
-
-	return (model.UnsplashRandomPhotoParameters{})
 }
 
 // GetCredentials read the current credentials file and return its model
