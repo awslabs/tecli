@@ -23,37 +23,37 @@ import (
 )
 
 // GetConfigurations read the current configurations file and return its model
-func GetConfigurations() (model.Configurations, error) {
-	var confs model.Configurations
-	v, err := aid.ReadConfig(aid.GetAppInfo().ConfigurationsName)
-	if err != nil {
-		return confs, fmt.Errorf("unable to read configurations\n%v", err)
-	}
+// func GetConfigurations() (model.Configurations, error) {
+// 	var confs model.Configurations
+// 	v, err := aid.ReadConfig(aid.GetAppInfo().ConfigurationsName)
+// 	if err != nil {
+// 		return confs, fmt.Errorf("unable to read configurations\n%v", err)
+// 	}
 
-	err = v.Unmarshal(&confs)
-	if err != nil {
-		return confs, fmt.Errorf("unable to unmarshall configurations\n%v", err)
-	}
+// 	err = v.Unmarshal(&confs)
+// 	if err != nil {
+// 		return confs, fmt.Errorf("unable to unmarshall configurations\n%v", err)
+// 	}
 
-	return confs, err
-}
+// 	return confs, err
+// }
 
 // GetConfigurationProfile returns credentials of a profile
-func GetConfigurationProfile(name string) (model.ConfigurationProfile, error) {
-	configurations, err := GetConfigurations()
+// func GetConfigurationProfile(name string) (model.ConfigurationProfile, error) {
+// 	configurations, err := GetConfigurations()
 
-	if err != nil {
-		return (model.ConfigurationProfile{}), err
-	}
+// 	if err != nil {
+// 		return (model.ConfigurationProfile{}), err
+// 	}
 
-	for _, profile := range configurations.Profiles {
-		if profile.Name == name && profile.Enabled {
-			return profile, err
-		}
-	}
+// 	for _, profile := range configurations.Profiles {
+// 		if profile.Name == name && profile.Enabled {
+// 			return profile, err
+// 		}
+// 	}
 
-	return (model.ConfigurationProfile{}), err
-}
+// 	return (model.ConfigurationProfile{}), err
+// }
 
 // GetCredentials read the current credentials file and return its model
 func GetCredentials() (model.Credentials, error) {
@@ -88,26 +88,10 @@ func GetCredentialProfile(name string) (model.CredentialProfile, error) {
 	return (model.CredentialProfile{}), err
 }
 
-// GetCredentialByProvider return credentials based on the given provider, if non-existent, return an empty credential
-func GetCredentialByProvider(profile string, provider string) (model.Credential, error) {
-	cp, err := GetCredentialProfile(profile)
-	if err != nil {
-		return (model.Credential{}), err
-	}
-
-	for _, c := range cp.Credentials {
-		if c.Provider == provider {
-			return c, err
-		}
-	}
-
-	return (model.Credential{}), err
-}
-
-// SaveConfigurations saves the given configuration onto the configurations file
-func SaveConfigurations(configurations model.Configurations) error {
-	return aid.WriteInterfaceToFile(configurations, aid.GetAppInfo().ConfigurationsPath)
-}
+// // SaveConfigurations saves the given configuration onto the configurations file
+// func SaveConfigurations(configurations model.Configurations) error {
+// 	return aid.WriteInterfaceToFile(configurations, aid.GetAppInfo().ConfigurationsPath)
+// }
 
 // SaveCredentials saves the given credential onto the credentials file
 func SaveCredentials(credentials model.Credentials) error {

@@ -7,7 +7,7 @@ tecli/test:
 	@cd tests && go test -v
 
 .PHONY: tecli/build
-tecli/build: go/mod/tidy go/version go/get go/fmt go/generate go/build ## Builds the app
+tecli/build: go/mod/tidy go/version go/get go/fmt go/generate go/build tecli/update-readme ## Builds the app
 
 .PHONY: tecli/build/docker
 tecli/build/docker: tecli/build

@@ -1,17 +1,13 @@
 ## Commands
 ```
-The Cloud Engineer CLI
+(nonofficial) Terraform Enterprise/Cloud Command Line Interface
 
 Usage:
   tecli [command]
 
 Available Commands:
   configure   Configures tecli global settings
-  gitignore   Download .gitignore based on the given input
   help        Help about any command
-  init        Initialize a project
-  render      Render a template
-  unsplash    Downloads random photos from Unsplash.com
   version     Displays the version of tecli and all installed plugins
 
 Flags:

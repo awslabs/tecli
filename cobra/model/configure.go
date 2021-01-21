@@ -22,47 +22,12 @@ type Credentials struct {
 
 // CredentialProfile model
 type CredentialProfile struct {
-	Name        string       `yaml:"name"`
-	Description string       `yaml:"description,omitempty"`
-	Enabled     bool         `yaml:"enabled"`
-	CreatedAt   string       `yaml:"createdAt"`
-	UpdatedAt   string       `yaml:"updatedAt"`
-	Credentials []Credential `yaml:"credentials"`
-}
-
-// Credential model
-type Credential struct {
-	Name         string `yaml:"name,omitempty"`
-	Description  string `yaml:"description,omitempty"`
-	Enabled      bool   `yaml:"enabled"`
-	CreatedAt    string `yaml:"createdAt"`
-	UpdatedAt    string `yaml:"updatedAt"`
-	Provider     string `yaml:"provider"`
-	AccessKey    string `yaml:"accessKey"`
-	SecretKey    string `yaml:"secretKey"`
-	SessionToken string `yaml:"sessionToken"`
-}
-
-// Configurations model
-type Configurations struct {
-	Profiles []ConfigurationProfile `yaml:"profiles"`
-}
-
-// ConfigurationProfile model
-type ConfigurationProfile struct {
-	Name           string          `yaml:"name"`
-	Description    string          `yaml:"description,omitempty"`
-	Enabled        bool            `yaml:"enabled"`
-	CreatedAt      string          `yaml:"createdAt"`
-	UpdatedAt      string          `yaml:"updatedAt"`
-	Configurations []Configuration `yaml:"configurations"`
-}
-
-// Configuration model
-type Configuration struct {
-	Name        string `yaml:"name,omitempty"`
-	Description string `yaml:"description,omitempty"`
-	Enabled     bool   `yaml:"enabled"`
-	CreatedAt   string `yaml:"createdAt"`
-	UpdatedAt   string `yaml:"updatedAt"`
+	Name              string `yaml:"name"`
+	Description       string `yaml:"description,omitempty"`
+	Enabled           bool   `yaml:"enabled"`
+	CreatedAt         string `yaml:"createdAt"`
+	UpdatedAt         string `yaml:"updatedAt"`
+	UserToken         string `yaml:"userToken"`
+	TeamToken         string `yaml:"teamToken"`
+	OrganizationToken string `yaml:"organizationToken"`
 }

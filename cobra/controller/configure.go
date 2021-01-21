@@ -54,7 +54,7 @@ func configureRun(cmd *cobra.Command, args []string) error {
 		if created, dir := aid.CreateConfigurationsDirectory(); created {
 			cmd.Printf("tecli configuration directory created at %s\n", dir)
 			createCredentials(cmd)
-			createConfigurations(cmd)
+			// createConfigurations(cmd)
 		}
 	} else {
 		// configurations directory exist
@@ -64,11 +64,11 @@ func configureRun(cmd *cobra.Command, args []string) error {
 			updateCredentials(cmd)
 		}
 
-		if !aid.ConfigurationsFileExist() {
-			createConfigurations(cmd)
-		} else {
-			updateConfigurations(cmd)
-		}
+		// if !aid.ConfigurationsFileExist() {
+		// 	createConfigurations(cmd)
+		// } else {
+		// 	updateConfigurations(cmd)
+		// }
 	}
 
 	return nil
@@ -90,18 +90,18 @@ func updateCredentials(cmd *cobra.Command) {
 	}
 }
 
-func createConfigurations(cmd *cobra.Command) {
-	answer := aid.GetUserInputAsBool(cmd, "Would you like to setup configurations?", false)
-	if answer {
-		configurations := view.CreateConfigurations(cmd, profile)
-		dao.SaveConfigurations(configurations)
-	}
-}
+// func createConfigurations(cmd *cobra.Command) {
+// 	answer := aid.GetUserInputAsBool(cmd, "Would you like to setup configurations?", false)
+// 	if answer {
+// 		configurations := view.CreateConfigurations(cmd, profile)
+// 		dao.SaveConfigurations(configurations)
+// 	}
+// }
 
-func updateConfigurations(cmd *cobra.Command) {
-	answer := aid.GetUserInputAsBool(cmd, "Would you like to update configurations?", false)
-	if answer {
-		configurations := view.UpdateConfigurations(cmd, profile)
-		dao.SaveConfigurations(configurations)
-	}
-}
+// func updateConfigurations(cmd *cobra.Command) {
+// 	answer := aid.GetUserInputAsBool(cmd, "Would you like to update configurations?", false)
+// 	if answer {
+// 		configurations := view.UpdateConfigurations(cmd, profile)
+// 		dao.SaveConfigurations(configurations)
+// 	}
+// }

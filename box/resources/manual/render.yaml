@@ -1,3 +1,0 @@
-use: render template [ --name <value> ]
-short: Render a template
-long: Render a template 
