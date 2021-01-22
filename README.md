@@ -11,7 +11,7 @@
 
 -->
 
-![logo](https://images.unsplash.com/photo-1607275906595-f2d28b5967ff?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MXwxOTEyNTB8MHwxfHJhbmRvbXx8fHx8fHx8&ixlib=rb-1.2.1&q=80&w=1080)
+![logo](https://images.unsplash.com/photo-1611129164249-582734563f60?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MXwxOTEyNTB8MHwxfHJhbmRvbXx8fHx8fHx8&ixlib=rb-1.2.1&q=80&w=1080)
 
 
 
@@ -128,7 +128,9 @@ Usage:
 Available Commands:
   configure   Configures tecli global settings
   help        Help about any command
+  plans       A plan represents the execution plan of a Run in a Terraform workspace.
   version     Displays the version of tecli and all installed plugins
+  workspace   A plan represents the execution plan of a Run in a Terraform workspace.
 
 Flags:
   -h, --help                   help for tecli

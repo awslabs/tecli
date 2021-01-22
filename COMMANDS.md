@@ -8,7 +8,9 @@ Usage:
 Available Commands:
   configure   Configures tecli global settings
   help        Help about any command
+  plans       A plan represents the execution plan of a Run in a Terraform workspace.
   version     Displays the version of tecli and all installed plugins
+  workspace   A plan represents the execution plan of a Run in a Terraform workspace.
 
 Flags:
   -h, --help                   help for tecli

@@ -42,21 +42,6 @@ func executeCommand(t *testing.T, cmd *cobra.Command, args []string) (stdout str
 	return stdout, err
 }
 
-func executeCommandGetWorkingDirectory(t *testing.T, cmd *cobra.Command, args []string) (wd string, stdout string, err error) {
-	wd = createAndEnterTestDirectory(t)
-	_, stdout, err = executeCommandC(cmd, args)
-	os.Chdir(wd)
-
-	return wd, stdout, err
-}
-
-func executeCommandOnTemporaryDirectory(t *testing.T, cmd *cobra.Command, args []string) (wd string, stdout string, err error) {
-	wd = t.TempDir()
-	os.Chdir(wd)
-	_, stdout, err = executeCommandC(cmd, args)
-	return wd, stdout, err
-}
-
 // executeCommandOnly only executes the given command without changing the current directory, useful for combined tests
 func executeCommandOnly(t *testing.T, cmd *cobra.Command, args []string) (stdout string, err error) {
 	_, stdout, err = executeCommandC(cmd, args)

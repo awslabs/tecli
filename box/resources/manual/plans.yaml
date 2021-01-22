@@ -1,0 +1,9 @@
+use: plans [delete]
+example: >
+  If you want to create a new named profile:
+    tecli configure --profile work
+    
+  If you want to delete a named profile:
+    tecli configure delete --profile work
+short: A plan represents the execution plan of a Run in a Terraform workspace.
+long: A plan represents the execution plan of a Run in a Terraform workspace.

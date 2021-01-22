@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"os"
 
+	tfe "github.com/hashicorp/go-tfe"
 	"github.com/mitchellh/go-homedir"
 	"github.com/sirupsen/logrus"
 	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/model"
@@ -89,4 +90,29 @@ func SetupLoggingLevel(level string) error {
 
 	logrus.SetLevel(lvl)
 	return nil
+}
+
+// getTFEConfig Returns struct from Terraform Enterprise Cloud API response
+func getTFEConfig(token string) *tfe.Config {
+	config := &tfe.Config{
+		Token: token,
+	}
+	return config
+}
+
+// getTFENewClient returns a new terraform api client
+func getTFENewClient(config *tfe.Config) (*tfe.Client, error) {
+	client, err := tfe.NewClient(config)
+	if err != nil {
+		logrus.Errorf("unable to get new terraform enterprise api client\n%v", err)
+		return client, err
+	}
+
+	return client, err
+}
+
+// GetTFEClient returns a new terraform api client given a token
+func GetTFEClient(token string) (*tfe.Client, error) {
+	config := getTFEConfig(token)
+	return getTFENewClient(config)
 }

@@ -1,0 +1,12 @@
+use: workspace [create]
+example: >
+  Workspaces represent running infrastructure managed by Terraform.
+  Viewing a workspace (individually or in a list) requires permission to read runs. Changing settings and force-unlocking require admin access to the workspace. Locking and unlocking a workspace requires permission to lock and unlock the workspace.
+
+  If you want to create a new named profile:
+    tecli workspace create --organization-name <value> --workspace-name <value>
+    
+  If you want to delete a named profile:
+    tecli configure delete --profile work
+short: A plan represents the execution plan of a Run in a Terraform workspace.
+long: A plan represents the execution plan of a Run in a Terraform workspace.

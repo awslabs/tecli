@@ -1,5 +1,5 @@
 logo:
-  url: https://images.unsplash.com/photo-1607275906595-f2d28b5967ff?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MXwxOTEyNTB8MHwxfHJhbmRvbXx8fHx8fHx8&ixlib=rb-1.2.1&q=80&w=1080
+  url: https://images.unsplash.com/photo-1611129164249-582734563f60?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MXwxOTEyNTB8MHwxfHJhbmRvbXx8fHx8fHx8&ixlib=rb-1.2.1&q=80&w=1080
   label: logo
 app:
   name: Terraform Cloud API Command Line Interface

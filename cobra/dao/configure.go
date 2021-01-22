@@ -88,6 +88,17 @@ func GetCredentialProfile(name string) (model.CredentialProfile, error) {
 	return (model.CredentialProfile{}), err
 }
 
+// GetTeamToken return the team token from credentials file
+func GetTeamToken(name string) (string, error) {
+	var token string
+	cp, err := GetCredentialProfile(name)
+	if err != nil {
+		return token, err
+	}
+
+	return cp.TeamToken, err
+}
+
 // // SaveConfigurations saves the given configuration onto the configurations file
 // func SaveConfigurations(configurations model.Configurations) error {
 // 	return aid.WriteInterfaceToFile(configurations, aid.GetAppInfo().ConfigurationsPath)
