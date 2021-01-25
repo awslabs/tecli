@@ -47,7 +47,7 @@ func GetAppInfo() model.App {
 	app.LogsPermissions = os.ModePerm
 	app.WorkingDir, err = os.Getwd()
 	if err != nil {
-		fmt.Printf("Unable to detect the current directory\n%v", err)
+		fmt.Printf("Unable to detect the current directory\n%v\n", err)
 		os.Exit(1)
 	}
 
@@ -57,7 +57,7 @@ func GetAppInfo() model.App {
 func getHomeDir() string {
 	home, err := homedir.Dir()
 	if err != nil {
-		fmt.Printf("Unable to detect the home directory\n%v", err)
+		fmt.Printf("Unable to detect the home directory\n%v\n", err)
 		os.Exit(1)
 	}
 	return home
@@ -72,7 +72,7 @@ func SetupLoggingOutput(path string) error {
 
 	file, err := os.OpenFile(path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, os.ModePerm)
 	if err != nil {
-		return fmt.Errorf("unable to open log file\n%v", err)
+		return fmt.Errorf("unable to open log file\n%v\n", err)
 	}
 
 	logrus.SetFormatter(&logrus.JSONFormatter{})
@@ -85,7 +85,7 @@ func SetupLoggingOutput(path string) error {
 func SetupLoggingLevel(level string) error {
 	lvl, err := logrus.ParseLevel(level)
 	if err != nil {
-		return fmt.Errorf("unable to set log level\n%v", err)
+		return fmt.Errorf("unable to set log level\n%v\n", err)
 	}
 
 	logrus.SetLevel(lvl)
@@ -104,7 +104,7 @@ func getTFEConfig(token string) *tfe.Config {
 func getTFENewClient(config *tfe.Config) (*tfe.Client, error) {
 	client, err := tfe.NewClient(config)
 	if err != nil {
-		logrus.Errorf("unable to get new terraform enterprise api client\n%v", err)
+		logrus.Errorf("unable to get new terraform enterprise api client\n%v\n", err)
 		return client, err
 	}
 
@@ -116,7 +116,7 @@ func GetTFEClient(token string) *tfe.Client {
 	config := getTFEConfig(token)
 	client, err := getTFENewClient(config)
 	if err != nil {
-		logrus.Fatalf("unable to get terraform cloud api client\n%v", err)
+		logrus.Fatalf("unable to get terraform cloud api client\n%v\n", err)
 	}
 
 	return client

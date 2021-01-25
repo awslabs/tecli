@@ -128,13 +128,13 @@ func CopyFile(sourceFile string, destinationFile string) {
 func CopyFileTo(sourceFile string, destinationFile string) error {
 	input, err := ioutil.ReadFile(sourceFile)
 	if err != nil {
-		logrus.Errorf("unable to copy file\n%v", err)
+		logrus.Errorf("unable to copy file\n%v\n", err)
 		return err
 	}
 
 	err = ioutil.WriteFile(destinationFile, input, 0644)
 	if err != nil {
-		logrus.Errorf("unable to write file\n%v", err)
+		logrus.Errorf("unable to write file\n%v\n", err)
 		return err
 	}
 

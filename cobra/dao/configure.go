@@ -28,12 +28,12 @@ import (
 // 	var confs model.Configurations
 // 	v, err := aid.ReadConfig(aid.GetAppInfo().ConfigurationsName)
 // 	if err != nil {
-// 		return confs, fmt.Errorf("unable to read configurations\n%v", err)
+// 		return confs, fmt.Errorf("unable to read configurations\n%v\n", err)
 // 	}
 
 // 	err = v.Unmarshal(&confs)
 // 	if err != nil {
-// 		return confs, fmt.Errorf("unable to unmarshall configurations\n%v", err)
+// 		return confs, fmt.Errorf("unable to unmarshall configurations\n%v\n", err)
 // 	}
 
 // 	return confs, err
@@ -61,12 +61,12 @@ func GetCredentials() (model.Credentials, error) {
 	var creds model.Credentials
 	v, err := aid.ReadConfig(aid.GetAppInfo().CredentialsName)
 	if err != nil {
-		return creds, fmt.Errorf("unable to read credentials\n%v", err)
+		return creds, fmt.Errorf("unable to read credentials\n%v\n", err)
 	}
 
 	err = v.Unmarshal(&creds)
 	if err != nil {
-		return creds, fmt.Errorf("unable to unmarshall credentials\n%v", err)
+		return creds, fmt.Errorf("unable to unmarshall credentials\n%v\n", err)
 	}
 
 	return creds, err
@@ -93,7 +93,7 @@ func GetCredentialProfile(name string) (model.CredentialProfile, error) {
 func GetTeamToken(name string) string {
 	cp, err := GetCredentialProfile(name)
 	if err != nil {
-		logrus.Fatalf("unable to read team token from credentials\n%v", err)
+		logrus.Fatalf("unable to read team token from credentials\n%v\n", err)
 	}
 
 	return cp.TeamToken
@@ -103,7 +103,7 @@ func GetTeamToken(name string) string {
 func GetOrganizationToken(name string) string {
 	cp, err := GetCredentialProfile(name)
 	if err != nil {
-		logrus.Fatalf("unable to read organization token from configurations\n%v", err)
+		logrus.Fatalf("unable to read organization token from configurations\n%v\n", err)
 	}
 	return cp.OrganizationToken
 }

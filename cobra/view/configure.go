@@ -16,6 +16,7 @@ limitations under the License.
 package view
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -29,7 +30,7 @@ import (
 
 // CreateCredentials create the credentials
 func CreateCredentials(cmd *cobra.Command, name string) model.Credentials {
-	cmd.Println("> Credentials")
+	fmt.Println("> Credentials")
 	var credentials model.Credentials
 	cProfile := createCredentialProfile(cmd, name)
 	credentials.Profiles = append(credentials.Profiles, cProfile)
@@ -48,7 +49,7 @@ func createCredentialProfile(cmd *cobra.Command, name string) model.CredentialPr
 }
 
 func askAboutCredentialProfile(cmd *cobra.Command, cp model.CredentialProfile) model.CredentialProfile {
-	cmd.Println(">> Profile: " + cp.Name)
+	fmt.Println(">> Profile: " + cp.Name)
 	cp.Name = aid.GetUserInputAsString(cmd, ">> Name", cp.Name)
 	cp.Description = aid.GetUserInputAsString(cmd, ">> Description", cp.Description)
 	cp.Enabled = aid.GetUserInputAsBool(cmd, ">> Enabled", cp.Enabled)
@@ -61,11 +62,11 @@ func askAboutCredentialProfile(cmd *cobra.Command, cp model.CredentialProfile) m
 
 // UpdateCredentials update the given credentials
 func UpdateCredentials(cmd *cobra.Command, name string) model.Credentials {
-	cmd.Println("> Credentials")
+	fmt.Println("> Credentials")
 
 	credentials, err := dao.GetCredentials()
 	if err != nil {
-		logrus.Fatalf("unable to update credentials\n%v", err)
+		logrus.Fatalf("unable to update credentials\n%v\n", err)
 	}
 
 	found := false
@@ -77,7 +78,7 @@ func UpdateCredentials(cmd *cobra.Command, name string) model.Credentials {
 	}
 
 	if !found {
-		cmd.Printf("No credentials not found for profile %s\n", name)
+		fmt.Printf("No credentials not found for profile %s\n", name)
 	}
 
 	return credentials
@@ -87,7 +88,7 @@ func UpdateCredentials(cmd *cobra.Command, name string) model.Credentials {
 
 // // CreateConfigurations create the configuration file with the given profile name
 // func CreateConfigurations(cmd *cobra.Command, name string) model.Configurations {
-// 	cmd.Println("> Configurations")
+// 	fmt.Println("> Configurations")
 // 	var configurations model.Configurations
 // 	cProfile := createConfigurationProfile(cmd, name)
 // 	configurations.Profiles = append(configurations.Profiles, cProfile)
@@ -96,7 +97,7 @@ func UpdateCredentials(cmd *cobra.Command, name string) model.Credentials {
 
 // // createConfigurationProfile create the given profile name into the configurations file, return the profile created
 // func createConfigurationProfile(cmd *cobra.Command, name string) model.ConfigurationProfile {
-// 	cmd.Println(">> Profile: " + name)
+// 	fmt.Println(">> Profile: " + name)
 // 	var cProfile model.ConfigurationProfile
 // 	cProfile.Name = name
 // 	cProfile.Description = "managed by tecli"
@@ -126,7 +127,7 @@ func UpdateCredentials(cmd *cobra.Command, name string) model.Credentials {
 // }
 
 // func askAboutConfiguration(cmd *cobra.Command, conf model.Configuration) model.Configuration {
-// 	cmd.Println(">>> Configuration")
+// 	fmt.Println(">>> Configuration")
 // 	conf.Name = aid.GetUserInputAsString(cmd, ">>>> Name", conf.Name)
 // 	conf.Description = aid.GetUserInputAsString(cmd, ">>>> Description", conf.Description)
 // 	conf.Enabled = aid.GetUserInputAsBool(cmd, ">>>> Enabled", conf.Enabled)
@@ -139,10 +140,10 @@ func UpdateCredentials(cmd *cobra.Command, name string) model.Credentials {
 
 // // UpdateConfigurations update the given configurations
 // func UpdateConfigurations(cmd *cobra.Command, name string) model.Configurations {
-// 	cmd.Println("> Configurations")
+// 	fmt.Println("> Configurations")
 // 	configurations, err := dao.GetConfigurations()
 // 	if err != nil {
-// 		logrus.Fatalf("unable to update configurations\n%v", err)
+// 		logrus.Fatalf("unable to update configurations\n%v\n", err)
 // 	}
 
 // 	found := false
@@ -154,14 +155,14 @@ func UpdateCredentials(cmd *cobra.Command, name string) model.Credentials {
 // 	}
 
 // 	if !found {
-// 		cmd.Printf("No configurations not found for profile %s\n", name)
+// 		fmt.Printf("No configurations not found for profile %s\n", name)
 // 	}
 
 // 	return configurations
 // }
 
 // func askAboutConfigurationProfile(cmd *cobra.Command, profile model.ConfigurationProfile) model.ConfigurationProfile {
-// 	cmd.Println(">> Profile: " + profile.Name)
+// 	fmt.Println(">> Profile: " + profile.Name)
 // 	profile.Name = aid.GetUserInputAsString(cmd, ">>> Name", profile.Name)
 // 	profile.Description = aid.GetUserInputAsString(cmd, ">>> Description", profile.Description)
 // 	profile.Enabled = aid.GetUserInputAsBool(cmd, ">>> Enabled", profile.Enabled)

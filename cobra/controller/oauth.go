@@ -74,11 +74,11 @@ func oAuthRun(cmd *cobra.Command, args []string) error {
 func listOAuthClients(cmd *cobra.Command, client *tfe.Client, organization string) {
 	clients, err := client.OAuthClients.List(context.Background(), organization, tfe.OAuthClientListOptions{})
 	if err != nil {
-		logrus.Fatalf("unable to list oauth clients\n%v", err)
+		logrus.Fatalf("unable to list oauth clients\n%v\n", err)
 	}
 
 	if len(clients.Items) == 0 {
-		cmd.Println("no oautch client found")
+		fmt.Println("no oautch client found")
 	} else {
 		for _, item := range clients.Items {
 			j, err := json.MarshalIndent(item, "", "  ")
@@ -86,7 +86,7 @@ func listOAuthClients(cmd *cobra.Command, client *tfe.Client, organization strin
 				logrus.Fatalf(err.Error())
 			}
 
-			cmd.Printf("\n %s\n", string(j))
+			fmt.Printf("\n %s\n", string(j))
 		}
 	}
 }
@@ -94,7 +94,7 @@ func listOAuthClients(cmd *cobra.Command, client *tfe.Client, organization strin
 // func listOAuthToken(client *tfe.Client, organization string) {
 // 	tokens, err := client.OAuthTokens.List(context.Background(), organization, tfe.OAuthTokenListOptions{})
 // 	if err != nil {
-// 		logrus.Fatal("unable to list oauth tokens\n%v", err)
+// 		logrus.Fatal("unable to list oauth tokens\n%v\n", err)
 // 	}
 
 // 	for i, item := range tokens.Items {

@@ -56,7 +56,7 @@ func versionRun(cmd *cobra.Command, args []string) error {
 	goVersion := runtime.Version()
 	goArch := runtime.GOARCH
 
-	cmd.Printf("tecli v%s %s %s %s\n", version, goVersion, goOS, goArch)
+	fmt.Printf("tecli v%s %s %s %s\n", version, goVersion, goOS, goArch)
 
 	return nil
 }

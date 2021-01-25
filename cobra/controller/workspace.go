@@ -177,10 +177,10 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 		if err == nil {
 			if list.TotalCount > 0 {
 				for _, item := range list.Items {
-					cmd.Printf("%v\n", aid.ToJSON(item))
+					fmt.Printf("%v\n", aid.ToJSON(item))
 				}
 			} else {
-				cmd.Println("no workspace was found")
+				fmt.Println("no workspace was found")
 			}
 		}
 	case "create":
@@ -188,7 +188,7 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 		workspace, err = workspaceCreate(client, options)
 
 		if err == nil && workspace.ID != "" {
-			cmd.Println(aid.ToJSON(workspace))
+			fmt.Println(aid.ToJSON(workspace))
 		}
 	case "read":
 		name, err := cmd.Flags().GetString("name")
@@ -198,9 +198,9 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 
 		workspace, err := workspaceRead(client, name)
 		if err == nil {
-			cmd.Println(aid.ToJSON(workspace))
+			fmt.Println(aid.ToJSON(workspace))
 		} else {
-			cmd.Printf("workspace %s not found\n%v", name, err)
+			fmt.Printf("workspace %s not found\n%v\n", name, err)
 		}
 	case "update":
 		name, err := cmd.Flags().GetString("name")
@@ -211,9 +211,9 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 		options := aid.GetWorkspaceUpdateOptions(cmd)
 		workspace, err = workspaceUpdate(client, name, options)
 		if err == nil && workspace.ID != "" {
-			cmd.Println(aid.ToJSON(workspace))
+			fmt.Println(aid.ToJSON(workspace))
 		} else {
-			cmd.Printf("unable to update workspace\n%v\n", err)
+			fmt.Printf("unable to update workspace\n%v\n", err)
 		}
 	case "delete":
 		name, err := cmd.Flags().GetString("name")
@@ -223,28 +223,28 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 
 		err = workspaceDelete(client, name)
 		if err == nil {
-			cmd.Printf("workspace %s deleted successfully\n", name)
+			fmt.Printf("workspace %s deleted successfully\n", name)
 		} else {
-			cmd.Printf("unable to delete workspace %s\n%v", name, err)
+			fmt.Printf("unable to delete workspace %s\n%v\n", name, err)
 		}
 	case "remove-vcs-connection":
-		cmd.Println("remove-vcs-connection")
+		fmt.Println("remove-vcs-connection")
 	case "lock":
-		cmd.Println("lock")
+		fmt.Println("lock")
 	case "unlock":
-		cmd.Println("unlock")
+		fmt.Println("unlock")
 	case "force-unlock":
-		cmd.Println("force-unlock")
+		fmt.Println("force-unlock")
 	case "assign-ssh-key":
-		cmd.Println("assign-ssh-key")
+		fmt.Println("assign-ssh-key")
 	case "unassign-ssh-key":
-		cmd.Println("unassign-ssh-key")
+		fmt.Println("unassign-ssh-key")
 	default:
 		return fmt.Errorf("unknown argument provided")
 	}
 
 	if err != nil {
-		logrus.Fatalf("unable to %s workspace\n%v", fArg, err)
+		logrus.Fatalf("unable to %s workspace\n%v\n", fArg, err)
 	}
 
 	return nil

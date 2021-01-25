@@ -23,7 +23,7 @@ func GetOrganizations(client *tfe.Client) (*tfe.OrganizationList, error) {
 func GetOrganizationByName(client *tfe.Client, name string) tfe.Organization {
 	orgs, err := GetOrganizations(client)
 	if err != nil {
-		logrus.Fatalf("unable to get organization by name\n%v", err)
+		logrus.Fatalf("unable to get organization by name\n%v\n", err)
 	}
 
 	if len(orgs.Items) == 0 {
@@ -45,84 +45,84 @@ func GetWorkspaceCreateOptions(cmd *cobra.Command) tfe.WorkspaceCreateOptions {
 
 	agentPoolID, err := cmd.Flags().GetString("agent-pool-id")
 	if err != nil {
-		logrus.Fatalf("unable to get flag agent-pool-id\n%v", err)
+		logrus.Fatalf("unable to get flag agent-pool-id\n%v\n", err)
 	}
 
 	allowDestroyPlan, err := cmd.Flags().GetBool("allow-destroy-plan")
 	if err != nil {
-		logrus.Fatalf("unable to get flag allow-destroy-plan\n%v", err)
+		logrus.Fatalf("unable to get flag allow-destroy-plan\n%v\n", err)
 	}
 
 	autoApply, err := cmd.Flags().GetBool("auto-apply")
 	if err != nil {
-		logrus.Fatalf("unable to get flag auto-apply\n%v", err)
+		logrus.Fatalf("unable to get flag auto-apply\n%v\n", err)
 	}
 
 	executionMode, err := cmd.Flags().GetString("execution-mode")
 	if err != nil {
-		logrus.Fatalf("unable to get flag execution-mode\n%v", err)
+		logrus.Fatalf("unable to get flag execution-mode\n%v\n", err)
 	}
 
 	fileTriggersEnabled, err := cmd.Flags().GetBool("file-triggers-enabled")
 	if err != nil {
-		logrus.Fatalf("unable to get flag file-triggers-enabled\n%v", err)
+		logrus.Fatalf("unable to get flag file-triggers-enabled\n%v\n", err)
 	}
 
 	migrationEnvironment, err := cmd.Flags().GetString("migration-environment")
 	if err != nil {
-		logrus.Fatalf("unable to get flag migration-environment\n%v", err)
+		logrus.Fatalf("unable to get flag migration-environment\n%v\n", err)
 	}
 
 	name, err := cmd.Flags().GetString("name")
 	if err != nil {
-		logrus.Fatalf("unable to get flag name\n%v", err)
+		logrus.Fatalf("unable to get flag name\n%v\n", err)
 	}
 
 	queueAllRuns, err := cmd.Flags().GetBool("queue-all-runs")
 	if err != nil {
-		logrus.Fatalf("unable to get flag queue-all-runs\n%v", err)
+		logrus.Fatalf("unable to get flag queue-all-runs\n%v\n", err)
 	}
 
 	speculativeEnabled, err := cmd.Flags().GetBool("speculative-enabled")
 	if err != nil {
-		logrus.Fatalf("unable to get flag speculative-enabled\n%v", err)
+		logrus.Fatalf("unable to get flag speculative-enabled\n%v\n", err)
 	}
 
 	terraformVersion, err := cmd.Flags().GetString("terraform-version")
 	if err != nil {
-		logrus.Fatalf("unable to get flag terraform-version\n%v", err)
+		logrus.Fatalf("unable to get flag terraform-version\n%v\n", err)
 	}
 
 	triggerPrefixes, err := cmd.Flags().GetStringArray("trigger-prefixes")
 	if err != nil {
-		logrus.Fatalf("unable to get flag trigger-prefixes\n%v", err)
+		logrus.Fatalf("unable to get flag trigger-prefixes\n%v\n", err)
 	}
 
 	workingDirectory, err := cmd.Flags().GetString("working-directory")
 	if err != nil {
-		logrus.Fatalf("unable to get flag working-directory\n%v", err)
+		logrus.Fatalf("unable to get flag working-directory\n%v\n", err)
 	}
 
 	// vcs
 
 	vcsRepoBranch, err := cmd.Flags().GetString("vcs-repo-branch")
 	if err != nil {
-		logrus.Fatalf("unable to get flag vcsRepoBranch\n%v", err)
+		logrus.Fatalf("unable to get flag vcsRepoBranch\n%v\n", err)
 	}
 
 	vcsRepoIdentifier, err := cmd.Flags().GetString("vcs-repo-identifier")
 	if err != nil {
-		logrus.Fatalf("unable to get flag vcsRepoIdentifier\n%v", err)
+		logrus.Fatalf("unable to get flag vcsRepoIdentifier\n%v\n", err)
 	}
 
 	vcsRepoIngressSubmodules, err := cmd.Flags().GetBool("vcs-repo-ingress-submodules")
 	if err != nil {
-		logrus.Fatalf("unable to get flag vcsRepoIngressSubmodules\n%v", err)
+		logrus.Fatalf("unable to get flag vcsRepoIngressSubmodules\n%v\n", err)
 	}
 
 	vcsRepoOauthTokenID, err := cmd.Flags().GetString("vcs-repo-oauth-token-id")
 	if err != nil {
-		logrus.Fatalf("unable to get flag vcsRepoOauthTokenId\n%v", err)
+		logrus.Fatalf("unable to get flag vcsRepoOauthTokenId\n%v\n", err)
 	}
 
 	var repoOptions tfe.VCSRepoOptions
@@ -215,7 +215,7 @@ func GetWorkspaceUpdateOptions(cmd *cobra.Command) tfe.WorkspaceUpdateOptions {
 	// if execution-mode is set to remote or local or if operations is set to true.
 	agentPoolID, err := cmd.Flags().GetString("agent-pool-id")
 	if err != nil {
-		logrus.Fatalf("unable to get flag agent-pool-id\n%v", err)
+		logrus.Fatalf("unable to get flag agent-pool-id\n%v\n", err)
 	}
 
 	if agentPoolID != "" {
@@ -225,7 +225,7 @@ func GetWorkspaceUpdateOptions(cmd *cobra.Command) tfe.WorkspaceUpdateOptions {
 	// Whether destroy plans can be queued on the workspace.
 	allowDestroyPlan, err := cmd.Flags().GetBool("allow-destroy-plan")
 	if err != nil {
-		logrus.Fatalf("unable to get flag allow-destroy-plan\n%v", err)
+		logrus.Fatalf("unable to get flag allow-destroy-plan\n%v\n", err)
 	}
 
 	if allowDestroyPlan {
@@ -235,7 +235,7 @@ func GetWorkspaceUpdateOptions(cmd *cobra.Command) tfe.WorkspaceUpdateOptions {
 	// Whether to automatically apply changes when a Terraform plan is successful.
 	autoApply, err := cmd.Flags().GetBool("auto-apply")
 	if err != nil {
-		logrus.Fatalf("unable to get flag auto-apply\n%v", err)
+		logrus.Fatalf("unable to get flag auto-apply\n%v\n", err)
 	}
 
 	if allowDestroyPlan {
@@ -248,7 +248,7 @@ func GetWorkspaceUpdateOptions(cmd *cobra.Command) tfe.WorkspaceUpdateOptions {
 	// API and UI.
 	newName, err := cmd.Flags().GetString("new-name")
 	if err != nil {
-		logrus.Fatalf("unable to get flag new-name\n%v", err)
+		logrus.Fatalf("unable to get flag new-name\n%v\n", err)
 	}
 
 	if newName != "" {
@@ -261,7 +261,7 @@ func GetWorkspaceUpdateOptions(cmd *cobra.Command) tfe.WorkspaceUpdateOptions {
 	// 'agent' execution mode is not available in Terraform Enterprise.
 	executionMode, err := cmd.Flags().GetString("execution-mode")
 	if err != nil {
-		logrus.Fatalf("unable to get flag execution-mode\n%v", err)
+		logrus.Fatalf("unable to get flag execution-mode\n%v\n", err)
 	}
 
 	if executionMode != "" {
@@ -274,7 +274,7 @@ func GetWorkspaceUpdateOptions(cmd *cobra.Command) tfe.WorkspaceUpdateOptions {
 	// disabled, any push will trigger a run.
 	fileTriggersEnabled, err := cmd.Flags().GetBool("file-triggers-enabled")
 	if err != nil {
-		logrus.Fatalf("unable to get flag file-triggers-enabled\n%v", err)
+		logrus.Fatalf("unable to get flag file-triggers-enabled\n%v\n", err)
 	}
 
 	if allowDestroyPlan {
@@ -285,7 +285,7 @@ func GetWorkspaceUpdateOptions(cmd *cobra.Command) tfe.WorkspaceUpdateOptions {
 	// a webhook will not be queued until at least one run is manually queued.
 	queueAllRuns, err := cmd.Flags().GetBool("queue-all-runs")
 	if err != nil {
-		logrus.Fatalf("unable to get flag queue-all-runs\n%v", err)
+		logrus.Fatalf("unable to get flag queue-all-runs\n%v\n", err)
 	}
 
 	if allowDestroyPlan {
@@ -298,7 +298,7 @@ func GetWorkspaceUpdateOptions(cmd *cobra.Command) tfe.WorkspaceUpdateOptions {
 	// repository is public or includes untrusted contributors.
 	speculativeEnabled, err := cmd.Flags().GetBool("speculative-enabled")
 	if err != nil {
-		logrus.Fatalf("unable to get flag speculative-enabled\n%v", err)
+		logrus.Fatalf("unable to get flag speculative-enabled\n%v\n", err)
 	}
 
 	if allowDestroyPlan {
@@ -308,7 +308,7 @@ func GetWorkspaceUpdateOptions(cmd *cobra.Command) tfe.WorkspaceUpdateOptions {
 	// The version of Terraform to use for this workspace.
 	terraformVersion, err := cmd.Flags().GetString("terraform-version")
 	if err != nil {
-		logrus.Fatalf("unable to get flag terraform-version\n%v", err)
+		logrus.Fatalf("unable to get flag terraform-version\n%v\n", err)
 	}
 
 	if terraformVersion != "" {
@@ -319,7 +319,7 @@ func GetWorkspaceUpdateOptions(cmd *cobra.Command) tfe.WorkspaceUpdateOptions {
 	// tracked for changes. See FileTriggersEnabled above for more details.
 	triggerPrefixes, err := cmd.Flags().GetStringArray("trigger-prefixes")
 	if err != nil {
-		logrus.Fatalf("unable to get flag trigger-prefixes\n%v", err)
+		logrus.Fatalf("unable to get flag trigger-prefixes\n%v\n", err)
 	}
 
 	if len(triggerPrefixes) > 0 {
@@ -335,7 +335,7 @@ func GetWorkspaceUpdateOptions(cmd *cobra.Command) tfe.WorkspaceUpdateOptions {
 	var repoOptions tfe.VCSRepoOptions
 	vcsRepoBranch, err := cmd.Flags().GetString("vcs-repo-branch")
 	if err != nil {
-		logrus.Fatalf("unable to get flag vcsRepoBranch\n%v", err)
+		logrus.Fatalf("unable to get flag vcsRepoBranch\n%v\n", err)
 	}
 
 	if vcsRepoBranch != "" {
@@ -344,7 +344,7 @@ func GetWorkspaceUpdateOptions(cmd *cobra.Command) tfe.WorkspaceUpdateOptions {
 
 	vcsRepoIdentifier, err := cmd.Flags().GetString("vcs-repo-identifier")
 	if err != nil {
-		logrus.Fatalf("unable to get flag vcsRepoIdentifier\n%v", err)
+		logrus.Fatalf("unable to get flag vcsRepoIdentifier\n%v\n", err)
 	}
 
 	if vcsRepoIdentifier != "" {
@@ -353,7 +353,7 @@ func GetWorkspaceUpdateOptions(cmd *cobra.Command) tfe.WorkspaceUpdateOptions {
 
 	vcsRepoIngressSubmodules, err := cmd.Flags().GetBool("vcs-repo-ingress-submodules")
 	if err != nil {
-		logrus.Fatalf("unable to get flag vcsRepoIngressSubmodules\n%v", err)
+		logrus.Fatalf("unable to get flag vcsRepoIngressSubmodules\n%v\n", err)
 	}
 
 	if vcsRepoIngressSubmodules {
@@ -362,7 +362,7 @@ func GetWorkspaceUpdateOptions(cmd *cobra.Command) tfe.WorkspaceUpdateOptions {
 
 	vcsRepoOauthTokenID, err := cmd.Flags().GetString("vcs-repo-oauth-token-id")
 	if err != nil {
-		logrus.Fatalf("unable to get flag vcsRepoOauthTokenId\n%v", err)
+		logrus.Fatalf("unable to get flag vcsRepoOauthTokenId\n%v\n", err)
 	}
 
 	if vcsRepoOauthTokenID != "" {
@@ -375,7 +375,7 @@ func GetWorkspaceUpdateOptions(cmd *cobra.Command) tfe.WorkspaceUpdateOptions {
 	// repository.
 	workingDirectory, err := cmd.Flags().GetString("working-directory")
 	if err != nil {
-		logrus.Fatalf("unable to get flag working-directory\n%v", err)
+		logrus.Fatalf("unable to get flag working-directory\n%v\n", err)
 	}
 
 	if workingDirectory != "" {
@@ -390,7 +390,7 @@ func GetWorkspaceUpdateOptions(cmd *cobra.Command) tfe.WorkspaceUpdateOptions {
 func ToJSON(v interface{}) string {
 	b, err := json.MarshalIndent(v, "", "  ")
 	if err != nil {
-		logrus.Fatalf("unable to convert struct to json\n%v", b)
+		logrus.Fatalf("unable to convert struct to json\n%v\n", b)
 	}
 
 	return string(b)

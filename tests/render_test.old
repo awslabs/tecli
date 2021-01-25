@@ -59,8 +59,8 @@ package cmd
 // 	output, err := helper.ExecuteCommand(rootCmd, "init", "project")
 
 // 	if err != nil {
-// 		t.Errorf("Project wasn't able to initialize: %v", output)
-// 		t.Errorf("Unexpected error: %v", err)
+// 		t.Errorf("Project wasn't able to initialize: %v\n", output)
+// 		t.Errorf("Unexpected error: %v\n", err)
 // 	}
 
 // 	rootCmd, renderCmd := helper.InitRootAndChildCmd(RootCmd(), RenderCmd())
@@ -97,8 +97,8 @@ package cmd
 // 	output, err := helper.ExecuteCommand(rootCmd, "init", "project")
 
 // 	if err != nil {
-// 		t.Errorf("Project wasn't able to initialize: %v", output)
-// 		t.Errorf("Unexpected error: %v", err)
+// 		t.Errorf("Project wasn't able to initialize: %v\n", output)
+// 		t.Errorf("Unexpected error: %v\n", err)
 // 	}
 
 // 	rootCmd, renderCmd := helper.InitRootAndChildCmd(RootCmd(), RenderCmd())
@@ -135,8 +135,8 @@ package cmd
 // 	output, err := helper.ExecuteCommand(rootCmd, "init", "project")
 
 // 	if err != nil {
-// 		t.Errorf("Project wasn't able to initialize: %v", output)
-// 		t.Errorf("Unexpected error: %v", err)
+// 		t.Errorf("Project wasn't able to initialize: %v\n", output)
+// 		t.Errorf("Unexpected error: %v\n", err)
 // 	}
 
 // 	rootCmd, renderCmd := helper.InitRootAndChildCmd(RootCmd(), RenderCmd())
@@ -175,20 +175,20 @@ package cmd
 // // 	output, err := helper.ExecuteCommand(rootCmd, "init", "project")
 
 // // 	if err != nil {
-// // 		t.Errorf("Project wasn't able to initialize: %v", output)
-// // 		t.Errorf("Unexpected error: %v", err)
+// // 		t.Errorf("Project wasn't able to initialize: %v\n", output)
+// // 		t.Errorf("Unexpected error: %v\n", err)
 // // 	}
 
 // // 	readme, err := helper.GetLocalReadMeConfig()
 // // 	if err != nil {
-// // 		t.Errorf("Unexpected error \n%v", err)
+// // 		t.Errorf("Unexpected error \n%v\n", err)
 // // 	}
 
 // // 	// if theme is set, URL must change
 // // 	readme.Logo.Theme = "dogs"
 // // 	err = helper.MarshallAndSaveReadMe(readme)
 // // 	if err != nil {
-// // 		t.Errorf("Unexpected error \n%v", err)
+// // 		t.Errorf("Unexpected error \n%v\n", err)
 // // 	}
 
 // // 	rootCmd, renderCmd := helper.InitRootAndChildCmd(RootCmd(), RenderCmd())
@@ -201,7 +201,7 @@ package cmd
 
 // // 	readme, err = helper.GetLocalReadMeConfig()
 // // 	if err != nil {
-// // 		t.Errorf("Unexpected error \n%v", err)
+// // 		t.Errorf("Unexpected error \n%v\n", err)
 // // 	}
 
 // // 	assert.NotEqual(t, readme.Logo.URL, "")

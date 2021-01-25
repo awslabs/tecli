@@ -63,7 +63,7 @@ func ReadConfig(name string) (*viper.Viper, error) {
 
 	err := v.ReadInConfig()
 	if err != nil {
-		return v, fmt.Errorf("unable to read configuration:%s\n%v", name, err)
+		return v, fmt.Errorf("unable to read configuration:%s\n%v\n", name, err)
 	}
 	return v, err
 }
@@ -78,7 +78,7 @@ func ReadConfigAsViper(configPath string, configName string, configType string) 
 
 	err := v.ReadInConfig()
 	if err != nil {
-		return v, fmt.Errorf("unable to read configuration as viper\n%v", err)
+		return v, fmt.Errorf("unable to read configuration as viper\n%v\n", err)
 	}
 	return v, err
 }
@@ -93,7 +93,7 @@ func ReadTemplate(fileName string) (*viper.Viper, error) {
 
 	err := c.ReadInConfig() // Find and read the c file
 	if err != nil {         // Handle errors reading the c file
-		return c, fmt.Errorf("Unable to read "+fileName+" via Viper"+"\n%v", err)
+		return c, fmt.Errorf("Unable to read "+fileName+" via Viper"+"\n%v\n", err)
 	}
 
 	return c, nil
@@ -111,7 +111,7 @@ func WriteInterfaceToFile(in interface{}, path string) error {
 
 	err = ioutil.WriteFile(path, b, os.ModePerm)
 	if err != nil {
-		return fmt.Errorf("unable to update:%s\n%v", path, err)
+		return fmt.Errorf("unable to update:%s\n%v\n", path, err)
 	}
 
 	return err
@@ -150,7 +150,7 @@ func maskString(s string, showLastChars int) string {
 func GetSensitiveUserInputAsString(cmd *cobra.Command, text string, info string) string {
 	answer, err := GetSensitiveUserInput(cmd, text, info)
 	if err != nil {
-		log.Fatalf("unable to get user input about profile's name\n%v", err)
+		log.Fatalf("unable to get user input about profile's name\n%v\n", err)
 	}
 
 	// if user typed ENTER, keep the current value
@@ -165,16 +165,16 @@ func getUserInput(cmd *cobra.Command, text string, info string) (string, error) 
 	reader := bufio.NewReader(os.Stdin)
 
 	if info == "" {
-		cmd.Print(text + ": ")
+		fmt.Print(text + ": ")
 	} else {
-		cmd.Print(text + " [" + info + "]: ")
+		fmt.Print(text + " [" + info + "]: ")
 	}
 
 	input, err := reader.ReadString('\n')
 	// convert CRLF to LF
 	input = strings.Replace(input, "\n", "", -1)
 	if err != nil {
-		return input, fmt.Errorf("unable to read user input\n%v", err)
+		return input, fmt.Errorf("unable to read user input\n%v\n", err)
 	}
 
 	return input, err
@@ -200,7 +200,7 @@ func GetUserInputAsBool(cmd *cobra.Command, text string, info bool) bool {
 func GetUserInputAsString(cmd *cobra.Command, text string, info string) string {
 	answer, err := getUserInput(cmd, text, info)
 	if err != nil {
-		log.Fatalf("unable to get user input about profile's name\n%v", err)
+		log.Fatalf("unable to get user input about profile's name\n%v\n", err)
 	}
 
 	// if user typed ENTER, keep the current value

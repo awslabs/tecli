@@ -52,7 +52,7 @@ func ConfigureCmd() *cobra.Command {
 func configureRun(cmd *cobra.Command, args []string) error {
 	if !aid.ConfigurationsDirectoryExist() {
 		if created, dir := aid.CreateConfigurationsDirectory(); created {
-			cmd.Printf("tecli configuration directory created at %s\n", dir)
+			fmt.Printf("tecli configuration directory created at %s\n", dir)
 			createCredentials(cmd)
 			// createConfigurations(cmd)
 		}
