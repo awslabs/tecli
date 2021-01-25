@@ -395,3 +395,17 @@ func ToJSON(v interface{}) string {
 
 	return string(b)
 }
+
+// GetWorkspaceAssignSSHKeyOptions TODO ...
+func GetWorkspaceAssignSSHKeyOptions(cmd *cobra.Command) tfe.WorkspaceAssignSSHKeyOptions {
+	var options tfe.WorkspaceAssignSSHKeyOptions
+
+	sshKeyID, err := cmd.Flags().GetString("ssh-key-id")
+	if err != nil {
+		logrus.Fatalf("unable to get flag ssh-key-id\n%v\n", err)
+	}
+
+	options.SSHKeyID = &sshKeyID
+
+	return options
+}

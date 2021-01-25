@@ -139,6 +139,9 @@ func WorkspaceCmd() *cobra.Command {
 	environment when multiple environments exist within the same repository.`
 	cmd.Flags().String("working-directory", "", usage)
 
+	usage = `The SSH key ID to assign to a workspace. Must be created on the organization.`
+	cmd.Flags().String("ssh-key-id", "", usage)
+
 	return cmd
 }
 
@@ -180,7 +183,7 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 					fmt.Printf("%v\n", aid.ToJSON(item))
 				}
 			} else {
-				fmt.Println("no workspace was found")
+				return fmt.Errorf("no workspace was found")
 			}
 		}
 	case "create":
@@ -200,7 +203,7 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 		if err == nil {
 			fmt.Println(aid.ToJSON(workspace))
 		} else {
-			fmt.Printf("workspace %s not found\n%v\n", name, err)
+			return fmt.Errorf("workspace %s not found\n%v", name, err)
 		}
 	case "update":
 		name, err := cmd.Flags().GetString("name")
@@ -213,7 +216,7 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 		if err == nil && workspace.ID != "" {
 			fmt.Println(aid.ToJSON(workspace))
 		} else {
-			fmt.Printf("unable to update workspace\n%v\n", err)
+			return fmt.Errorf("unable to update workspace\n%v", err)
 		}
 	case "delete":
 		name, err := cmd.Flags().GetString("name")
@@ -225,18 +228,101 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 		if err == nil {
 			fmt.Printf("workspace %s deleted successfully\n", name)
 		} else {
-			fmt.Printf("unable to delete workspace %s\n%v\n", name, err)
+			return fmt.Errorf("unable to delete workspace %s\n%v", name, err)
 		}
 	case "remove-vcs-connection":
-		fmt.Println("remove-vcs-connection")
+		name, err := cmd.Flags().GetString("name")
+		if err != nil {
+			return err
+		}
+
+		workspace, err = workspaceRemoveVCSConnection(client, name)
+		if err == nil {
+			fmt.Println(aid.ToJSON(workspace))
+		} else {
+			return fmt.Errorf("unable to remove vcs connection\n%v", err)
+		}
 	case "lock":
-		fmt.Println("lock")
+		name, err := cmd.Flags().GetString("name")
+		if err != nil {
+			return err
+		}
+
+		w, err := workspaceRead(client, name)
+		if err != nil {
+			return err
+		}
+
+		workspace, err := workspaceLock(client, w.ID)
+		if err != nil {
+			return err
+		}
+
+		if workspace.Locked {
+			fmt.Printf("workspace %s locked successfully\n", name)
+		}
+
 	case "unlock":
-		fmt.Println("unlock")
+		name, err := cmd.Flags().GetString("name")
+		if err != nil {
+			return err
+		}
+
+		w, err := workspaceRead(client, name)
+		if err != nil {
+			return err
+		}
+
+		workspace, err := workspaceUnlock(client, w.ID)
+		if err != nil {
+			return err
+		}
+
+		if !workspace.Locked {
+			fmt.Printf("workspace %s unlocked successfully\n", name)
+		}
 	case "force-unlock":
-		fmt.Println("force-unlock")
+		name, err := cmd.Flags().GetString("name")
+		if err != nil {
+			return err
+		}
+
+		w, err := workspaceRead(client, name)
+		if err != nil {
+			return err
+		}
+
+		workspace, err := workspaceForceUnlock(client, w.ID)
+		if err != nil {
+			return err
+		}
+
+		if !workspace.Locked {
+			fmt.Printf("workspace %s unlocked successfully\n", name)
+		}
 	case "assign-ssh-key":
-		fmt.Println("assign-ssh-key")
+		name, err := cmd.Flags().GetString("name")
+		if err != nil {
+			return err
+		}
+
+		w, err := workspaceRead(client, name)
+		if err != nil {
+			return err
+		}
+
+		// TODO: need to fetch the SSH keys via the client.SSHKeys interface
+		options := aid.GetWorkspaceAssignSSHKeyOptions(cmd)
+		workspace, err := workspaceAssignSSHKey(client, w.ID, options)
+		if err != nil {
+			return err
+		}
+
+		if workspace.ID != "" && workspace.SSHKey.ID != "" {
+			fmt.Println(aid.ToJSON(workspace))
+			fmt.Println("SSH key assigned  successfully")
+		}
+
 	case "unassign-ssh-key":
 		fmt.Println("unassign-ssh-key")
 	default:
@@ -274,32 +360,32 @@ func workspaceDelete(client *tfe.Client, workspace string) error {
 	return client.Workspaces.Delete(context.Background(), organization, workspace)
 }
 
-// // RemoveVCSConnection from a workspace.
-// func workspaceRemoveVCSConnection(client *tfe.Client, workspace string) (*tfe.Workspace, error){
-// 	return client.Workspaces.RemoveVCSConnection(context.Background(), organization, workspace)
-// }
+// RemoveVCSConnection from a workspace.
+func workspaceRemoveVCSConnection(client *tfe.Client, workspace string) (*tfe.Workspace, error) {
+	return client.Workspaces.RemoveVCSConnection(context.Background(), organization, workspace)
+}
 
-// // Lock a workspace by its ID.
-// func workspaceLock(client *tfe.Client, workspaceID string) (*tfe.Workspace, error, workspaceID string){
-// 	return client.Workspaces.Lock(context.Background(), workspaceID, tfe.WorkspaceLockOptions{})
-// }
+// Lock a workspace by its ID.
+func workspaceLock(client *tfe.Client, workspaceID string) (*tfe.Workspace, error) {
+	return client.Workspaces.Lock(context.Background(), workspaceID, tfe.WorkspaceLockOptions{})
+}
 
-// // Unlock a workspace by its ID.
-// func workspaceUnlock(client *tfe.Client) (*tfe.Workspace, error, workspaceID string){
-// 	return client.Workspaces.Unlock(context.Background(), workspaceID)
-// }
+// Unlock a workspace by its ID.
+func workspaceUnlock(client *tfe.Client, workspaceID string) (*tfe.Workspace, error) {
+	return client.Workspaces.Unlock(context.Background(), workspaceID)
+}
 
-// // ForceUnlock a workspace by its ID.
-// func workspaceForceUnlock(client *tfe.Client) (*tfe.Workspace, error, workspaceID string){
-// 	return client.Workspaces.ForceUnlock(context.Background(), workspaceID)
-// }
+// ForceUnlock a workspace by its ID.
+func workspaceForceUnlock(client *tfe.Client, workspaceID string) (*tfe.Workspace, error) {
+	return client.Workspaces.ForceUnlock(context.Background(), workspaceID)
+}
 
-// // AssignSSHKey to a workspace.
-// func workspaceAssignSSHKey(client *tfe.Client) (*tfe.Workspace, error, workspaceID string){
-// 	return client.Workspaces.AssignSSHKey(context.Background(), workspaceID, tfe.WorkspaceAssignSSHKeyOptions{})
-// }
+// AssignSSHKey to a workspace.
+func workspaceAssignSSHKey(client *tfe.Client, workspaceID string, options tfe.WorkspaceAssignSSHKeyOptions) (*tfe.Workspace, error) {
+	return client.Workspaces.AssignSSHKey(context.Background(), workspaceID, options)
+}
 
-// // UnassignSSHKey from a workspace.
-// func workspaceUnassignSSHKey(client *tfe.Client) (*tfe.Workspace, error, workspaceID string){
-// 	return client.Workspaces.UnassignSSHKey(context.Background(), workspaceID)
-// }
+// UnassignSSHKey from a workspace.
+func workspaceUnassignSSHKey(client *tfe.Client, workspaceID string) (*tfe.Workspace, error) {
+	return client.Workspaces.UnassignSSHKey(context.Background(), workspaceID)
+}
