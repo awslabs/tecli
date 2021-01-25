@@ -32,7 +32,7 @@ func MkDirsIfNotExist(name string) bool {
 func CreateDirectoryNamedPath(path string) (string, error) {
 	err := os.MkdirAll(path, os.ModePerm)
 	if err != nil {
-		logrus.Fatal("Unable to create directory (and its parents)", err)
+		logrus.Fatalf("Unable to create directory (and its parents)\n%v", err)
 	}
 
 	return path, err

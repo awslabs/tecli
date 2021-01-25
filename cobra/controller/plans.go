@@ -52,16 +52,8 @@ func PlansCmd() *cobra.Command {
 }
 
 func plansRun(cmd *cobra.Command, args []string) error {
-	token, err := dao.GetTeamToken(profile)
-	if err != nil {
-		logrus.Errorf("unable to fetch team token\n%v", err)
-		return err
-	}
-
-	client, err := aid.GetTFEClient(token)
-	if err != nil {
-		return err
-	}
+	token := dao.GetTeamToken(profile)
+	client := aid.GetTFEClient(token)
 
 	orgs, err := client.Organizations.List(context.Background(), tfe.OrganizationListOptions{})
 	if err != nil {

@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
 	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/aid"
@@ -28,6 +29,11 @@ import (
 )
 
 var rootCmd = controller.RootCmd()
+
+//The verbose flag value
+var verbosity string
+var log string
+var logFilePath string
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
@@ -40,6 +46,11 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
+
+	rootCmd.PersistentFlags().StringVarP(&verbosity, "verbosity", "v", logrus.ErrorLevel.String(), "Valid log level:panic,fatal,error,warn,info,debug,trace).")
+	rootCmd.PersistentFlags().StringVarP(&log, "log", "l", "disable", "Enable or disable logs (found at $HOME/.tecli/logs.json). Log outputs will be shown on default output.")
+	rootCmd.PersistentFlags().StringVar(&logFilePath, "log-file-path", aid.GetAppInfo().LogsPath, "Log file path.")
+
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -53,4 +64,15 @@ func initConfig() {
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("using config file:", viper.ConfigFileUsed())
 	}
+
+	if log == "enable" && logFilePath != "" {
+		if err := aid.SetupLoggingLevel(verbosity); err == nil {
+			fmt.Printf("logging level: %s\n", verbosity)
+		}
+
+		if err := aid.SetupLoggingOutput(logFilePath); err == nil {
+			fmt.Printf("logging path: %s\n", logFilePath)
+		}
+	}
+
 }

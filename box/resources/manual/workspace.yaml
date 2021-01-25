@@ -1,12 +1,21 @@
 use: workspace [create]
-example: >
-  Workspaces represent running infrastructure managed by Terraform.
-  Viewing a workspace (individually or in a list) requires permission to read runs. Changing settings and force-unlocking require admin access to the workspace. Locking and unlocking a workspace requires permission to lock and unlock the workspace.
-
-  If you want to create a new named profile:
+example: |-
+  # How to
+  ## Create a workspace:
     tecli workspace create --organization-name <value> --workspace-name <value>
-    
+
+  ## Create a workspace and specify a VCS provider and repository:
+    ### Get the OAuth Token ID first:
+      tecli oauth list --organization terraform-cloud-pipeline
+    ### Create the workspace and specify the OAuth Token ID:
+      tecli workspace create --vcs-repo-oauth-token-id <oauth-token-id> --vcs-repo-identifier <org/repo> --organization <organization> --name <workspace>
+
   If you want to delete a named profile:
     tecli configure delete --profile work
-short: A plan represents the execution plan of a Run in a Terraform workspace.
-long: A plan represents the execution plan of a Run in a Terraform workspace.
+short: Manage Terraform Cloud workspaces
+long: |-
+  Workspaces represent running infrastructure managed by Terraform.
+  Viewing a workspace (individually or in a list) requires permission to read runs.
+  Changing settings and force-unlocking require admin access to the workspace.
+  Locking and unlocking a workspace requires permission to lock and unlock the workspace.
+  

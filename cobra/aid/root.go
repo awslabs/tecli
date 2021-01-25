@@ -112,7 +112,12 @@ func getTFENewClient(config *tfe.Config) (*tfe.Client, error) {
 }
 
 // GetTFEClient returns a new terraform api client given a token
-func GetTFEClient(token string) (*tfe.Client, error) {
+func GetTFEClient(token string) *tfe.Client {
 	config := getTFEConfig(token)
-	return getTFENewClient(config)
+	client, err := getTFENewClient(config)
+	if err != nil {
+		logrus.Fatalf("unable to get terraform cloud api client\n%v", err)
+	}
+
+	return client
 }

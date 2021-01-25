@@ -1,0 +1,13 @@
+use: oauth [list]
+example: >
+  If you want to create a new named profile:
+    tecli oauth list
+    
+  If you want to delete a named profile:
+    tecli configure delete --profile work
+short: A plan represents the execution plan of a Run in a Terraform workspace.
+long: >
+  To connect workspaces, modules, and policy sets to git repositories containing Terraform configurations, Terraform Cloud needs access to your version control system (VCS) provider.
+  Use this page to configure OAuth authentication with your VCS provider.
+  For more information, please see the Terraform Cloud documentation on Configuring Version Control Access (https://www.terraform.io/docs/cloud/vcs/index.html)
+  The oauth-token object represents a VCS configuration which includes the OAuth connection and the associated OAuth token. This object is used when creating a workspace to identify which VCS connection to use.

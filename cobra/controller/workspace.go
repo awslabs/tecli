@@ -28,7 +28,18 @@ import (
 	"gitlab.aws.dev/devops-aws/terraform-ce-cli/helper"
 )
 
-var workspaceValidArgs = []string{"create"}
+var workspaceValidArgs = []string{
+	"list",
+	"create",
+	"read",
+	"update",
+	"delete",
+	"remove-vcs-connection",
+	"lock",
+	"unlock",
+	"force-unlock",
+	"assign-ssh-key",
+	"unassign-ssh-key"}
 
 // WorkspaceCmd command to display tecli current version
 func WorkspaceCmd() *cobra.Command {
@@ -48,9 +59,6 @@ func WorkspaceCmd() *cobra.Command {
 		PreRunE:   workspacePreRun,
 		RunE:      workspaceRun,
 	}
-
-	cmd.Flags().StringP("organization", "o", "", "Organization name.")
-	cmd.MarkFlagRequired("organization")
 
 	usage := `Required when execution-mode is set to agent. The ID of the agent pool
 	belonging to the workspace's organization. This value must not be specified
@@ -84,7 +92,12 @@ func WorkspaceCmd() *cobra.Command {
 	and _. This will be used as an identifier and must be unique in the
 	organization.`
 	cmd.Flags().String("name", "", usage)
-	cmd.MarkFlagRequired("name")
+
+	usage = `A new name for the workspace, which can only include letters, numbers, -,
+	and _. This will be used as an identifier and must be unique in the
+	organization. Warning: Changing a workspace's name changes its URL in the
+	API and UI.`
+	cmd.Flags().String("new-name", "", usage)
 
 	usage = `Whether to queue all runs. Unless this is set to true, runs triggered by
 	a webhook will not be queued until at least one run is manually queued.`
@@ -100,10 +113,10 @@ func WorkspaceCmd() *cobra.Command {
 	workspace, the latest version is selected unless otherwise specified.`
 	cmd.Flags().String("terraform-version", "", usage)
 
-	// usage := `List of repository-root-relative paths which list all locations to be
-	// tracked for changes. See FileTriggersEnabled above for more details.`
-	// TriggerPrefixes []string trigger-prefixes,omitempty
-	// trigger-prefixes []string trigger-prefixes,omitempty
+	usage = `List of repository-root-relative paths which list all locations to be
+	tracked for changes. See FileTriggersEnabled above for more details.`
+	var emptyArray []string
+	cmd.Flags().StringArray("trigger-prefixes", emptyArray, usage)
 
 	// Settings for the workspace's VCS repository. If omitted, the workspace is
 	// created without a VCS repo. If included, you must specify at least the
@@ -151,42 +164,142 @@ func workspacePreRun(cmd *cobra.Command, args []string) error {
 
 func workspaceRun(cmd *cobra.Command, args []string) error {
 
+	token := dao.GetTeamToken(profile)
+	client := aid.GetTFEClient(token)
+
+	var workspace *tfe.Workspace
+	var err error
+
 	fArg := args[0]
 	switch fArg {
+	case "list":
+		list, err := workspaceList(client)
+		if err == nil {
+			if list.TotalCount > 0 {
+				for _, item := range list.Items {
+					cmd.Printf("%v\n", aid.ToJSON(item))
+				}
+			} else {
+				cmd.Println("no workspace was found")
+			}
+		}
 	case "create":
-		createWorkspace(cmd)
+		options := aid.GetWorkspaceCreateOptions(cmd)
+		workspace, err = workspaceCreate(client, options)
+
+		if err == nil && workspace.ID != "" {
+			cmd.Println(aid.ToJSON(workspace))
+		}
+	case "read":
+		name, err := cmd.Flags().GetString("name")
+		if err != nil {
+			return err
+		}
+
+		workspace, err := workspaceRead(client, name)
+		if err == nil {
+			cmd.Println(aid.ToJSON(workspace))
+		} else {
+			cmd.Printf("workspace %s not found\n%v", name, err)
+		}
+	case "update":
+		name, err := cmd.Flags().GetString("name")
+		if err != nil {
+			return err
+		}
+
+		options := aid.GetWorkspaceUpdateOptions(cmd)
+		workspace, err = workspaceUpdate(client, name, options)
+		if err == nil && workspace.ID != "" {
+			cmd.Println(aid.ToJSON(workspace))
+		} else {
+			cmd.Printf("unable to update workspace\n%v\n", err)
+		}
+	case "delete":
+		name, err := cmd.Flags().GetString("name")
+		if err != nil {
+			return err
+		}
+
+		err = workspaceDelete(client, name)
+		if err == nil {
+			cmd.Printf("workspace %s deleted successfully\n", name)
+		} else {
+			cmd.Printf("unable to delete workspace %s\n%v", name, err)
+		}
+	case "remove-vcs-connection":
+		cmd.Println("remove-vcs-connection")
+	case "lock":
+		cmd.Println("lock")
+	case "unlock":
+		cmd.Println("unlock")
+	case "force-unlock":
+		cmd.Println("force-unlock")
+	case "assign-ssh-key":
+		cmd.Println("assign-ssh-key")
+	case "unassign-ssh-key":
+		cmd.Println("unassign-ssh-key")
 	default:
 		return fmt.Errorf("unknown argument provided")
+	}
+
+	if err != nil {
+		logrus.Fatalf("unable to %s workspace\n%v", fArg, err)
 	}
 
 	return nil
 }
 
-func getTFEClient() *tfe.Client {
-	token, err := dao.GetTeamToken(profile)
-	if err != nil {
-		logrus.Fatalf("unable to fetch team token\n%v", err)
-	}
-
-	client, err := aid.GetTFEClient(token)
-	if err != nil {
-		logrus.Fatalf("unable to fetch terraform enterprise api client\n%v", err)
-	}
-
-	return client
+func workspaceList(client *tfe.Client) (*tfe.WorkspaceList, error) {
+	return client.Workspaces.List(context.Background(), organization, tfe.WorkspaceListOptions{})
 }
 
-func createWorkspace(cmd *cobra.Command) {
-	organization, _ := cmd.Flags().GetString("organization")
-	// workspaceName, _ := cmd.Flags().GetString("workspace-name")
-
-	client := getTFEClient()
-	org := aid.GetOrganizationByName(client, organization)
-	options := aid.GetWorkspaceCreateOptions(cmd)
-	workspace, err := client.Workspaces.Create(context.Background(), org.Name, options)
-	if err != nil {
-		logrus.Fatalf("unable to create workspace\n%v", err)
-	}
-
-	cmd.Println(workspace.Name)
+// Create is used to create a new workspace.
+func workspaceCreate(client *tfe.Client, options tfe.WorkspaceCreateOptions) (*tfe.Workspace, error) {
+	return client.Workspaces.Create(context.Background(), organization, options)
 }
+
+// Read a workspace by its name.
+func workspaceRead(client *tfe.Client, workspace string) (*tfe.Workspace, error) {
+	return client.Workspaces.Read(context.Background(), organization, workspace)
+}
+
+// Update settings of an existing workspace.
+func workspaceUpdate(client *tfe.Client, workspace string, options tfe.WorkspaceUpdateOptions) (*tfe.Workspace, error) {
+	return client.Workspaces.Update(context.Background(), organization, workspace, options)
+}
+
+// // Delete a workspace by its name.
+func workspaceDelete(client *tfe.Client, workspace string) error {
+	return client.Workspaces.Delete(context.Background(), organization, workspace)
+}
+
+// // RemoveVCSConnection from a workspace.
+// func workspaceRemoveVCSConnection(client *tfe.Client, workspace string) (*tfe.Workspace, error){
+// 	return client.Workspaces.RemoveVCSConnection(context.Background(), organization, workspace)
+// }
+
+// // Lock a workspace by its ID.
+// func workspaceLock(client *tfe.Client, workspaceID string) (*tfe.Workspace, error, workspaceID string){
+// 	return client.Workspaces.Lock(context.Background(), workspaceID, tfe.WorkspaceLockOptions{})
+// }
+
+// // Unlock a workspace by its ID.
+// func workspaceUnlock(client *tfe.Client) (*tfe.Workspace, error, workspaceID string){
+// 	return client.Workspaces.Unlock(context.Background(), workspaceID)
+// }
+
+// // ForceUnlock a workspace by its ID.
+// func workspaceForceUnlock(client *tfe.Client) (*tfe.Workspace, error, workspaceID string){
+// 	return client.Workspaces.ForceUnlock(context.Background(), workspaceID)
+// }
+
+// // AssignSSHKey to a workspace.
+// func workspaceAssignSSHKey(client *tfe.Client) (*tfe.Workspace, error, workspaceID string){
+// 	return client.Workspaces.AssignSSHKey(context.Background(), workspaceID, tfe.WorkspaceAssignSSHKeyOptions{})
+// }
+
+// // UnassignSSHKey from a workspace.
+// func workspaceUnassignSSHKey(client *tfe.Client) (*tfe.Workspace, error, workspaceID string){
+// 	return client.Workspaces.UnassignSSHKey(context.Background(), workspaceID)
+// }

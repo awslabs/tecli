@@ -18,6 +18,7 @@ package dao
 import (
 	"fmt"
 
+	"github.com/sirupsen/logrus"
 	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/aid"
 	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/model"
 )
@@ -89,14 +90,22 @@ func GetCredentialProfile(name string) (model.CredentialProfile, error) {
 }
 
 // GetTeamToken return the team token from credentials file
-func GetTeamToken(name string) (string, error) {
-	var token string
+func GetTeamToken(name string) string {
 	cp, err := GetCredentialProfile(name)
 	if err != nil {
-		return token, err
+		logrus.Fatalf("unable to read team token from credentials\n%v", err)
 	}
 
-	return cp.TeamToken, err
+	return cp.TeamToken
+}
+
+// GetOrganizationToken return the organization token from credentials file
+func GetOrganizationToken(name string) string {
+	cp, err := GetCredentialProfile(name)
+	if err != nil {
+		logrus.Fatalf("unable to read organization token from configurations\n%v", err)
+	}
+	return cp.OrganizationToken
 }
 
 // // SaveConfigurations saves the given configuration onto the configurations file
