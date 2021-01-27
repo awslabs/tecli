@@ -71,7 +71,7 @@ func sshKeyPreRun(cmd *cobra.Command, args []string) error {
 		if err := helper.ValidateCmdArgAndFlag(cmd, args, "sshKey", fArg, "organization"); err != nil {
 			return err
 		}
-	case "create", "delete":
+	case "create":
 		if err := helper.ValidateCmdArgAndFlag(cmd, args, "sshKey", fArg, "organization"); err != nil {
 			return err
 		}
@@ -84,6 +84,22 @@ func sshKeyPreRun(cmd *cobra.Command, args []string) error {
 			return err
 		}
 	case "read":
+		if err := helper.ValidateCmdArgAndFlag(cmd, args, "sshKey", fArg, "id"); err != nil {
+			return err
+		}
+	case "update":
+		if err := helper.ValidateCmdArgAndFlag(cmd, args, "sshKey", fArg, "id"); err != nil {
+			return err
+		}
+
+		if err := helper.ValidateCmdArgAndFlag(cmd, args, "sshKey", fArg, "name"); err != nil {
+			return err
+		}
+
+		if err := helper.ValidateCmdArgAndFlag(cmd, args, "sshKey", fArg, "value"); err != nil {
+			return err
+		}
+	case "delete":
 		if err := helper.ValidateCmdArgAndFlag(cmd, args, "sshKey", fArg, "id"); err != nil {
 			return err
 		}
@@ -134,29 +150,29 @@ func sshKeyRun(cmd *cobra.Command, args []string) error {
 		}
 
 	case "update":
-		name, err := cmd.Flags().GetString("name")
+		id, err := cmd.Flags().GetString("id")
 		if err != nil {
 			return err
 		}
 
 		options := aid.GetSSHKeysUpdateOptions(cmd)
-		sshKey, err = sshKeyUpdate(client, name, options)
+		sshKey, err = sshKeyUpdate(client, id, options)
 		if err == nil && sshKey.ID != "" {
 			fmt.Println(aid.ToJSON(sshKey))
 		} else {
-			return fmt.Errorf("unable to update sshKey\n%v", err)
+			return fmt.Errorf("unable to update ssh key\n%v", err)
 		}
 	case "delete":
-		name, err := cmd.Flags().GetString("name")
+		id, err := cmd.Flags().GetString("id")
 		if err != nil {
 			return err
 		}
 
-		err = sshKeyDelete(client, name)
+		err = sshKeyDelete(client, id)
 		if err == nil {
-			fmt.Printf("sshKey %s deleted successfully\n", name)
+			fmt.Printf("ssh key %s deleted successfully\n", id)
 		} else {
-			return fmt.Errorf("unable to delete sshKey %s\n%v", name, err)
+			return fmt.Errorf("unable to delete ssh key %s\n%v", id, err)
 		}
 	}
 

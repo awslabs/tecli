@@ -85,8 +85,15 @@ func TestSSHKeyRead(t *testing.T) {
 	assert.Contains(t, out, "")
 }
 
+func TestSSHKeyUpdate(t *testing.T) {
+	args := []string{"sshKey", "update", "--name", "bar", "--value", tempSSHPrivateKey, "--id", "sshkey-BmNjgGuyA8sP7NUK"}
+	out, err := executeCommandOnly(t, controller.SSHKeyCmd(), args)
+	assert.Nil(t, err)
+	assert.Contains(t, out, "")
+}
+
 func TestSSHKeyDelete(t *testing.T) {
-	args := []string{"sshKey", "delete", "--organization", "terraform-cloud-pipeline"}
+	args := []string{"sshKey", "delete", "--id", "sshkey-BmNjgGuyA8sP7NUK"}
 	out, err := executeCommandOnly(t, controller.SSHKeyCmd(), args)
 	assert.Nil(t, err)
 	assert.Contains(t, out, "")

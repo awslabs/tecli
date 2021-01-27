@@ -60,6 +60,24 @@ func GetSSHKeyByName(list *tfe.SSHKeyList, name string) tfe.SSHKey {
 func GetSSHKeysUpdateOptions(cmd *cobra.Command) tfe.SSHKeyUpdateOptions {
 	var options tfe.SSHKeyUpdateOptions
 
+	name, err := cmd.Flags().GetString("name")
+	if err != nil {
+		logrus.Fatalf("unable to get flag name\n%v\n", err)
+	}
+
+	if name != "" {
+		options.Name = &name
+	}
+
+	value, err := cmd.Flags().GetString("value")
+	if err != nil {
+		logrus.Fatalf("unable to get flag value\n%v\n", err)
+	}
+
+	if value != "" {
+		options.Value = &value
+	}
+
 	return options
 
 }
