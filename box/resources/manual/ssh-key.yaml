@@ -1,4 +1,10 @@
-use: ssh-key [options]
+use: |-
+  ssh-key [argument] [flags]
+
+  Arguments: 
+    {{ arguments }}
+example: |-
+  How to ...
 short: TODO ...
-long: |
+long: |-
   TODO ...
