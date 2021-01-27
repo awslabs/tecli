@@ -79,7 +79,7 @@ func TestSSHKeyCreate(t *testing.T) {
 }
 
 func TestSSHKeyRead(t *testing.T) {
-	args := []string{"sshKey", "read", "--organization", "terraform-cloud-pipeline", "--name", "foo"}
+	args := []string{"sshKey", "read", "--organization", "terraform-cloud-pipeline", "--id", "sshkey-BmNjgGuyA8sP7NUK"}
 	out, err := executeCommandOnly(t, controller.SSHKeyCmd(), args)
 	assert.Nil(t, err)
 	assert.Contains(t, out, "")

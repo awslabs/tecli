@@ -45,6 +45,17 @@ func GetSSHKeysCreateOptions(cmd *cobra.Command) tfe.SSHKeyCreateOptions {
 	return options
 }
 
+// GetSSHKeyByName TODO ...
+func GetSSHKeyByName(list *tfe.SSHKeyList, name string) tfe.SSHKey {
+	for _, item := range list.Items {
+		if item.Name == name {
+			return *item
+		}
+	}
+
+	return tfe.SSHKey{}
+}
+
 // GetSSHKeysUpdateOptions TODO ...
 func GetSSHKeysUpdateOptions(cmd *cobra.Command) tfe.SSHKeyUpdateOptions {
 	var options tfe.SSHKeyUpdateOptions

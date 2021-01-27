@@ -27,7 +27,7 @@ import (
 	"gitlab.aws.dev/devops-aws/terraform-ce-cli/helper"
 )
 
-var sshKeyValidArgs = []string{"list", "create", "update", "delete"}
+var sshKeyValidArgs = []string{"list", "create", "read", "update", "delete"}
 
 // SSHKeyCmd command to display tecli current version
 func SSHKeyCmd() *cobra.Command {
@@ -48,7 +48,10 @@ func SSHKeyCmd() *cobra.Command {
 		RunE:      sshKeyRun,
 	}
 
-	usage := `A name to identify the SSH key.`
+	usage := `SSH key ID. Required for read and delete.`
+	cmd.Flags().String("id", "", usage)
+
+	usage = `A name to identify the SSH key.`
 	cmd.Flags().String("name", "", usage)
 
 	usage = `The content of the SSH private key.`
@@ -68,7 +71,7 @@ func sshKeyPreRun(cmd *cobra.Command, args []string) error {
 		if err := helper.ValidateCmdArgAndFlag(cmd, args, "sshKey", fArg, "organization"); err != nil {
 			return err
 		}
-	case "create", "read", "delete":
+	case "create", "delete":
 		if err := helper.ValidateCmdArgAndFlag(cmd, args, "sshKey", fArg, "organization"); err != nil {
 			return err
 		}
@@ -78,6 +81,10 @@ func sshKeyPreRun(cmd *cobra.Command, args []string) error {
 		}
 
 		if err := helper.ValidateCmdArgAndFlag(cmd, args, "sshKey", fArg, "value"); err != nil {
+			return err
+		}
+	case "read":
+		if err := helper.ValidateCmdArgAndFlag(cmd, args, "sshKey", fArg, "id"); err != nil {
 			return err
 		}
 	}
@@ -114,17 +121,18 @@ func sshKeyRun(cmd *cobra.Command, args []string) error {
 			fmt.Println(aid.ToJSON(sshKey))
 		}
 	case "read":
-		name, err := cmd.Flags().GetString("name")
+		id, err := cmd.Flags().GetString("id")
 		if err != nil {
 			return err
 		}
 
-		sshKey, err := sshKeyRead(client, name)
+		sshKey, err := sshKeyRead(client, id)
 		if err == nil {
 			fmt.Println(aid.ToJSON(sshKey))
 		} else {
-			return fmt.Errorf("sshKey %s not found\n%v", name, err)
+			return fmt.Errorf("ssh key %s not found\n%v", id, err)
 		}
+
 	case "update":
 		name, err := cmd.Flags().GetString("name")
 		if err != nil {
