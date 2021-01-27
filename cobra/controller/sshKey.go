@@ -31,7 +31,7 @@ var sshKeyValidArgs = []string{"list", "create", "read", "update", "delete"}
 
 // SSHKeyCmd command to display tecli current version
 func SSHKeyCmd() *cobra.Command {
-	man, err := helper.GetManual("sshKey")
+	man, err := helper.GetManual("ssh-key")
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -61,46 +61,46 @@ func SSHKeyCmd() *cobra.Command {
 }
 
 func sshKeyPreRun(cmd *cobra.Command, args []string) error {
-	if err := helper.ValidateCmdArgs(cmd, args, "sshKey"); err != nil {
+	if err := helper.ValidateCmdArgs(cmd, args, "ssh-key"); err != nil {
 		return err
 	}
 
 	fArg := args[0]
 	switch fArg {
 	case "list":
-		if err := helper.ValidateCmdArgAndFlag(cmd, args, "sshKey", fArg, "organization"); err != nil {
+		if err := helper.ValidateCmdArgAndFlag(cmd, args, "ssh-key", fArg, "organization"); err != nil {
 			return err
 		}
 	case "create":
-		if err := helper.ValidateCmdArgAndFlag(cmd, args, "sshKey", fArg, "organization"); err != nil {
+		if err := helper.ValidateCmdArgAndFlag(cmd, args, "ssh-key", fArg, "organization"); err != nil {
 			return err
 		}
 
-		if err := helper.ValidateCmdArgAndFlag(cmd, args, "sshKey", fArg, "name"); err != nil {
+		if err := helper.ValidateCmdArgAndFlag(cmd, args, "ssh-key", fArg, "name"); err != nil {
 			return err
 		}
 
-		if err := helper.ValidateCmdArgAndFlag(cmd, args, "sshKey", fArg, "value"); err != nil {
+		if err := helper.ValidateCmdArgAndFlag(cmd, args, "ssh-key", fArg, "value"); err != nil {
 			return err
 		}
 	case "read":
-		if err := helper.ValidateCmdArgAndFlag(cmd, args, "sshKey", fArg, "id"); err != nil {
+		if err := helper.ValidateCmdArgAndFlag(cmd, args, "ssh-key", fArg, "id"); err != nil {
 			return err
 		}
 	case "update":
-		if err := helper.ValidateCmdArgAndFlag(cmd, args, "sshKey", fArg, "id"); err != nil {
+		if err := helper.ValidateCmdArgAndFlag(cmd, args, "ssh-key", fArg, "id"); err != nil {
 			return err
 		}
 
-		if err := helper.ValidateCmdArgAndFlag(cmd, args, "sshKey", fArg, "name"); err != nil {
+		if err := helper.ValidateCmdArgAndFlag(cmd, args, "ssh-key", fArg, "name"); err != nil {
 			return err
 		}
 
-		if err := helper.ValidateCmdArgAndFlag(cmd, args, "sshKey", fArg, "value"); err != nil {
+		if err := helper.ValidateCmdArgAndFlag(cmd, args, "ssh-key", fArg, "value"); err != nil {
 			return err
 		}
 	case "delete":
-		if err := helper.ValidateCmdArgAndFlag(cmd, args, "sshKey", fArg, "id"); err != nil {
+		if err := helper.ValidateCmdArgAndFlag(cmd, args, "ssh-key", fArg, "id"); err != nil {
 			return err
 		}
 	}
