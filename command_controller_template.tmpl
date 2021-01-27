@@ -31,7 +31,7 @@ var COMMAND_LC_ValidArgs = []string{"list", "create", "read", "update", "delete"
 
 // COMMAND_UC_Cmd command to display tecli current version
 func COMMAND_UC_Cmd() *cobra.Command {
-	man, err := helper.GetManual("COMMAND_LC_")
+	man, err := helper.GetManualV2("COMMAND_LC_", COMMAND_LC_ValidArgs)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)

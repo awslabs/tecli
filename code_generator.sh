@@ -15,7 +15,7 @@ organizationMemberships
 organizationTokens
 organizations
 planExports
-plans
+plan
 policies
 policyChecks
 policySetParameters
@@ -40,7 +40,7 @@ workspace
 
 for command in ${commands}
 do
-    if [[ ${command} == 'sshKeys' ]]; then
+    if [[ ${command} == 'plan' ]]; then
         echo "Working on command ${command} now"
         cp command_template.tmpl "cobra/cmd/${command}.go"
         sed "s,COMMAND_LC_,${command},g"  "cobra/cmd/${command}.go" > "cobra/cmd/${command}.go.1"
@@ -67,10 +67,10 @@ do
         rm -f "box/resources/manual/${command}.yaml.1"
 
         # test
-        cp command_test_template.tmpl "tests/${command}.go"
-        sed "s,COMMAND_LC_,${command},g"  "tests/${command}.go" > "tests/${command}.go.1"
-        sed "s,COMMAND_UC_,${command_uc},g"  "tests/${command}.go.1" > "tests/${command}.go"
-        rm -f "tests/${command}.go.1"
+        cp command_test_template.tmpl "tests/command_${command}_test.go"
+        sed "s,COMMAND_LC_,${command},g"  "tests/command_${command}_test.go" > "tests/command_${command}_test.go.1"
+        sed "s,COMMAND_UC_,${command_uc},g"  "tests/command_${command}_test.go.1" > "tests/command_${command}_test.go"
+        rm -f "tests/command_${command}_test.go.1"
 
         exit 0
     fi
