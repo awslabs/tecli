@@ -17,15 +17,32 @@ package aid
 
 import (
 	tfe "github.com/hashicorp/go-tfe"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
 // GetSSHKeysCreateOptions TODO ..
 func GetSSHKeysCreateOptions(cmd *cobra.Command) tfe.SSHKeyCreateOptions {
 	var options tfe.SSHKeyCreateOptions
+	name, err := cmd.Flags().GetString("name")
+	if err != nil {
+		logrus.Fatalf("unable to get flag name\n%v\n", err)
+	}
+
+	if name != "" {
+		options.Name = &name
+	}
+
+	value, err := cmd.Flags().GetString("value")
+	if err != nil {
+		logrus.Fatalf("unable to get flag value\n%v\n", err)
+	}
+
+	if value != "" {
+		options.Value = &value
+	}
 
 	return options
-
 }
 
 // GetSSHKeysUpdateOptions TODO ...

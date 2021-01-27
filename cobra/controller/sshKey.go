@@ -64,7 +64,11 @@ func sshKeyPreRun(cmd *cobra.Command, args []string) error {
 
 	fArg := args[0]
 	switch fArg {
-	case "create", "read", "list", "delete":
+	case "list":
+		if err := helper.ValidateCmdArgAndFlag(cmd, args, "sshKey", fArg, "organization"); err != nil {
+			return err
+		}
+	case "create", "read", "delete":
 		if err := helper.ValidateCmdArgAndFlag(cmd, args, "sshKey", fArg, "organization"); err != nil {
 			return err
 		}

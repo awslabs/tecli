@@ -22,7 +22,7 @@ import (
 	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/controller"
 )
 
-var tempSSHPrivateKey=`
+var tempSSHPrivateKey = `
 -----BEGIN RSA PRIVATE KEY-----
 MIIG5QIBAAKCAYEAm/thT2vL9QiU/iUTicE/BqTc/deQpqf/EHuPHHY9NynSswBm
 REH7qeQvIU6Go0c+eAackbiM6g53O9Akwr00EI603iCcQmbvwMYkz+VVBN9N14wh
@@ -65,21 +65,21 @@ nyg0I2FvjBFgoapmQedIbtlFVTyUGLqNDb/ls9mSSvriDOUB0uBLwbc=
 `
 
 func TestSSHKeyList(t *testing.T) {
-	args := []string{"sshKey", "list", "--organization", "terraform-cloud-pipeline", "--name", "foo", "--value", tempSSHPrivateKey}
+	args := []string{"sshKey", "list", "--organization", "terraform-cloud-pipeline"}
 	out, err := executeCommandOnly(t, controller.SSHKeyCmd(), args)
 	assert.Nil(t, err)
 	assert.Contains(t, out, "")
 }
 
 func TestSSHKeyCreate(t *testing.T) {
-	args := []string{"sshKey", "create", "--organization", "terraform-cloud-pipeline"}
+	args := []string{"sshKey", "create", "--organization", "terraform-cloud-pipeline", "--name", "foo", "--value", tempSSHPrivateKey}
 	out, err := executeCommandOnly(t, controller.SSHKeyCmd(), args)
 	assert.Nil(t, err)
 	assert.Contains(t, out, "")
 }
 
 func TestSSHKeyRead(t *testing.T) {
-	args := []string{"sshKey", "read", "--organization", "terraform-cloud-pipeline"}
+	args := []string{"sshKey", "read", "--organization", "terraform-cloud-pipeline", "--name", "foo"}
 	out, err := executeCommandOnly(t, controller.SSHKeyCmd(), args)
 	assert.Nil(t, err)
 	assert.Contains(t, out, "")
