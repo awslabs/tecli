@@ -1,4 +1,4 @@
-use: workspace [create]
+use: workspace [argument] [flags]
 example: |-
   # How to
   ## Create a workspace:

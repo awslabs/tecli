@@ -41,7 +41,6 @@ func RootCmd() *cobra.Command {
 		Long:  man.Long,
 	}
 
-	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here will be global for your application.
 	cmd.PersistentFlags().StringVarP(&profile, "profile", "p", "default", "Use a specific profile from your credentials and configurations file.")
 

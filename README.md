@@ -130,6 +130,7 @@ Available Commands:
   help        Help about any command
   oauth       A plan represents the execution plan of a Run in a Terraform workspace.
   plans       A plan represents the execution plan of a Run in a Terraform workspace.
+  sshKey      Displays the version of tecli and all installed plugins
   version     Displays the version of tecli and all installed plugins
   workspace   Manage Terraform Cloud workspaces
 
