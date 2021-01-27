@@ -20,7 +20,6 @@ Flags:
       --log-file-path string   Log file path. (default "/Users/valterh/.tecli/logs.json")
   -o, --organization string    Terraform Cloud Organization name
   -p, --profile string         Use a specific profile from your credentials and configurations file. (default "default")
-  -t, --toggle                 Help message for toggle
   -v, --verbosity string       Valid log level:panic,fatal,error,warn,info,debug,trace). (default "error")
 
 Use "tecli [command] --help" for more information about a command.

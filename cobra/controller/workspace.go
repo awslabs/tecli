@@ -21,7 +21,6 @@ import (
 	"os"
 
 	"github.com/hashicorp/go-tfe"
-	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/aid"
 	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/dao"
@@ -32,9 +31,13 @@ var workspaceValidArgs = []string{
 	"list",
 	"create",
 	"read",
+	"read-by-id",
 	"update",
+	"update-by-id",
 	"delete",
+	"delete-by-id",
 	"remove-vcs-connection",
+	"remove-vcs-connection-by-id",
 	"lock",
 	"unlock",
 	"force-unlock",
@@ -43,7 +46,7 @@ var workspaceValidArgs = []string{
 
 // WorkspaceCmd command to display tecli current version
 func WorkspaceCmd() *cobra.Command {
-	man, err := helper.GetManual("workspace")
+	man, err := helper.GetManualV2("workspace", workspaceValidArgs)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -92,6 +95,9 @@ func WorkspaceCmd() *cobra.Command {
 	and _. This will be used as an identifier and must be unique in the
 	organization.`
 	cmd.Flags().String("name", "", usage)
+
+	usage = `The workspace ID`
+	cmd.Flags().String("id", "", usage)
 
 	usage = `A new name for the workspace, which can only include letters, numbers, -,
 	and _. This will be used as an identifier and must be unique in the
@@ -152,7 +158,11 @@ func workspacePreRun(cmd *cobra.Command, args []string) error {
 
 	fArg := args[0]
 	switch fArg {
-	case "create":
+	case "list":
+		if err := helper.ValidateCmdArgAndFlag(cmd, args, "workspace", fArg, "organization"); err != nil {
+			return err
+		}
+	case "create", "read", "update", "delete", "remove-vcs-connection":
 		if err := helper.ValidateCmdArgAndFlag(cmd, args, "workspace", fArg, "organization"); err != nil {
 			return err
 		}
@@ -160,7 +170,17 @@ func workspacePreRun(cmd *cobra.Command, args []string) error {
 		if err := helper.ValidateCmdArgAndFlag(cmd, args, "workspace", fArg, "name"); err != nil {
 			return err
 		}
+	case "read-by-id", "update-by-id", "delete-by-id", "remove-vcs-connection-by-id", "lock", "unlock", "force-unlock", "assign-ssh-key", "unassign-ssh-key":
+		if err := helper.ValidateCmdArgAndFlag(cmd, args, "workspace", fArg, "id"); err != nil {
+			return err
+		}
+
+	default:
+		return fmt.Errorf("unknown argument")
 	}
+
+	// case "read-by-id", "update-by-id", "delete-by-id", "remove-vcs-connection-by-id",
+	// }
 
 	return nil
 }
@@ -170,9 +190,6 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 	token := dao.GetTeamToken(profile)
 	client := aid.GetTFEClient(token)
 
-	var workspace *tfe.Workspace
-	var err error
-
 	fArg := args[0]
 	switch fArg {
 	case "list":
@@ -180,7 +197,7 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 		if err == nil {
 			if list.TotalCount > 0 {
 				for _, item := range list.Items {
-					fmt.Printf("%v\n", aid.ToJSON(item))
+					fmt.Printf("%v,\n", aid.ToJSON(item))
 				}
 			} else {
 				return fmt.Errorf("no workspace was found")
@@ -188,10 +205,12 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 		}
 	case "create":
 		options := aid.GetWorkspaceCreateOptions(cmd)
-		workspace, err = workspaceCreate(client, options)
+		workspace, err := workspaceCreate(client, options)
 
 		if err == nil && workspace.ID != "" {
 			fmt.Println(aid.ToJSON(workspace))
+		} else {
+			return fmt.Errorf("unable to create workspace\n%v", err)
 		}
 	case "read":
 		name, err := cmd.Flags().GetString("name")
@@ -205,6 +224,18 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 		} else {
 			return fmt.Errorf("workspace %s not found\n%v", name, err)
 		}
+	case "read-by-id":
+		id, err := cmd.Flags().GetString("id")
+		if err != nil {
+			return err
+		}
+
+		workspace, err := workspaceReadByID(client, id)
+		if err == nil {
+			fmt.Println(aid.ToJSON(workspace))
+		} else {
+			return fmt.Errorf("workspace %s not found\n%v", id, err)
+		}
 	case "update":
 		name, err := cmd.Flags().GetString("name")
 		if err != nil {
@@ -212,7 +243,20 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 		}
 
 		options := aid.GetWorkspaceUpdateOptions(cmd)
-		workspace, err = workspaceUpdate(client, name, options)
+		workspace, err := workspaceUpdate(client, name, options)
+		if err == nil && workspace.ID != "" {
+			fmt.Println(aid.ToJSON(workspace))
+		} else {
+			return fmt.Errorf("unable to update workspace\n%v", err)
+		}
+	case "update-by-id":
+		id, err := cmd.Flags().GetString("id")
+		if err != nil {
+			return err
+		}
+
+		options := aid.GetWorkspaceUpdateOptions(cmd)
+		workspace, err := workspaceUpdateByID(client, id, options)
 		if err == nil && workspace.ID != "" {
 			fmt.Println(aid.ToJSON(workspace))
 		} else {
@@ -230,107 +274,104 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 		} else {
 			return fmt.Errorf("unable to delete workspace %s\n%v", name, err)
 		}
+	case "delete-by-id":
+		id, err := cmd.Flags().GetString("id")
+		if err != nil {
+			return err
+		}
+
+		err = workspaceDeleteByID(client, id)
+		if err == nil {
+			fmt.Printf("workspace %s deleted successfully\n", id)
+		} else {
+			return fmt.Errorf("unable to delete workspace %s\n%v", id, err)
+		}
 	case "remove-vcs-connection":
 		name, err := cmd.Flags().GetString("name")
 		if err != nil {
 			return err
 		}
 
-		workspace, err = workspaceRemoveVCSConnection(client, name)
+		workspace, err := workspaceRemoveVCSConnection(client, name)
+		if err == nil {
+			fmt.Println(aid.ToJSON(workspace))
+		} else {
+			return fmt.Errorf("unable to remove vcs connection\n%v", err)
+		}
+	case "remove-vcs-connection-by-id":
+		id, err := cmd.Flags().GetString("id")
+		if err != nil {
+			return err
+		}
+
+		workspace, err := workspaceRemoveVCSConnectionByID(client, id)
 		if err == nil {
 			fmt.Println(aid.ToJSON(workspace))
 		} else {
 			return fmt.Errorf("unable to remove vcs connection\n%v", err)
 		}
 	case "lock":
-		name, err := cmd.Flags().GetString("name")
+		id, err := cmd.Flags().GetString("id")
 		if err != nil {
 			return err
 		}
 
-		w, err := workspaceRead(client, name)
+		workspace, err := workspaceLock(client, id)
 		if err != nil {
-			return err
-		}
-
-		workspace, err := workspaceLock(client, w.ID)
-		if err != nil {
-			return err
+			return fmt.Errorf("unable to lock workspace\n%v", err)
 		}
 
 		if workspace.Locked {
-			fmt.Printf("workspace %s locked successfully\n", name)
+			fmt.Println(aid.ToJSON(workspace))
 		}
-
 	case "unlock":
-		name, err := cmd.Flags().GetString("name")
+		id, err := cmd.Flags().GetString("id")
 		if err != nil {
 			return err
 		}
 
-		w, err := workspaceRead(client, name)
-		if err != nil {
-			return err
-		}
-
-		workspace, err := workspaceUnlock(client, w.ID)
+		workspace, err := workspaceUnlock(client, id)
 		if err != nil {
 			return err
 		}
 
 		if !workspace.Locked {
-			fmt.Printf("workspace %s unlocked successfully\n", name)
+			fmt.Println(aid.ToJSON(workspace))
 		}
 	case "force-unlock":
-		name, err := cmd.Flags().GetString("name")
+		id, err := cmd.Flags().GetString("id")
 		if err != nil {
 			return err
 		}
 
-		w, err := workspaceRead(client, name)
-		if err != nil {
-			return err
-		}
-
-		workspace, err := workspaceForceUnlock(client, w.ID)
+		workspace, err := workspaceForceUnlock(client, id)
 		if err != nil {
 			return err
 		}
 
 		if !workspace.Locked {
-			fmt.Printf("workspace %s unlocked successfully\n", name)
+			fmt.Println(aid.ToJSON(workspace))
 		}
 	case "assign-ssh-key":
-		name, err := cmd.Flags().GetString("name")
-		if err != nil {
-			return err
-		}
-
-		w, err := workspaceRead(client, name)
+		id, err := cmd.Flags().GetString("id")
 		if err != nil {
 			return err
 		}
 
 		// TODO: need to fetch the SSH keys via the client.SSHKeys interface
 		options := aid.GetWorkspaceAssignSSHKeyOptions(cmd)
-		workspace, err := workspaceAssignSSHKey(client, w.ID, options)
+		workspace, err := workspaceAssignSSHKey(client, id, options)
 		if err != nil {
 			return err
 		}
 
 		if workspace.ID != "" && workspace.SSHKey.ID != "" {
 			fmt.Println(aid.ToJSON(workspace))
-			fmt.Println("SSH key assigned  successfully")
 		}
-
 	case "unassign-ssh-key":
 		fmt.Println("unassign-ssh-key")
 	default:
 		return fmt.Errorf("unknown argument provided")
-	}
-
-	if err != nil {
-		logrus.Fatalf("unable to %s workspace\n%v\n", fArg, err)
 	}
 
 	return nil
@@ -350,9 +391,19 @@ func workspaceRead(client *tfe.Client, workspace string) (*tfe.Workspace, error)
 	return client.Workspaces.Read(context.Background(), organization, workspace)
 }
 
+// Read a workspace by its name.
+func workspaceReadByID(client *tfe.Client, workspaceID string) (*tfe.Workspace, error) {
+	return client.Workspaces.ReadByID(context.Background(), workspaceID)
+}
+
 // Update settings of an existing workspace.
 func workspaceUpdate(client *tfe.Client, workspace string, options tfe.WorkspaceUpdateOptions) (*tfe.Workspace, error) {
 	return client.Workspaces.Update(context.Background(), organization, workspace, options)
+}
+
+// Update settings of an existing workspace.
+func workspaceUpdateByID(client *tfe.Client, workspaceID string, options tfe.WorkspaceUpdateOptions) (*tfe.Workspace, error) {
+	return client.Workspaces.UpdateByID(context.Background(), workspaceID, options)
 }
 
 // // Delete a workspace by its name.
@@ -360,9 +411,19 @@ func workspaceDelete(client *tfe.Client, workspace string) error {
 	return client.Workspaces.Delete(context.Background(), organization, workspace)
 }
 
+// Delete a workspace by its name.
+func workspaceDeleteByID(client *tfe.Client, workspaceID string) error {
+	return client.Workspaces.DeleteByID(context.Background(), workspaceID)
+}
+
 // RemoveVCSConnection from a workspace.
 func workspaceRemoveVCSConnection(client *tfe.Client, workspace string) (*tfe.Workspace, error) {
 	return client.Workspaces.RemoveVCSConnection(context.Background(), organization, workspace)
+}
+
+// RemoveVCSConnection from a workspace.
+func workspaceRemoveVCSConnectionByID(client *tfe.Client, workspaceID string) (*tfe.Workspace, error) {
+	return client.Workspaces.RemoveVCSConnectionByID(context.Background(), workspaceID)
 }
 
 // Lock a workspace by its ID.

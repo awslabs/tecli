@@ -1,4 +1,8 @@
-use: workspace [argument] [flags]
+use: |- 
+  workspace [argument] [flags]
+
+  Arguments: 
+    {{ arguments }}
 example: |-
   # How to
   ## Create a workspace:

@@ -43,14 +43,7 @@ func RootCmd() *cobra.Command {
 
 	// Cobra supports persistent flags, which, if defined here will be global for your application.
 	cmd.PersistentFlags().StringVarP(&profile, "profile", "p", "default", "Use a specific profile from your credentials and configurations file.")
-
 	cmd.PersistentFlags().StringVarP(&organization, "organization", "o", "", "Terraform Cloud Organization name")
-	cmd.MarkFlagRequired("organization")
-
-	// TODO: allow users to pass their prefer location for tecli's configurations directory
-
-	// Cobra also supports local flags, which will only run when this action is called directly.
-	cmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
 	return cmd
 }
