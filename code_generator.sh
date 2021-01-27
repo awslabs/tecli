@@ -23,7 +23,7 @@ policySets
 registryModules
 root
 runTriggers
-runs
+run
 sshKeys
 stateVersionOutputs
 stateVersions
@@ -40,7 +40,7 @@ workspace
 
 for command in ${commands}
 do
-    if [[ ${command} == 'plan' ]]; then
+    if [[ ${command} == 'run' ]]; then
         echo "Working on command ${command} now"
         cp command_template.tmpl "cobra/cmd/${command}.go"
         sed "s,COMMAND_LC_,${command},g"  "cobra/cmd/${command}.go" > "cobra/cmd/${command}.go.1"
@@ -49,7 +49,7 @@ do
         rm -f "cobra/cmd/${command}.go.1"
 
         # controller
-        cp controller_template.tmpl "cobra/controller/${command}.go"
+        cp command_controller_template.tmpl "cobra/controller/${command}.go"
         sed "s,COMMAND_LC_,${command},g"  "cobra/controller/${command}.go" > "cobra/controller/${command}.go.1"
         sed "s,COMMAND_UC_,${command_uc},g"  "cobra/controller/${command}.go.1" > "cobra/controller/${command}.go"
         rm -f "cobra/controller/${command}.go.1"

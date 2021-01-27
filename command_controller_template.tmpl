@@ -79,17 +79,14 @@ func COMMAND_LC_Run(cmd *cobra.Command, args []string) error {
 	token := dao.GetTeamToken(profile)
 	client := aid.GetTFEClient(token)
 
-	var COMMAND_LC_ *tfe.COMMAND_UC_
-	var err error
-
 	fArg := args[0]
 	switch fArg {
 	case "list":
 		list, err := COMMAND_LC_List(client)
 		if err == nil {
-			if list.TotalCount > 0 {
+			if len(list.Items) > 0 {
 				for _, item := range list.Items {
-					fmt.Printf("%v\n", aid.ToJSON(item))
+					fmt.Printf("%v,\n", aid.ToJSON(item))
 				}
 			} else {
 				return fmt.Errorf("no COMMAND_LC_ was found")
