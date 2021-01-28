@@ -1,0 +1,10 @@
+use: |-
+  o-auth-token [argument] [flags]
+
+  Arguments:
+    {{ arguments }}
+example: |-
+  How to ...
+short: o-auth-token ...
+long: |-
+  o-auth-token ...

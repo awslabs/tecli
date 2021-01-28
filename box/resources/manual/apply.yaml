@@ -1,0 +1,10 @@
+use: |-
+  apply [argument] [flags]
+
+  Arguments:
+    {{ arguments }}
+example: |-
+  How to ...
+short: apply ...
+long: |-
+  apply ...

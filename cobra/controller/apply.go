@@ -16,7 +16,6 @@ limitations under the License.
 package controller
 
 import (
-	"bytes"
 	"context"
 	"fmt"
 	"io"
@@ -30,11 +29,11 @@ import (
 	"gitlab.aws.dev/devops-aws/terraform-ce-cli/helper"
 )
 
-var planValidArgs = []string{"read", "logs"}
+var applyValidArgs = []string{"read", "logs"}
 
-// PlanCmd command to display tecli current version
-func PlanCmd() *cobra.Command {
-	man, err := helper.GetManualV2("plan", planValidArgs)
+// ApplyCmd command to display tecli current version
+func ApplyCmd() *cobra.Command {
+	man, err := helper.GetManualV2("apply", applyValidArgs)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -45,18 +44,18 @@ func PlanCmd() *cobra.Command {
 		Short:     man.Short,
 		Long:      man.Long,
 		Example:   man.Example,
-		ValidArgs: planValidArgs,
+		ValidArgs: applyValidArgs,
 		Args:      cobra.OnlyValidArgs,
-		PreRunE:   planPreRun,
-		RunE:      planRun,
+		PreRunE:   applyPreRun,
+		RunE:      applyRun,
 	}
 
-	aid.SetPlanFlags(cmd)
+	aid.SetApplyFlags(cmd)
 
 	return cmd
 }
 
-func planPreRun(cmd *cobra.Command, args []string) error {
+func applyPreRun(cmd *cobra.Command, args []string) error {
 	if err := helper.ValidateCmdArgs(cmd, args, "plan"); err != nil {
 		return err
 	}
@@ -72,7 +71,7 @@ func planPreRun(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func planRun(cmd *cobra.Command, args []string) error {
+func applyRun(cmd *cobra.Command, args []string) error {
 
 	token := dao.GetTeamToken(profile)
 	client := aid.GetTFEClient(token)
@@ -85,11 +84,11 @@ func planRun(cmd *cobra.Command, args []string) error {
 			return fmt.Errorf("unable to get flag id\n%v", err)
 		}
 
-		plan, err := planRead(client, id)
+		apply, err := applyRead(client, id)
 		if err == nil {
-			fmt.Println(aid.ToJSON(plan))
+			fmt.Println(aid.ToJSON(apply))
 		} else {
-			return fmt.Errorf("plan %s not found\n%v", id, err)
+			return fmt.Errorf("apply %s not found\n%v", id, err)
 		}
 	case "logs":
 		id, err := cmd.Flags().GetString("id")
@@ -97,9 +96,9 @@ func planRun(cmd *cobra.Command, args []string) error {
 			return fmt.Errorf("unable to get flag id\n%v", err)
 		}
 
-		logs, err := planLogs(client, id)
+		logs, err := applyLogs(client, id)
 		if err != nil {
-			logrus.Fatalf("unable to read plan logs\n%v", err)
+			logrus.Fatalf("unable to read apply logs\n%v", err)
 		}
 		fmt.Println(StreamToString(logs))
 	}
@@ -107,28 +106,12 @@ func planRun(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-// Read a plan by its ID.
-func planRead(client *tfe.Client, planID string) (*tfe.Plan, error) {
-	return client.Plans.Read(context.Background(), planID)
-
+// Read an apply by its ID.
+func applyRead(client *tfe.Client, applyID string) (*tfe.Apply, error) {
+	return client.Applies.Read(context.Background(), applyID)
 }
 
-// Logs retrieves the logs of a plan.
-func planLogs(client *tfe.Client, planID string) (io.Reader, error) {
-	return client.Plans.Logs(context.Background(), planID)
-
-}
-
-// StreamToByte TODO ..
-func StreamToByte(stream io.Reader) []byte {
-	buf := new(bytes.Buffer)
-	buf.ReadFrom(stream)
-	return buf.Bytes()
-}
-
-// StreamToString TODO ...
-func StreamToString(stream io.Reader) string {
-	buf := new(bytes.Buffer)
-	buf.ReadFrom(stream)
-	return buf.String()
+// Logs retrieves the logs of an apply.
+func applyLogs(client *tfe.Client, applyID string) (io.Reader, error) {
+	return client.Applies.Logs(context.Background(), applyID)
 }

@@ -68,7 +68,7 @@ func runPreRun(cmd *cobra.Command, args []string) error {
 
 	fArg := args[0]
 	switch fArg {
-	case "list":
+	case "list", "create":
 		if err := helper.ValidateCmdArgAndFlag(cmd, args, "run", fArg, "workspace-id"); err != nil {
 			return err
 		}

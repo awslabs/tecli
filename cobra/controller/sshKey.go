@@ -139,7 +139,7 @@ func sshKeyRun(cmd *cobra.Command, args []string) error {
 	case "read":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return err
+			return fmt.Errorf("unable to get flag id\n%v", err)
 		}
 
 		sshKey, err := sshKeyRead(client, id)
@@ -152,7 +152,7 @@ func sshKeyRun(cmd *cobra.Command, args []string) error {
 	case "update":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return err
+			return fmt.Errorf("unable to get flag id\n%v", err)
 		}
 
 		options := aid.GetSSHKeysUpdateOptions(cmd)
@@ -165,7 +165,7 @@ func sshKeyRun(cmd *cobra.Command, args []string) error {
 	case "delete":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return err
+			return fmt.Errorf("unable to get flag id\n%v", err)
 		}
 
 		err = sshKeyDelete(client, id)

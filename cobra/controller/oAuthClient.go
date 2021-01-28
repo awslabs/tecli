@@ -128,7 +128,7 @@ func oAuthClientRun(cmd *cobra.Command, args []string) error {
 	case "read":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return err
+			return fmt.Errorf("unable to get flag id\n%v", err)
 		}
 
 		oAuthClient, err := oAuthClientRead(client, id)
@@ -140,7 +140,7 @@ func oAuthClientRun(cmd *cobra.Command, args []string) error {
 	case "delete":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return err
+			return fmt.Errorf("unable to get flag id\n%v", err)
 		}
 
 		err = oAuthClientDelete(client, id)

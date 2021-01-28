@@ -157,7 +157,7 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 	case "read-by-id":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return err
+			return fmt.Errorf("unable to get flag id\n%v", err)
 		}
 
 		workspace, err := workspaceReadByID(client, id)
@@ -182,7 +182,7 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 	case "update-by-id":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return err
+			return fmt.Errorf("unable to get flag id\n%v", err)
 		}
 
 		options := aid.GetWorkspaceUpdateOptions(cmd)
@@ -207,7 +207,7 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 	case "delete-by-id":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return err
+			return fmt.Errorf("unable to get flag id\n%v", err)
 		}
 
 		err = workspaceDeleteByID(client, id)
@@ -231,7 +231,7 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 	case "remove-vcs-connection-by-id":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return err
+			return fmt.Errorf("unable to get flag id\n%v", err)
 		}
 
 		workspace, err := workspaceRemoveVCSConnectionByID(client, id)
@@ -243,7 +243,7 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 	case "lock":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return err
+			return fmt.Errorf("unable to get flag id\n%v", err)
 		}
 
 		workspace, err := workspaceLock(client, id)
@@ -257,7 +257,7 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 	case "unlock":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return err
+			return fmt.Errorf("unable to get flag id\n%v", err)
 		}
 
 		workspace, err := workspaceUnlock(client, id)
@@ -271,7 +271,7 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 	case "force-unlock":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return err
+			return fmt.Errorf("unable to get flag id\n%v", err)
 		}
 
 		workspace, err := workspaceForceUnlock(client, id)
@@ -285,7 +285,7 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 	case "assign-ssh-key":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return err
+			return fmt.Errorf("unable to get flag id\n%v", err)
 		}
 
 		// TODO: need to fetch the SSH keys via the client.SSHKeys interface
