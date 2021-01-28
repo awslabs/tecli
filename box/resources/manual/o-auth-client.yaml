@@ -1,0 +1,10 @@
+use: |-
+  o-auth-client [argument] [flags]
+
+  Arguments:
+    {{ arguments }}
+example: |-
+  How to ...
+short: o-auth-client ...
+long: |-
+  o-auth-client ...

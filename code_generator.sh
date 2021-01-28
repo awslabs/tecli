@@ -3,7 +3,7 @@
 commands='
 agentPool
 agentToken
-applies
+apply
 configurationVersion
 configure
 costEstimate
@@ -30,7 +30,7 @@ stateVersion
 teamAccesse
 teamMember
 teamToken
-teams
+team
 userToken
 user
 variable
