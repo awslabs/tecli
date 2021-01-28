@@ -48,18 +48,7 @@ func RunCmd() *cobra.Command {
 		RunE:      runRun,
 	}
 
-	usage := `Specifies if this plan is a destroy plan, which will destroy all provisioned resources.`
-	cmd.Flags().Bool("is-destroy", false, usage)
-
-	usage = `Specifies the message to be associated with this run.`
-	cmd.Flags().String("message", "", usage)
-
-	aid.SetConfigurationVersionFlags(cmd)
-	aid.SetWorkspaceFlags(cmd)
-
-	usage = `TODO`
-	var emptyArray []string
-	cmd.Flags().StringArray("target-addrs", emptyArray, usage)
+	aid.SetRunFlags(cmd)
 
 	return cmd
 }
@@ -106,6 +95,25 @@ func runRun(cmd *cobra.Command, args []string) error {
 		}
 	case "create":
 		options := aid.GetRunCreateOptions(cmd)
+
+		workspaceID, err := cmd.Flags().GetString("workspace-id")
+		if err != nil {
+			return fmt.Errorf("unable to get flag workspace-id\n%v", err)
+		}
+
+		if workspaceID != "" {
+			workspace, err := workspaceReadByID(client, workspaceID)
+			if err != nil {
+				return fmt.Errorf("unable to find workspace %s\n%v", workspaceID, err)
+			}
+			options.Workspace = workspace
+		}
+
+		// configurationVersionID, err := cmd.Flags().GetString("configuration-version-id")
+		// if err != nil {
+		// return fmt.Errorf("unable to get flag configuration-version-id\n%v", err)
+		// }
+
 		run, err := runCreate(client, options)
 
 		if err == nil && run.ID != "" {

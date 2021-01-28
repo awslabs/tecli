@@ -4,7 +4,7 @@ commands='
 agentPools
 agentTokens
 applies
-configurationVersions
+configurationVersion
 configure
 costEstimates
 notificationConfigurations
@@ -40,7 +40,7 @@ workspace
 
 for command in ${commands}
 do
-    if [[ ${command} == 'run' ]]; then
+    if [[ ${command} == 'configurationVersion' ]]; then
         echo "Working on command ${command} now"
         cp command_template.tmpl "cobra/cmd/${command}.go"
         sed "s,COMMAND_LC_,${command},g"  "cobra/cmd/${command}.go" > "cobra/cmd/${command}.go.1"

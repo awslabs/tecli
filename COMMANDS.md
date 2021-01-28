@@ -6,14 +6,15 @@ Usage:
   tecli [command]
 
 Available Commands:
-  configure   Configures tecli global settings
-  help        Help about any command
-  oauth       A plan represents the execution plan of a Run in a Terraform workspace.
-  plans       A plan represents the execution plan of a Run in a Terraform workspace.
-  run         run ...
-  ssh-key     TODO ...
-  version     Displays the version of tecli and all installed plugins
-  workspace   Manage Terraform Cloud workspaces
+  configurationVersion configurationVersion ...
+  configure            Configures tecli global settings
+  help                 Help about any command
+  oauth                A plan represents the execution plan of a Run in a Terraform workspace.
+  plans                A plan represents the execution plan of a Run in a Terraform workspace.
+  run                  run ...
+  ssh-key              TODO ...
+  version              Displays the version of tecli and all installed plugins
+  workspace            Manage Terraform Cloud workspaces
 
 Flags:
   -h, --help                   help for tecli
