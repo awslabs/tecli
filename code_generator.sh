@@ -1,37 +1,37 @@
 #!/bin/bash
 
 commands='
-agent-pool
-agent-token
+agentPool
+agentToken
 applies
-configuration-version
+configurationVersion
 configure
-cost-estimate
-notification-configuration
-o-auth-client
-o-auth-token
+costEstimate
+notificationConfiguration
+oAuthClient
+oAuthToken
 oauth
-organization-membership
-organization-token
+organizationMembership
+organizationToken
 organization
-plan-export
+planExport
 plan
 policy
-policy-check
-policy-set-parameter
-policy-set
-registry-module
+policyCheck
+policySetParameter
+policySet
+registryModule
 root
-run-trigger
+runTrigger
 run
-ssh-key
-state-version-output
-state-version
-team-accesse
-team-member
-team-token
+sshKey
+stateVersionOutput
+stateVersion
+teamAccesse
+teamMember
+teamToken
 teams
-user-token
+userToken
 user
 variable
 version
@@ -40,7 +40,7 @@ workspace
 
 for command in ${commands}
 do
-    if [[ ${command} == 'plan' ]]; then
+    if [[ ${command} == 'oAuthClient' ]]; then
         echo "Working on command ${command} now"
         cp command_template.tmpl "cobra/cmd/${command}.go"
         sed "s,COMMAND_LC_,${command},g"  "cobra/cmd/${command}.go" > "cobra/cmd/${command}.go.1"
