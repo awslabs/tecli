@@ -97,6 +97,70 @@ func GetRunReadOptions(cmd *cobra.Command) tfe.RunReadOptions {
 	return options
 }
 
+// GetRunApplyOptions TODO ..
+func GetRunApplyOptions(cmd *cobra.Command) tfe.RunApplyOptions {
+	var options tfe.RunApplyOptions
+
+	comment, err := cmd.Flags().GetString("comment")
+	if err != nil {
+		logrus.Fatalf("unable to get flag comment\n%v", err)
+	}
+
+	if comment != "" {
+		options.Comment = &comment
+	}
+
+	return options
+}
+
+// GetRunCancelOptions TODO ...
+func GetRunCancelOptions(cmd *cobra.Command) tfe.RunCancelOptions {
+	var options tfe.RunCancelOptions
+
+	comment, err := cmd.Flags().GetString("comment")
+	if err != nil {
+		logrus.Fatalf("unable to get flag comment\n%v", err)
+	}
+
+	if comment != "" {
+		options.Comment = &comment
+	}
+
+	return options
+}
+
+// GetRunForceCancelOptions TODO ...
+func GetRunForceCancelOptions(cmd *cobra.Command) tfe.RunForceCancelOptions {
+	var options tfe.RunForceCancelOptions
+
+	comment, err := cmd.Flags().GetString("comment")
+	if err != nil {
+		logrus.Fatalf("unable to get flag comment\n%v", err)
+	}
+
+	if comment != "" {
+		options.Comment = &comment
+	}
+
+	return options
+}
+
+// GetRunDiscardOptions TODO ...
+func GetRunDiscardOptions(cmd *cobra.Command) tfe.RunDiscardOptions {
+	var options tfe.RunDiscardOptions
+
+	comment, err := cmd.Flags().GetString("comment")
+	if err != nil {
+		logrus.Fatalf("unable to get flag comment\n%v", err)
+	}
+
+	if comment != "" {
+		options.Comment = &comment
+	}
+
+	return options
+}
+
 // // GetRunUpdateOptions TODO ...
 // func GetRunUpdateOptions(cmd *cobra.Command) tfe.RunUpdateOptions {
 // 	var options tfe.RunUpdateOptions

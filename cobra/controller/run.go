@@ -27,7 +27,15 @@ import (
 	"gitlab.aws.dev/devops-aws/terraform-ce-cli/helper"
 )
 
-var runValidArgs = []string{"list", "create", "read", "update", "delete"}
+var runValidArgs = []string{
+	"list",
+	"create",
+	"read",
+	"read-with-options",
+	"apply",
+	"cancel",
+	"force-cancel",
+	"discard"}
 
 // RunCmd command to display tecli current version
 func RunCmd() *cobra.Command {
@@ -136,7 +144,7 @@ func runRun(cmd *cobra.Command, args []string) error {
 	case "read":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return err
+			return fmt.Errorf("unable to get flag id\n%v", err)
 		}
 
 		run, err := runRead(client, id)
@@ -148,7 +156,7 @@ func runRun(cmd *cobra.Command, args []string) error {
 	case "read-with-options":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return err
+			return fmt.Errorf("unable to get flag id\n%v", err)
 		}
 
 		options := aid.GetRunReadOptions(cmd)
@@ -159,13 +167,56 @@ func runRun(cmd *cobra.Command, args []string) error {
 			return fmt.Errorf("run %s not found\n%v", id, err)
 		}
 	case "apply":
-		fmt.Print("Apply")
+		id, err := cmd.Flags().GetString("id")
+		if err != nil {
+			return fmt.Errorf("unable to get flag id\n%v", err)
+		}
+
+		options := aid.GetRunApplyOptions(cmd)
+		err = runApply(client, id, options)
+		if err != nil {
+			return fmt.Errorf("unable to apply run\n%v", err)
+		}
+
+		fmt.Println("run applied successfully")
 	case "cancel":
-		fmt.Print("Cancel")
+		id, err := cmd.Flags().GetString("id")
+		if err != nil {
+			return fmt.Errorf("unable to get flag id\n%v", err)
+		}
+
+		options := aid.GetRunCancelOptions(cmd)
+		err = runCancel(client, id, options)
+		if err != nil {
+			return fmt.Errorf("unable to cancel run\n%v", err)
+		}
+
+		fmt.Println("run cancelled successfully")
+
 	case "force-cancel":
-		fmt.Print("ForceCancel")
+		id, err := cmd.Flags().GetString("id")
+		if err != nil {
+			return fmt.Errorf("unable to get flag id\n%v", err)
+		}
+
+		options := aid.GetRunForceCancelOptions(cmd)
+		err = runForceCancel(client, id, options)
+		if err != nil {
+			return fmt.Errorf("unable to force ancel run\n%v", err)
+		}
+
+		fmt.Println("run cancelled successfully")
 	case "discard":
-		fmt.Print("Discard")
+		id, err := cmd.Flags().GetString("id")
+		if err != nil {
+			return fmt.Errorf("unable to get flag id\n%v", err)
+		}
+
+		options := aid.GetRunDiscardOptions(cmd)
+		err = runDiscard(client, id, options)
+		if err != nil {
+			return fmt.Errorf("unable to discard run\n%v", err)
+		}
 
 	}
 
