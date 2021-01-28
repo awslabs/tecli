@@ -109,10 +109,21 @@ func runRun(cmd *cobra.Command, args []string) error {
 			options.Workspace = workspace
 		}
 
-		// configurationVersionID, err := cmd.Flags().GetString("configuration-version-id")
-		// if err != nil {
-		// return fmt.Errorf("unable to get flag configuration-version-id\n%v", err)
-		// }
+		cvID, err := cmd.Flags().GetString("configuration-version-id")
+		if err != nil {
+			return fmt.Errorf("unable to get flag configuration-version-id\n%v", err)
+		}
+
+		if cvID != "" {
+			cv, err := configurationVersionRead(client, cvID)
+			if err != nil {
+				return fmt.Errorf("unable to find configuration version %s\n%v", cvID, err)
+			}
+
+			if cv.ID != "" {
+				options.ConfigurationVersion = cv
+			}
+		}
 
 		run, err := runCreate(client, options)
 
@@ -121,43 +132,41 @@ func runRun(cmd *cobra.Command, args []string) error {
 		} else {
 			return fmt.Errorf("unable to create run\n%v", err)
 		}
-		// case "read":
-		// 	name, err := cmd.Flags().GetString("name")
-		// 	if err != nil {
-		// 		return err
-		// 	}
 
-		// 	run, err := runRead(client, name)
-		// 	if err == nil {
-		// 		fmt.Println(aid.ToJSON(run))
-		// 	} else {
-		// 		return fmt.Errorf("run %s not found\n%v", name, err)
-		// 	}
-		// case "update":
-		// 	name, err := cmd.Flags().GetString("name")
-		// 	if err != nil {
-		// 		return err
-		// 	}
+	case "read":
+		id, err := cmd.Flags().GetString("id")
+		if err != nil {
+			return err
+		}
 
-		// 	options := aid.GetRunUpdateOptions(cmd)
-		// 	run, err = runUpdate(client, name, options)
-		// 	if err == nil && run.ID != "" {
-		// 		fmt.Println(aid.ToJSON(run))
-		// 	} else {
-		// 		return fmt.Errorf("unable to update run\n%v", err)
-		// 	}
-		// case "delete":
-		// 	name, err := cmd.Flags().GetString("name")
-		// 	if err != nil {
-		// 		return err
-		// 	}
+		run, err := runRead(client, id)
+		if err == nil {
+			fmt.Println(aid.ToJSON(run))
+		} else {
+			return fmt.Errorf("run %s not found\n%v", id, err)
+		}
+	case "read-with-options":
+		id, err := cmd.Flags().GetString("id")
+		if err != nil {
+			return err
+		}
 
-		// 	err = runDelete(client, name)
-		// 	if err == nil {
-		// 		fmt.Printf("run %s deleted successfully\n", name)
-		// 	} else {
-		// 		return fmt.Errorf("unable to delete run %s\n%v", name, err)
-		// 	}
+		options := aid.GetRunReadOptions(cmd)
+		run, err := runReadWithOptions(client, id, &options)
+		if err == nil {
+			fmt.Println(aid.ToJSON(run))
+		} else {
+			return fmt.Errorf("run %s not found\n%v", id, err)
+		}
+	case "apply":
+		fmt.Print("Apply")
+	case "cancel":
+		fmt.Print("Cancel")
+	case "force-cancel":
+		fmt.Print("ForceCancel")
+	case "discard":
+		fmt.Print("Discard")
+
 	}
 
 	return nil

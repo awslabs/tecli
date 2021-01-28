@@ -1,0 +1,11 @@
+use: |-
+  configuration-version [argument] [flags]
+
+  Arguments:
+    {{ arguments }}
+example: |-
+  How to ....
+short: configuration-version ...
+long: |-
+  ConfigurationVersions describes all the configuration version related methods that the Terraform Enterprise API supports.
+  TFE API docs: https://www.terraform.io/docs/enterprise/api/configuration-versions.html

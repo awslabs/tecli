@@ -82,6 +82,21 @@ func GetRunCreateOptions(cmd *cobra.Command) tfe.RunCreateOptions {
 	return options
 }
 
+// GetRunReadOptions TODO ...
+func GetRunReadOptions(cmd *cobra.Command) tfe.RunReadOptions {
+	var options tfe.RunReadOptions
+	include, err := cmd.Flags().GetString("include")
+	if err != nil {
+		logrus.Fatalf("unable to get flag include\n%v", err)
+	}
+
+	if include != "" {
+		options.Include = include
+	}
+
+	return options
+}
+
 // // GetRunUpdateOptions TODO ...
 // func GetRunUpdateOptions(cmd *cobra.Command) tfe.RunUpdateOptions {
 // 	var options tfe.RunUpdateOptions

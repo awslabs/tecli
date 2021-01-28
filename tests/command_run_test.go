@@ -23,14 +23,14 @@ import (
 )
 
 func TestRunList(t *testing.T) {
-	args := []string{"run", "list", "--organization", "terraform-cloud-pipeline"}
+	args := []string{"run", "list", "--workspace-id", "ws-LhxL4zC6zhZAUT9i"}
 	out, err := executeCommandOnly(t, controller.RunCmd(), args)
 	assert.Nil(t, err)
 	assert.Contains(t, out, "")
 }
 
 func TestRunCreate(t *testing.T) {
-	args := []string{"run", "create", "--organization", "terraform-cloud-pipeline"}
+	args := []string{"run", "create", "--workspace-id", "ws-LhxL4zC6zhZAUT9i"}
 	out, err := executeCommandOnly(t, controller.RunCmd(), args)
 	assert.Nil(t, err)
 	assert.Contains(t, out, "")

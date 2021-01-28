@@ -27,11 +27,11 @@ import (
 	"gitlab.aws.dev/devops-aws/terraform-ce-cli/helper"
 )
 
-var configurationVersionValidArgs = []string{"list", "create", "read", "update", "delete"}
+var configurationVersionValidArgs = []string{"list", "create", "read", "upload"}
 
 // ConfigurationVersionCmd command to display tecli current version
 func ConfigurationVersionCmd() *cobra.Command {
-	man, err := helper.GetManualV2("configurationVersion", configurationVersionValidArgs)
+	man, err := helper.GetManualV2("configuration-version", configurationVersionValidArgs)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -54,21 +54,30 @@ func ConfigurationVersionCmd() *cobra.Command {
 }
 
 func configurationVersionPreRun(cmd *cobra.Command, args []string) error {
-	if err := helper.ValidateCmdArgs(cmd, args, "configurationVersion"); err != nil {
+	if err := helper.ValidateCmdArgs(cmd, args, "configuration-version"); err != nil {
 		return err
 	}
 
-	// fArg := args[0]
-	// switch fArg {
-	// case "create", "read", "list", "delete":
-	// 	if err := helper.ValidateCmdArgAndFlag(cmd, args, "configurationVersion", fArg, "organization"); err != nil {
-	// 		return err
-	// 	}
+	fArg := args[0]
+	switch fArg {
+	case "list", "create":
+		if err := helper.ValidateCmdArgAndFlag(cmd, args, "configuration-version", fArg, "workspace-id"); err != nil {
+			return err
+		}
 
-	// 	if err := helper.ValidateCmdArgAndFlag(cmd, args, "configurationVersion", fArg, "name"); err != nil {
-	// 		return err
-	// 	}
-	// }
+	case "read":
+		if err := helper.ValidateCmdArgAndFlag(cmd, args, "configuration-version", fArg, "id"); err != nil {
+			return err
+		}
+	case "upload":
+		if err := helper.ValidateCmdArgAndFlag(cmd, args, "configuration-version", fArg, "url"); err != nil {
+			return err
+		}
+
+		if err := helper.ValidateCmdArgAndFlag(cmd, args, "configuration-version", fArg, "path"); err != nil {
+			return err
+		}
+	}
 
 	return nil
 }
@@ -96,50 +105,50 @@ func configurationVersionRun(cmd *cobra.Command, args []string) error {
 				return fmt.Errorf("no configurationVersion was found")
 			}
 		}
-		// case "create":
-		// 	options := aid.GetConfigurationVersionCreateOptions(cmd)
-		// 	configurationVersion, err = configurationVersionCreate(client, options)
+	case "create":
+		workspaceID, err := cmd.Flags().GetString("workspace-id")
+		if err != nil {
+			return fmt.Errorf("unable to get flag workspace-id\n%v", err)
+		}
 
-		// 	if err == nil && configurationVersion.ID != "" {
-		// 		fmt.Println(aid.ToJSON(configurationVersion))
-		// 	}
-		// case "read":
-		// 	name, err := cmd.Flags().GetString("name")
-		// 	if err != nil {
-		// 		return err
-		// 	}
+		options := aid.GetConfigurationVersionCreateOptions(cmd, false)
+		cv, err := configurationVersionCreate(client, workspaceID, options)
 
-		// 	configurationVersion, err := configurationVersionRead(client, name)
-		// 	if err == nil {
-		// 		fmt.Println(aid.ToJSON(configurationVersion))
-		// 	} else {
-		// 		return fmt.Errorf("configurationVersion %s not found\n%v", name, err)
-		// 	}
-		// case "update":
-		// 	name, err := cmd.Flags().GetString("name")
-		// 	if err != nil {
-		// 		return err
-		// 	}
+		if err == nil && cv.ID != "" {
+			fmt.Println(aid.ToJSON(cv))
+		} else {
+			return fmt.Errorf("unable to create configuration version\n%v", err)
+		}
+	case "read":
+		id, err := cmd.Flags().GetString("id")
+		if err != nil {
+			return fmt.Errorf("unable to get flag id\n%v", err)
+		}
 
-		// 	options := aid.GetConfigurationVersionUpdateOptions(cmd)
-		// 	configurationVersion, err = configurationVersionUpdate(client, name, options)
-		// 	if err == nil && configurationVersion.ID != "" {
-		// 		fmt.Println(aid.ToJSON(configurationVersion))
-		// 	} else {
-		// 		return fmt.Errorf("unable to update configurationVersion\n%v", err)
-		// 	}
-		// case "delete":
-		// 	name, err := cmd.Flags().GetString("name")
-		// 	if err != nil {
-		// 		return err
-		// 	}
+		cv, err := configurationVersionRead(client, id)
+		if err == nil {
+			fmt.Println(aid.ToJSON(cv))
+		} else {
+			return fmt.Errorf("configuration version %s not found\n%v", id, err)
+		}
 
-		// 	err = configurationVersionDelete(client, name)
-		// 	if err == nil {
-		// 		fmt.Printf("configurationVersion %s deleted successfully\n", name)
-		// 	} else {
-		// 		return fmt.Errorf("unable to delete configurationVersion %s\n%v", name, err)
-		// 	}
+	case "upload":
+		url, err := cmd.Flags().GetString("url")
+		if err != nil {
+			return fmt.Errorf("unable to get flag url\n%v", err)
+		}
+
+		path, err := cmd.Flags().GetString("path")
+		if err != nil {
+			return fmt.Errorf("unable to get flag path\n%v", err)
+		}
+
+		err = configurationVersionUpload(client, url, path)
+		if err == nil {
+			fmt.Println("upload completed successfully")
+		} else {
+			return fmt.Errorf("unable to upload to configuration version\n%v", err)
+		}
 	}
 
 	return nil
@@ -152,7 +161,7 @@ func configurationVersionList(client *tfe.Client, workspaceID string, options tf
 
 // Create is used to create a new configuration version. The created
 // configuration version will be usable once data is uploaded to it.
-func configurationVersionCreate(client *tfe.Client, workspaceID string, string, options tfe.ConfigurationVersionCreateOptions) (*tfe.ConfigurationVersion, error) {
+func configurationVersionCreate(client *tfe.Client, workspaceID string, options tfe.ConfigurationVersionCreateOptions) (*tfe.ConfigurationVersion, error) {
 	return client.ConfigurationVersions.Create(context.Background(), workspaceID, options)
 }
 

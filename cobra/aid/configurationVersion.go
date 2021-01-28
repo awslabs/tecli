@@ -31,7 +31,10 @@ func SetConfigurationVersionFlags(cmd *cobra.Command, withPrefix bool) {
 	// configuration version object is omitted, the run will be created using the
 	// workspace's latest configuration version.
 
-	usage := `When true, runs are queued automatically when the configuration version is uploaded.`
+	usage := `The Configuration Version ID.`
+	cmd.Flags().String(prefix+"id", "", usage)
+
+	usage = `When true, runs are queued automatically when the configuration version is uploaded.`
 	cmd.Flags().Bool(prefix+"auto-queue-runs", false, usage)
 
 	usage = `When true, this configuration version can only be used for planning.`
@@ -39,6 +42,15 @@ func SetConfigurationVersionFlags(cmd *cobra.Command, withPrefix bool) {
 
 	usage = `The Workspace ID`
 	cmd.Flags().String("workspace-id", "", usage)
+
+	// Upload packages and uploads Terraform configuration files. It requires
+	// the upload URL from a configuration version and the full path to the
+	// configuration files on disk.
+	usage = `The upload url`
+	cmd.Flags().String("url", "", usage)
+
+	usage = `The upload path`
+	cmd.Flags().String("path", "", usage)
 }
 
 // GetConfigurationVersionCreateOptions TODO ..
