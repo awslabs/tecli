@@ -1,46 +1,46 @@
 #!/bin/bash
 
 commands='
-agentPools
-agentTokens
+agent-pool
+agent-token
 applies
-configurationVersion
+configuration-version
 configure
-costEstimates
-notificationConfigurations
-oAuthClients
-oAuthTokens
+cost-estimate
+notification-configuration
+o-auth-client
+o-auth-token
 oauth
-organizationMemberships
-organizationTokens
-organizations
-planExports
+organization-membership
+organization-token
+organization
+plan-export
 plan
-policies
-policyChecks
-policySetParameters
-policySets
-registryModules
+policy
+policy-check
+policy-set-parameter
+policy-set
+registry-module
 root
-runTriggers
+run-trigger
 run
-sshKeys
-stateVersionOutputs
-stateVersions
-teamAccesses
-teamMembers
-teamTokens
+ssh-key
+state-version-output
+state-version
+team-accesse
+team-member
+team-token
 teams
-userTokens
-users
-variables
+user-token
+user
+variable
 version
 workspace
 '
 
 for command in ${commands}
 do
-    if [[ ${command} == 'configurationVersion' ]]; then
+    if [[ ${command} == 'plan' ]]; then
         echo "Working on command ${command} now"
         cp command_template.tmpl "cobra/cmd/${command}.go"
         sed "s,COMMAND_LC_,${command},g"  "cobra/cmd/${command}.go" > "cobra/cmd/${command}.go.1"

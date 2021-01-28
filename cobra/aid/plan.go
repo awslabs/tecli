@@ -13,14 +13,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package cmd
+package aid
 
 import (
-	controller "gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/controller"
+	"github.com/spf13/cobra"
 )
 
-var plansCmd = controller.PlansCmd()
-
-func init() {
-	rootCmd.AddCommand(plansCmd)
+// SetPlanFlags TODO ...
+func SetPlanFlags(cmd *cobra.Command) {
+	usage := `The Plan ID`
+	cmd.Flags().String("id", "", usage)
 }
