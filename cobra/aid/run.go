@@ -35,187 +35,19 @@ func GetRunCreateOptions(cmd *cobra.Command) tfe.RunCreateOptions {
 	}
 
 	// Specifies the message to be associated with this run.
-	message := cmd.Flags().GetString("message")
-
-	// Specifies the configuration version to use for this run. If the
-	// configuration version object is omitted, the run will be created using the
-	// workspace's latest configuration version.
-	configurationVersionId := cmd.Flags().GetString("configuration-version-id")
-
-	configurationVersionAutoQueueRuns, err := cmd.Flags().GetBool("configuration-version-auto-queue-runs")
+	message, err := cmd.Flags().GetString("message")
 	if err != nil {
-		logrus.Fatalf("unable to get flag configuration-version-auto-queue-runs\n%v", err)
-	} else {
-		options.ConfigurationVersion.AutoQueueRuns = configurationVersionAutoQueueRuns
+		logrus.Fatalf("unable to get flag message\n%v", err)
+	}
+	if message != "" {
+		options.Message = &message
 	}
 
-	configurationVersionError := cmd.Flags().GetString("configuration-version-error")
-	configurationVersionErrorMessage := cmd.Flags().GetString("configuration-version-error-message")
-	configurationVersionSource := cmd.Flags().GetString("configuration-version-source")
+	configurationVersion := GetConfigurationVersionFlags(cmd)
+	options.ConfigurationVersion = &configurationVersion
 
-	configurationVersionSpeculative, err := cmd.Flags().GetBool("configuration-version-speculative")
-	if err != nil {
-		logrus.Fatalf("unable to get flag configuration-version-speculative\n%v", err)
-	} else {
-		options.ConfigurationVersion.Speculative = configurationVersionSpeculative
-	}
-
-	configurationVersionStatus := cmd.Flags().GetSTring("configuration-version-status")
-	configurationVersionUploadUrl := cmd.Flags().GetString("configuration-version-upload-url")
-
-	// Specifies the workspace where the run will be executed.
-	workspaceId := cmd.Flags().GetString("workspace-id")
-
-	workspaceActionsIsDestroyable, err := cmd.Flags().GetBool("workspace-actions-is-destroyable")
-	if err != nil {
-		logrus.Fatalf("unable to get flag workspace-actions-is-destroyable\n%v", err)
-	} else {
-		options.Workspace.Actions.IsDestroyable = workspaceActionsIsDestroyable
-	}
-
-	workspaceAgentPoolId := cmd.Flags().GetString("workspace-agent-pool-id")
-
-	workspaceAllowDestroyPlan, err := cmd.Flags().GetBool("workspace-allow-destroy-plan")
-	if err != nil {
-		logrus.Fatalf("unable to get flag workspace-allow-destroy-plan\n%v", err)
-	} else {
-		options.Workspace.AllowDestroyPlan = workspaceAllowDestroyPlan
-	}
-
-	workspaceAutoApply, err := cmd.Flags().GetBool("workspace-auto-apply")
-	if err != nil {
-		logrus.Fatalf("unable to get flag workspace-auto-apply\n%v", err)
-	} else {
-		options.Workspace.AutoApply = workspaceAutoApply
-	}
-
-	workspaceCanQueueDestroyPlan, err := cmd.Flags().GetBool("workspace-can-queue-destroy-plan")
-	if err != nil {
-		logrus.Fatalf("unable to get flag workspace-can-queue-destroy-plan\n%v", err)
-	} else {
-		options.Workspace.CanQueueDestroyPlan = workspaceCanQueueDestroyPlan
-	}
-
-	workspaceEnvironment := cmd.Flags().GetString("workspace-environment")
-	workspaceExecutionMode := cmd.Flags().GetString("workspace-execution-mode")
-
-	workspaceFileTriggersEnabled, err := cmd.Flags().GetBool("workspace-file-triggers-enabled")
-	if err != nil {
-		logrus.Fatalf("unable to get flag workspace-file-triggers-enabled\n%v", err)
-	} else {
-		options.Workspace.FileTriggersEnabled = workspaceFileTriggersEnabled
-	}
-
-	workspaceLocked, err := cmd.Flags().GetBool("workspace-locked")
-	if err != nil {
-		logrus.Fatalf("unable to get flag workspace-locked\n%v", err)
-	} else {
-		options.Workspace.Locked = workspaceLocked
-	}
-
-	workspaceMigrationEnvironment := cmd.Flags().GetString("workspace-migration-environment")
-	workspaceName := cmd.Flags().GetString("workspace-name")
-
-	workspacePermissionCanDestroy, err := cmd.Flags().GetBool("workspace-permission-can-destroy")
-	if err != nil {
-		logrus.Fatalf("unable to get flag workspace-permission-can-destroy\n%v", err)
-	} else {
-		options.Workspace.Permissions.CanDestroy = workspacePermissionCanDestroy
-	}
-
-	workspacePermissionCanForceUnlock, err := cmd.Flags().GetBool("workspace-permission-can-force-unlock")
-	if err != nil {
-		logrus.Fatalf("unable to get flag workspace-permission-can-force-unlock\n%v", err)
-	} else {
-		options.Workspace.Permissions.CanForceUnlock = workspacePermissionCanForceUnlock
-	}
-
-	workspacePermissionCanLock, err := cmd.Flags().GetBool("workspace-permission-can-lock")
-	if err != nil {
-		logrus.Fatalf("unable to get flag workspace-permission-can-lock\n%v", err)
-	} else {
-		options.Workspace.Permissions.CanLock = workspacePermissionCanLock
-	}
-
-	workspacePermissionCanQueueApply, err := cmd.Flags().GetBool("workspace-permission-can-queue-apply")
-	if err != nil {
-		logrus.Fatalf("unable to get flag workspace-permission-can-queue-apply\n%v", err)
-	} else {
-		options.Workspace.Permissions.CanQueueApply = workspacePermissionCanQueueApply
-	}
-
-	workspacePermissionCanQueueDestroy, err := cmd.Flags().GetBool("workspace-permission-can-queue-destroy")
-	if err != nil {
-		logrus.Fatalf("unable to get flag workspace-permission-can-queue-destroy\n%v", err)
-	} else {
-		options.Workspace.Permissions.CanQueueDestroy = workspacePermissionCanQueueDestroy
-	}
-
-	workspacePermissionCanQueueRun, err := cmd.Flags().GetBool("workspace-permission-can-queue-run")
-	if err != nil {
-		logrus.Fatalf("unable to get flag workspace-permission-can-queue-run\n%v", err)
-	} else {
-		options.Workspace.Permissions.CanQueueRun = workspacePermissionCanQueueRun
-	}
-
-	workspacePermissionCanReadSettings, err := cmd.Flags().GetBool("workspace-permission-can-read-settings")
-	if err != nil {
-		logrus.Fatalf("unable to get flag workspace-permission-can-read-settings\n%v", err)
-	} else {
-		options.Workspace.Permissions.CanReadSettings = workspacePermissionCanReadSettings
-	}
-
-	workspacePermissionCanUnlock, err := cmd.Flags().GetBool("workspace-permission-can-unlock")
-	if err != nil {
-		logrus.Fatalf("unable to get flag workspace-permission-can-unlock\n%v", err)
-	} else {
-		options.Workspace.Permissions.CanUnlock = workspacePermissionCanUnlock
-	}
-
-	workspacePermissionCanUpdate, err := cmd.Flags().GetBool("workspace-permission-can-update")
-	if err != nil {
-		logrus.Fatalf("unable to get flag workspace-permission-can-update\n%v", err)
-	} else {
-		options.Workspace.Permissions.CanUpdate = workspacePermissionCanUpdate
-	}
-
-	workspacePermissionCanUpdateVariable, err := cmd.Flags().GetBool("workspace-permission-can-update-variable")
-	if err != nil {
-		logrus.Fatalf("unable to get flag workspace-permission-can-update-variable\n%v", err)
-	} else {
-		options.Workspace.Permissions.CanUpdateVariable = workspacePermissionCanUpdateVariable
-	}
-
-	workspaceQueueAllRuns, err := cmd.Flags().GetBool("workspace-queue-all-runs")
-	if err != nil {
-		logrus.Fatalf("unable to get flag workspace-queue-all-runs\n%v", err)
-	} else {
-		options.Workspace.QueueAllRuns = workspaceQueueAllRuns
-	}
-
-	workspaceSpeculativeEnabled, err := cmd.Flags().GetBool("workspace-speculative-enabled")
-	if err != nil {
-		logrus.Fatalf("unable to get flag workspace-speculative-enabled\n%v", err)
-	} else {
-		options.Workspace.SpeculativeEnabled = workspaceSpeculativeEnabled
-	}
-
-	workspaceTerraformVersion := cmd.Flags().GetString("workspace-terraform-version")
-	workspaceTriggerPrefixes := cmd.Flags().GetStringArray("workspace-trigger-prefixes")
-
-	workspaceVcsRepoBranch := cmd.Flags().GetString("workspace-vcs-repo-branch")
-	workspaceVcsRepoDisplayIdentifier := cmd.Flags().GetString("workspace-vcs-repo-display-identifier")
-	workspaceVcsRepoIdentifier := cmd.Flags().GetString("workspace-vcs-repo-identifier")
-	workspaceVcsRepoIngressSubmodules, err := cmd.Flags().GetBool("workspace-vcs-repo-ingress-submodules")
-	if err != nil {
-		logrus.Fatalf("unable to get flag workspace-vcs-repo-ingress-submodules\n%v", err)
-	} else {
-		options.Workspace.VcsRepoIngressSubmodules = &workspaceVcsRepoIngressSubmodules
-	}
-
-	workspaceVcsRepoOAuthTokenId := cmd.Flags().GetString("workspace-vcs-repo-o-auth-token-id")
-
-	workspaceWorkingDirectory := cmd.Flags().GetString("workspace-working-directory")
+	workspace := GetWorspaceFlags(cmd)
+	options.Workspace = &workspace
 
 	// If non-empty, requests that Terraform should create a plan including
 	// actions only for the given objects (specified using resource address
@@ -228,10 +60,72 @@ func GetRunCreateOptions(cmd *cobra.Command) tfe.RunCreateOptions {
 	// argument may be appropriate. This argument should not be used as part
 	// of routine workflow and Terraform will emit warnings reminding about
 	// this whenever this property is set.
-	targetAddrs := cmd.Flags().GetStringArray("target-addrs")
+	targetAddrs, err := cmd.Flags().GetStringArray("target-addrs")
+	if err != nil {
+		logrus.Fatalf("unable to get flag target-addrs\n%v", err)
+	}
+	if len(targetAddrs) > 0 {
+		options.TargetAddrs = targetAddrs
+	}
 
 	return options
 
+}
+
+// GetConfigurationVersionFlags TODO ...
+func GetConfigurationVersionFlags(cmd *cobra.Command) tfe.ConfigurationVersion {
+	var configurationVersion tfe.ConfigurationVersion
+
+	// Specifies the configuration version to use for this run. If the
+	// configuration version object is omitted, the run will be created using the
+	// workspace's latest configuration version.
+	configurationVersionID, err := cmd.Flags().GetString("configuration-version-id")
+	if err != nil {
+		logrus.Fatalf("unable to get flag configuration-version-id\n%v", err)
+	}
+	if configurationVersionID != "" {
+		configurationVersion.ID = configurationVersionID
+	}
+
+	configurationVersionAutoQueueRuns, err := cmd.Flags().GetBool("configuration-version-auto-queue-runs")
+	if err != nil {
+		logrus.Fatalf("unable to get flag configuration-version-auto-queue-runs\n%v", err)
+	} else {
+		configurationVersion.AutoQueueRuns = configurationVersionAutoQueueRuns
+	}
+
+	configurationVersionError, err := cmd.Flags().GetString("configuration-version-error")
+	if err != nil {
+		logrus.Fatalf("unable to get flag configuration-version-error\n%v", err)
+	}
+	if configurationVersionError != "" {
+		configurationVersion.Error = configurationVersionError
+	}
+
+	configurationVersionErrorMessage, err := cmd.Flags().GetString("configuration-version-error-message")
+	if err != nil {
+		logrus.Fatalf("unable to get flag configuration-version-error-message\n%v", err)
+	}
+	if configurationVersionErrorMessage != "" {
+		configurationVersion.ErrorMessage = configurationVersionErrorMessage
+	}
+
+	configurationVersionSpeculative, err := cmd.Flags().GetBool("configuration-version-speculative")
+	if err != nil {
+		logrus.Fatalf("unable to get flag configuration-version-speculative\n%v", err)
+	} else {
+		configurationVersion.Speculative = configurationVersionSpeculative
+	}
+
+	configurationVersionUploadURL, err := cmd.Flags().GetString("configuration-version-upload-url")
+	if err != nil {
+		logrus.Fatalf("unable to get flag configuration-version-upload-url\n%v", err)
+	}
+	if configurationVersionUploadURL != "" {
+		configurationVersion.UploadURL = configurationVersionUploadURL
+	}
+
+	return configurationVersion
 }
 
 // // GetRunUpdateOptions TODO ...

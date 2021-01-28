@@ -63,90 +63,7 @@ func WorkspaceCmd() *cobra.Command {
 		RunE:      workspaceRun,
 	}
 
-	usage := `Required when execution-mode is set to agent. The ID of the agent pool
-	belonging to the workspace's organization. This value must not be specified
-	if execution-mode is set to remote or local or if operations is set to true.`
-	cmd.Flags().String("agent-pool-id", "", usage)
-
-	usage = `Whether destroy plans can be queued on the workspace.`
-	cmd.Flags().Bool("allow-destroy-plan", false, usage)
-
-	usage = `Whether to automatically apply changes when a Terraform plan is successful.`
-	cmd.Flags().Bool("auto-apply", false, usage)
-
-	usage = `Which execution mode to use. Valid values are remote, local, and agent.
-	When set to local, the workspace will be used for state storage only.
-	This value must not be specified if operations is specified.
-	'agent' execution mode is not available in Terraform Enterprise.`
-	cmd.Flags().String("execution-mode", "", usage)
-
-	usage = `Whether to filter runs based on the changed files in a VCS push. If
-	enabled, the working directory and trigger prefixes describe a set of
-	paths which must contain changes for a VCS push to trigger a run. If
-	disabled, any push will trigger a run.`
-	cmd.Flags().Bool("file-triggers-enabled", false, usage)
-
-	usage = `The legacy TFE environment to use as the source of the migration, in the
-	form organization/environment. Omit this unless you are migrating a legacy
-	environment.`
-	cmd.Flags().String("migration-environment", "", usage)
-
-	usage = `The name of the workspace, which can only include letters, numbers, -,
-	and _. This will be used as an identifier and must be unique in the
-	organization.`
-	cmd.Flags().String("name", "", usage)
-
-	usage = `The workspace ID`
-	cmd.Flags().String("id", "", usage)
-
-	usage = `A new name for the workspace, which can only include letters, numbers, -,
-	and _. This will be used as an identifier and must be unique in the
-	organization. Warning: Changing a workspace's name changes its URL in the
-	API and UI.`
-	cmd.Flags().String("new-name", "", usage)
-
-	usage = `Whether to queue all runs. Unless this is set to true, runs triggered by
-	a webhook will not be queued until at least one run is manually queued.`
-	cmd.Flags().Bool("queue-all-runs", false, usage)
-
-	usage = `Whether this workspace allows speculative plans. Setting this to false
-	prevents Terraform Cloud or the Terraform Enterprise instance from
-	running plans on pull requests, which can improve security if the VCS
-	repository is public or includes untrusted contributors.`
-	cmd.Flags().Bool("speculative-enabled", false, usage)
-
-	usage = `The version of Terraform to use for this workspace. Upon creating a
-	workspace, the latest version is selected unless otherwise specified.`
-	cmd.Flags().String("terraform-version", "", usage)
-
-	usage = `List of repository-root-relative paths which list all locations to be
-	tracked for changes. See FileTriggersEnabled above for more details.`
-	var emptyArray []string
-	cmd.Flags().StringArray("trigger-prefixes", emptyArray, usage)
-
-	// Settings for the workspace's VCS repository. If omitted, the workspace is
-	// created without a VCS repo. If included, you must specify at least the
-	// oauth-token-id and identifier keys below.`
-
-	usage = `The repository branch that Terraform will execute from. If omitted or submitted as an empty string, this defaults to the repository's default branch (e.g. master).`
-	cmd.Flags().String("vcs-repo-branch", "", usage)
-
-	usage = `A reference to your VCS repository in the format :org/:repo where :org and :repo refer to the organization and repository in your VCS provider. The format for Azure DevOps is :org/:project/_git/:repo.`
-	cmd.Flags().String("vcs-repo-identifier", "", usage)
-
-	usage = `Whether submodules should be fetched when cloning the VCS repository.`
-	cmd.Flags().Bool("vcs-repo-ingress-submodules", false, usage)
-
-	usage = `The VCS Connection (OAuth Connection + Token) to use. This ID can be obtained from the oauth-tokens endpoint.`
-	cmd.Flags().String("vcs-repo-oauth-token-id", "", usage)
-
-	usage = `A relative path that Terraform will execute within. This defaults to the
-	root of your repository and is typically set to a subdirectory matching the
-	environment when multiple environments exist within the same repository.`
-	cmd.Flags().String("working-directory", "", usage)
-
-	usage = `The SSH key ID to assign to a workspace. Must be created on the organization.`
-	cmd.Flags().String("ssh-key-id", "", usage)
+	aid.SetWorkspaceFlagsV1(cmd)
 
 	return cmd
 }
@@ -158,11 +75,18 @@ func workspacePreRun(cmd *cobra.Command, args []string) error {
 
 	fArg := args[0]
 	switch fArg {
+
 	case "list":
 		if err := helper.ValidateCmdArgAndFlag(cmd, args, "workspace", fArg, "organization"); err != nil {
 			return err
 		}
-	case "create", "read", "update", "delete", "remove-vcs-connection":
+
+	case "create",
+		"read",
+		"update",
+		"delete",
+		"remove-vcs-connection":
+
 		if err := helper.ValidateCmdArgAndFlag(cmd, args, "workspace", fArg, "organization"); err != nil {
 			return err
 		}
@@ -170,7 +94,16 @@ func workspacePreRun(cmd *cobra.Command, args []string) error {
 		if err := helper.ValidateCmdArgAndFlag(cmd, args, "workspace", fArg, "name"); err != nil {
 			return err
 		}
-	case "read-by-id", "update-by-id", "delete-by-id", "remove-vcs-connection-by-id", "lock", "unlock", "force-unlock", "assign-ssh-key", "unassign-ssh-key":
+
+	case "read-by-id",
+		"update-by-id",
+		"delete-by-id",
+		"remove-vcs-connection-by-id",
+		"lock",
+		"unlock",
+		"force-unlock",
+		"assign-ssh-key",
+		"unassign-ssh-key":
 		if err := helper.ValidateCmdArgAndFlag(cmd, args, "workspace", fArg, "id"); err != nil {
 			return err
 		}
@@ -178,9 +111,6 @@ func workspacePreRun(cmd *cobra.Command, args []string) error {
 	default:
 		return fmt.Errorf("unknown argument")
 	}
-
-	// case "read-by-id", "update-by-id", "delete-by-id", "remove-vcs-connection-by-id",
-	// }
 
 	return nil
 }
