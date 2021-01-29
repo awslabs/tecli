@@ -3,7 +3,7 @@ image: golang:latest
 
 variables:
   # Please edit to your GitLab project
-  REPO_NAME: gitlab.com/namespace/project
+  REPO_NAME: gitlab.aws.dev/devops-aws/tecli
 
 # The problem is that to be able to use go get, one needs to put
 # the repository in the $GOPATH. So for example if your gitlab domain
@@ -17,21 +17,21 @@ before_script:
   - cd $GOPATH/src/$REPO_NAME
 
 stages:
-  - test
+  # - test
   - build
   - deploy
 
 format:
-  stage: test
-  script:
-    - go fmt $(go list ./... | grep -v /vendor/)
-    - go vet $(go list ./... | grep -v /vendor/)
-    - go test -race $(go list ./... | grep -v /vendor/)
+  # stage: test
+  # script:
+  #   - go fmt $(go list ./... | grep -v /vendor/)
+  #   - go vet $(go list ./... | grep -v /vendor/)
+  #   - go test -race $(go list ./... | grep -v /vendor/)
 
 compile:
   stage: build
   script:
-    - go build -race -ldflags "-extldflags '-static'" -o $CI_PROJECT_DIR/mybinary
+    - go build -race -ldflags "-extldflags '-static'" -o $CI_PROJECT_DIR/tecli
   artifacts:
     paths:
-      - mybinary
+      - tecli
