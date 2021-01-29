@@ -9,7 +9,7 @@ app:
 screenshots:
 - caption: How to build
   label: how-to-build
-  url: https://via.placeholder.com/512x256.png
+  url: clencli/tecli.gif
 - caption: How to run
   label: how-to-run
   url: https://via.placeholder.com/512x256.png
