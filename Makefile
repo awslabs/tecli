@@ -7,7 +7,7 @@ tecli/test:
 	@cd tests && go test -v
 
 .PHONY: tecli/build
-tecli/build: go/mod/tidy go/version go/get go/fmt go/generate go/build tecli/update-readme ## Builds the app
+tecli/build: go/mod/tidy go/version go/get go/fmt go/generate go/build ## Builds the app
 
 .PHONY: tecli/build/docker
 tecli/build/docker: tecli/build
@@ -25,8 +25,8 @@ else
 	make go/run
 endif
 
-.PHONY: tecli/compile
-tecli/compile: ## Compile to multiple architectures
+.PHONY: tecli/release
+tecli/release: ## Compile to multiple architectures
 	@mkdir -p dist
 	@echo "Compiling for every OS and Platform"
 	GOOS=darwin GOARCH=amd64 go build -o dist/tecli-darwin-amd64 main.go
