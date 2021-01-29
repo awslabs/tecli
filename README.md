@@ -43,7 +43,7 @@ A command line interface for the official Go API client for Terraform Cloud/Ente
   <summary>Expand</summary>
 
 
-| ![how-to-build](https://via.placeholder.com/512x256.png) |
+| ![how-to-build](clencli/tecli.gif) |
 |:--:| 
 | *How to build* |
 
