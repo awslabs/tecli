@@ -21,24 +21,21 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// SetConfigurationVersionFlags TODO ...
-func SetConfigurationVersionFlags(cmd *cobra.Command, withPrefix bool) {
-	var prefix string
-	if withPrefix {
-		prefix = "configuration-version-"
-	}
+// SetConfigurationVersionFlags define flags for the cobra command
+func SetConfigurationVersionFlags(cmd *cobra.Command) {
+
 	// Specifies the configuration version to use for this run. If the
 	// configuration version object is omitted, the run will be created using the
 	// workspace's latest configuration version.
 
 	usage := `The Configuration Version ID.`
-	cmd.Flags().String(prefix+"id", "", usage)
+	cmd.Flags().String("id", "", usage)
 
 	usage = `When true, runs are queued automatically when the configuration version is uploaded.`
-	cmd.Flags().Bool(prefix+"auto-queue-runs", false, usage)
+	cmd.Flags().Bool("auto-queue-runs", false, usage)
 
 	usage = `When true, this configuration version can only be used for planning.`
-	cmd.Flags().Bool(prefix+"speculative", false, usage)
+	cmd.Flags().Bool("speculative", false, usage)
 
 	usage = `The Workspace ID`
 	cmd.Flags().String("workspace-id", "", usage)
@@ -53,23 +50,18 @@ func SetConfigurationVersionFlags(cmd *cobra.Command, withPrefix bool) {
 	cmd.Flags().String("path", "", usage)
 }
 
-// GetConfigurationVersionCreateOptions TODO ..
-func GetConfigurationVersionCreateOptions(cmd *cobra.Command, withPrefix bool) tfe.ConfigurationVersionCreateOptions {
+// GetConfigurationVersionCreateOptions  return options based on the flags values
+func GetConfigurationVersionCreateOptions(cmd *cobra.Command) tfe.ConfigurationVersionCreateOptions {
 	var options tfe.ConfigurationVersionCreateOptions
-	var prefix string
 
-	if withPrefix {
-		prefix = "configuration-version-"
-	}
-
-	autoQueueRuns, err := cmd.Flags().GetBool(prefix + "auto-queue-runs")
+	autoQueueRuns, err := cmd.Flags().GetBool("auto-queue-runs")
 	if err != nil {
 		logrus.Fatalf("unable to get flag configuration-version-auto-queue-runs\n%v", err)
 	}
 
 	options.AutoQueueRuns = &autoQueueRuns
 
-	speculative, err := cmd.Flags().GetBool(prefix + "speculative")
+	speculative, err := cmd.Flags().GetBool("speculative")
 	if err != nil {
 		logrus.Fatalf("unable to get flag configuration-version-speculative\n%v", err)
 	}

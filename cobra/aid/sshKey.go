@@ -21,7 +21,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// GetSSHKeysCreateOptions TODO ..
+// GetSSHKeysCreateOptions  return options based on the flags values
 func GetSSHKeysCreateOptions(cmd *cobra.Command) tfe.SSHKeyCreateOptions {
 	var options tfe.SSHKeyCreateOptions
 	name, err := cmd.Flags().GetString("name")
@@ -56,7 +56,7 @@ func GetSSHKeyByName(list *tfe.SSHKeyList, name string) tfe.SSHKey {
 	return tfe.SSHKey{}
 }
 
-// GetSSHKeysUpdateOptions TODO ...
+// GetSSHKeysUpdateOptions return options based on the flag values
 func GetSSHKeysUpdateOptions(cmd *cobra.Command) tfe.SSHKeyUpdateOptions {
 	var options tfe.SSHKeyUpdateOptions
 

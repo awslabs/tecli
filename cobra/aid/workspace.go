@@ -74,7 +74,7 @@ func SetWorkspaceFlagsV1(cmd *cobra.Command) {
 	cmd.Flags().String("ssh-key-id", "", usage)
 }
 
-// SetVCSRepoFlags TODO ..
+// SetVCSRepoFlags define flags for the cobra command ..
 func SetVCSRepoFlags(cmd *cobra.Command) {
 	// Settings for the workspace's VCS repository. If omitted, the workspace is
 	// created without a VCS repo. If included, you must specify at least the
@@ -93,7 +93,7 @@ func SetVCSRepoFlags(cmd *cobra.Command) {
 	cmd.Flags().String("vcs-repo-oauth-token-id", "", usage)
 }
 
-// GetWorkspaceCreateOptions TODO ..
+// GetWorkspaceCreateOptions  return options based on the flags values
 func GetWorkspaceCreateOptions(cmd *cobra.Command) tfe.WorkspaceCreateOptions {
 	var options tfe.WorkspaceCreateOptions
 
@@ -198,7 +198,7 @@ func GetWorkspaceCreateOptions(cmd *cobra.Command) tfe.WorkspaceCreateOptions {
 
 }
 
-// GetVCSRepoFlags TODO ...
+// GetVCSRepoFlags define flags for the cobra command
 func GetVCSRepoFlags(cmd *cobra.Command) tfe.VCSRepoOptions {
 	var options tfe.VCSRepoOptions
 
@@ -236,7 +236,7 @@ func GetVCSRepoFlags(cmd *cobra.Command) tfe.VCSRepoOptions {
 	return options
 }
 
-// GetWorkspaceUpdateOptions TODO ...
+// GetWorkspaceUpdateOptions return options based on the flag values
 func GetWorkspaceUpdateOptions(cmd *cobra.Command) tfe.WorkspaceUpdateOptions {
 	var options tfe.WorkspaceUpdateOptions
 
@@ -388,7 +388,7 @@ func GetWorkspaceAssignSSHKeyOptions(cmd *cobra.Command) tfe.WorkspaceAssignSSHK
 	return options
 }
 
-// // GetWorspaceFlags TODO ...
+// // GetWorspaceFlags define flags for the cobra command
 // func GetWorspaceFlags(cmd *cobra.Command) tfe.Workspace {
 
 // 	var workspace tfe.Workspace
@@ -634,7 +634,7 @@ func GetWorkspaceAssignSSHKeyOptions(cmd *cobra.Command) tfe.WorkspaceAssignSSHK
 // 	return workspace
 // }
 
-// // SetWorkspaceFlags TODO ...
+// // SetWorkspaceFlags define flags for the cobra command
 // func SetWorkspaceFlags(cmd *cobra.Command) {
 
 // 	usage := `TODO`

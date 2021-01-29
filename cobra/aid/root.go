@@ -72,7 +72,7 @@ func SetupLoggingOutput(path string) error {
 
 	file, err := os.OpenFile(path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, os.ModePerm)
 	if err != nil {
-		return fmt.Errorf("unable to open log file\n%v\n", err)
+		return fmt.Errorf("unable to open log file\n%v", err)
 	}
 
 	logrus.SetFormatter(&logrus.JSONFormatter{})
@@ -85,14 +85,14 @@ func SetupLoggingOutput(path string) error {
 func SetupLoggingLevel(level string) error {
 	lvl, err := logrus.ParseLevel(level)
 	if err != nil {
-		return fmt.Errorf("unable to set log level\n%v\n", err)
+		return fmt.Errorf("unable to set log level\n%v", err)
 	}
 
 	logrus.SetLevel(lvl)
 	return nil
 }
 
-// getTFEConfig Returns struct from Terraform Enterprise Cloud API response
+// Returns struct from Terraform Enterprise Cloud API response
 func getTFEConfig(token string) *tfe.Config {
 	config := &tfe.Config{
 		Token: token,
@@ -100,7 +100,7 @@ func getTFEConfig(token string) *tfe.Config {
 	return config
 }
 
-// getTFENewClient returns a new terraform api client
+// Returns a new terraform api client
 func getTFENewClient(config *tfe.Config) (*tfe.Client, error) {
 	client, err := tfe.NewClient(config)
 	if err != nil {

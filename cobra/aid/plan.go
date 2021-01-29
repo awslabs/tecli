@@ -19,7 +19,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// SetPlanFlags TODO ...
+// SetPlanFlags define flags for the cobra command
 func SetPlanFlags(cmd *cobra.Command) {
 	usage := `The Plan ID`
 	cmd.Flags().String("id", "", usage)

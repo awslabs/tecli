@@ -23,50 +23,17 @@ import (
 	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/model"
 )
 
-// GetConfigurations read the current configurations file and return its model
-// func GetConfigurations() (model.Configurations, error) {
-// 	var confs model.Configurations
-// 	v, err := aid.ReadConfig(aid.GetAppInfo().ConfigurationsName)
-// 	if err != nil {
-// 		return confs, fmt.Errorf("unable to read configurations\n%v\n", err)
-// 	}
-
-// 	err = v.Unmarshal(&confs)
-// 	if err != nil {
-// 		return confs, fmt.Errorf("unable to unmarshall configurations\n%v\n", err)
-// 	}
-
-// 	return confs, err
-// }
-
-// GetConfigurationProfile returns credentials of a profile
-// func GetConfigurationProfile(name string) (model.ConfigurationProfile, error) {
-// 	configurations, err := GetConfigurations()
-
-// 	if err != nil {
-// 		return (model.ConfigurationProfile{}), err
-// 	}
-
-// 	for _, profile := range configurations.Profiles {
-// 		if profile.Name == name && profile.Enabled {
-// 			return profile, err
-// 		}
-// 	}
-
-// 	return (model.ConfigurationProfile{}), err
-// }
-
 // GetCredentials read the current credentials file and return its model
 func GetCredentials() (model.Credentials, error) {
 	var creds model.Credentials
 	v, err := aid.ReadConfig(aid.GetAppInfo().CredentialsName)
 	if err != nil {
-		return creds, fmt.Errorf("unable to read credentials\n%v\n", err)
+		return creds, fmt.Errorf("unable to read credentials\n%v", err)
 	}
 
 	err = v.Unmarshal(&creds)
 	if err != nil {
-		return creds, fmt.Errorf("unable to unmarshall credentials\n%v\n", err)
+		return creds, fmt.Errorf("unable to unmarshall credentials\n%v", err)
 	}
 
 	return creds, err
@@ -107,11 +74,6 @@ func GetOrganizationToken(name string) string {
 	}
 	return cp.OrganizationToken
 }
-
-// // SaveConfigurations saves the given configuration onto the configurations file
-// func SaveConfigurations(configurations model.Configurations) error {
-// 	return aid.WriteInterfaceToFile(configurations, aid.GetAppInfo().ConfigurationsPath)
-// }
 
 // SaveCredentials saves the given credential onto the credentials file
 func SaveCredentials(credentials model.Credentials) error {

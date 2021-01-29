@@ -19,7 +19,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// SetApplyFlags TODO ...
+// SetApplyFlags define flags for the cobra command
 func SetApplyFlags(cmd *cobra.Command) {
 	usage := `The Apply ID`
 	cmd.Flags().String("id", "", usage)

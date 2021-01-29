@@ -63,7 +63,7 @@ func ReadConfig(name string) (*viper.Viper, error) {
 
 	err := v.ReadInConfig()
 	if err != nil {
-		return v, fmt.Errorf("unable to read configuration:%s\n%v\n", name, err)
+		return v, fmt.Errorf("unable to read configuration:%s\n%v", name, err)
 	}
 	return v, err
 }
@@ -78,7 +78,7 @@ func ReadConfigAsViper(configPath string, configName string, configType string) 
 
 	err := v.ReadInConfig()
 	if err != nil {
-		return v, fmt.Errorf("unable to read configuration as viper\n%v\n", err)
+		return v, fmt.Errorf("unable to read configuration as viper\n%v", err)
 	}
 	return v, err
 }
@@ -93,7 +93,7 @@ func ReadTemplate(fileName string) (*viper.Viper, error) {
 
 	err := c.ReadInConfig() // Find and read the c file
 	if err != nil {         // Handle errors reading the c file
-		return c, fmt.Errorf("Unable to read "+fileName+" via Viper"+"\n%v\n", err)
+		return c, fmt.Errorf("Unable to read "+fileName+" via Viper"+"\n%v", err)
 	}
 
 	return c, nil
@@ -111,7 +111,7 @@ func WriteInterfaceToFile(in interface{}, path string) error {
 
 	err = ioutil.WriteFile(path, b, os.ModePerm)
 	if err != nil {
-		return fmt.Errorf("unable to update:%s\n%v\n", path, err)
+		return fmt.Errorf("unable to update:%s\n%v", path, err)
 	}
 
 	return err
@@ -174,7 +174,7 @@ func getUserInput(cmd *cobra.Command, text string, info string) (string, error) 
 	// convert CRLF to LF
 	input = strings.Replace(input, "\n", "", -1)
 	if err != nil {
-		return input, fmt.Errorf("unable to read user input\n%v\n", err)
+		return input, fmt.Errorf("unable to read user input\n%v", err)
 	}
 
 	return input, err
@@ -184,7 +184,7 @@ func getUserInput(cmd *cobra.Command, text string, info string) (string, error) 
 func GetUserInputAsBool(cmd *cobra.Command, text string, info bool) bool {
 	answer, err := getUserInput(cmd, text, strconv.FormatBool(info))
 	if err != nil {
-		log.Fatalf("unable to get user input as boolean\n%s", err)
+		log.Fatalf("unable to get user input as boolean\n%v", err)
 	}
 
 	if answer == "true" {

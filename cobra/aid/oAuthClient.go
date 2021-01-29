@@ -21,7 +21,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// SetOAuthClientFlags TODO ...
+// SetOAuthClientFlags define flags for the cobra command
 func SetOAuthClientFlags(cmd *cobra.Command) {
 	usage := `The OAuth Client ID.`
 	cmd.Flags().String("id", "", usage)
@@ -37,7 +37,7 @@ func SetOAuthClientFlags(cmd *cobra.Command) {
 	cmd.Flags().String("service-provider", "", usage)
 }
 
-// GetOAuthClientCreateOptions TODO ..
+// GetOAuthClientCreateOptions return options based on the flags values
 func GetOAuthClientCreateOptions(cmd *cobra.Command) tfe.OAuthClientCreateOptions {
 	var options tfe.OAuthClientCreateOptions
 

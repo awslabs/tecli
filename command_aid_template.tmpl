@@ -20,7 +20,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// GetCOMMAND_UC_CreateOptions TODO ..
+// GetCOMMAND_UC_CreateOptions  return options based on the flags values
 func GetCOMMAND_UC_CreateOptions(cmd *cobra.Command) tfe.COMMAND_UC_CreateOptions {
 	var options tfe.COMMAND_UC_CreateOptions
 
@@ -28,7 +28,7 @@ func GetCOMMAND_UC_CreateOptions(cmd *cobra.Command) tfe.COMMAND_UC_CreateOption
 
 }
 
-// GetCOMMAND_UC_UpdateOptions TODO ...
+// GetCOMMAND_UC_UpdateOptions return options based on the flag values
 func GetCOMMAND_UC_UpdateOptions(cmd *cobra.Command) tfe.COMMAND_UC_UpdateOptions {
 	var options tfe.COMMAND_UC_UpdateOptions
 

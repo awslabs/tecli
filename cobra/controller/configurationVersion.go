@@ -48,7 +48,7 @@ func ConfigurationVersionCmd() *cobra.Command {
 		RunE:      configurationVersionRun,
 	}
 
-	aid.SetConfigurationVersionFlags(cmd, false)
+	aid.SetConfigurationVersionFlags(cmd)
 
 	return cmd
 }
@@ -111,7 +111,7 @@ func configurationVersionRun(cmd *cobra.Command, args []string) error {
 			return fmt.Errorf("unable to get flag workspace-id\n%v", err)
 		}
 
-		options := aid.GetConfigurationVersionCreateOptions(cmd, false)
+		options := aid.GetConfigurationVersionCreateOptions(cmd)
 		cv, err := configurationVersionCreate(client, workspaceID, options)
 
 		if err == nil && cv.ID != "" {

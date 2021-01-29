@@ -21,7 +21,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// SetOAuthTokenFlags TODO ...
+// SetOAuthTokenFlags define flags for the cobra command
 func SetOAuthTokenFlags(cmd *cobra.Command) {
 	usage := `The OAuth Token ID.`
 	cmd.Flags().String("id", "", usage)
@@ -30,7 +30,7 @@ func SetOAuthTokenFlags(cmd *cobra.Command) {
 	cmd.Flags().String("private-ssh-key", "", usage)
 }
 
-// GetOAuthTokenUpdateOptions TODO ...
+// GetOAuthTokenUpdateOptions return options based on the flag values
 func GetOAuthTokenUpdateOptions(cmd *cobra.Command) tfe.OAuthTokenUpdateOptions {
 	var options tfe.OAuthTokenUpdateOptions
 

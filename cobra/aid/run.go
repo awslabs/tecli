@@ -21,7 +21,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// SetRunFlags TODO ...
+// SetRunFlags define flags for the cobra command
 func SetRunFlags(cmd *cobra.Command) {
 	usage := `A list of relations to include. See available resources: https://www.terraform.io/docs/cloud/api/run.html#available-related-resources`
 	cmd.Flags().String("include", "", usage)
@@ -49,7 +49,7 @@ func SetRunFlags(cmd *cobra.Command) {
 
 }
 
-// GetRunCreateOptions TODO ..
+// GetRunCreateOptions  return options based on the flags values
 func GetRunCreateOptions(cmd *cobra.Command) tfe.RunCreateOptions {
 	var options tfe.RunCreateOptions
 
@@ -160,11 +160,3 @@ func GetRunDiscardOptions(cmd *cobra.Command) tfe.RunDiscardOptions {
 
 	return options
 }
-
-// // GetRunUpdateOptions TODO ...
-// func GetRunUpdateOptions(cmd *cobra.Command) tfe.RunUpdateOptions {
-// 	var options tfe.RunUpdateOptions
-
-// 	return options
-
-// }
