@@ -29,9 +29,8 @@ import (
 // CREDENTIALS
 
 // CreateCredentials create the credentials
-func CreateCredentials(cmd *cobra.Command, name string) model.Credentials {
+func CreateCredentials(cmd *cobra.Command, name string, credentials model.Credentials) model.Credentials {
 	fmt.Println("> Credentials")
-	var credentials model.Credentials
 	cProfile := createCredentialProfile(cmd, name)
 	credentials.Profiles = append(credentials.Profiles, cProfile)
 	return credentials
@@ -83,99 +82,3 @@ func UpdateCredentials(cmd *cobra.Command, name string) model.Credentials {
 
 	return credentials
 }
-
-// CONFIGURATIONS
-
-// // CreateConfigurations create the configuration file with the given profile name
-// func CreateConfigurations(cmd *cobra.Command, name string) model.Configurations {
-// 	fmt.Println("> Configurations")
-// 	var configurations model.Configurations
-// 	cProfile := createConfigurationProfile(cmd, name)
-// 	configurations.Profiles = append(configurations.Profiles, cProfile)
-// 	return configurations
-// }
-
-// // createConfigurationProfile create the given profile name into the configurations file, return the profile created
-// func createConfigurationProfile(cmd *cobra.Command, name string) model.ConfigurationProfile {
-// 	fmt.Println(">> Profile: " + name)
-// 	var cProfile model.ConfigurationProfile
-// 	cProfile.Name = name
-// 	cProfile.Description = "managed by tecli"
-// 	cProfile.Enabled = true // enabling profile by default
-// 	cProfile.CreatedAt = time.Now().String()
-// 	cProfile.UpdatedAt = time.Now().String()
-
-// 	var conf model.Configuration
-// 	conf.Enabled = true
-// 	conf.CreatedAt = time.Now().String()
-// 	conf = askAboutConfiguration(cmd, conf)
-// 	cProfile.Configurations = append(cProfile.Configurations, conf)
-
-// 	for {
-// 		answer := aid.GetUserInputAsBool(cmd, "Would you like to setup another configuration?", false)
-// 		if answer {
-// 			var newConf model.Configuration
-// 			newConf.Enabled = true
-// 			newConf = askAboutConfiguration(cmd, newConf)
-// 			cProfile.Configurations = append(cProfile.Configurations, newConf)
-// 		} else {
-// 			break
-// 		}
-// 	}
-
-// 	return cProfile
-// }
-
-// func askAboutConfiguration(cmd *cobra.Command, conf model.Configuration) model.Configuration {
-// 	fmt.Println(">>> Configuration")
-// 	conf.Name = aid.GetUserInputAsString(cmd, ">>>> Name", conf.Name)
-// 	conf.Description = aid.GetUserInputAsString(cmd, ">>>> Description", conf.Description)
-// 	conf.Enabled = aid.GetUserInputAsBool(cmd, ">>>> Enabled", conf.Enabled)
-
-// 	if conf.CreatedAt == "" {
-// 		conf.CreatedAt = time.Now().String()
-// 	}
-// 	return conf
-// }
-
-// // UpdateConfigurations update the given configurations
-// func UpdateConfigurations(cmd *cobra.Command, name string) model.Configurations {
-// 	fmt.Println("> Configurations")
-// 	configurations, err := dao.GetConfigurations()
-// 	if err != nil {
-// 		logrus.Fatalf("unable to update configurations\n%v\n", err)
-// 	}
-
-// 	found := false
-// 	for i, profile := range configurations.Profiles {
-// 		if profile.Name == name {
-// 			found = true
-// 			configurations.Profiles[i] = askAboutConfigurationProfile(cmd, profile)
-// 		}
-// 	}
-
-// 	if !found {
-// 		fmt.Printf("No configurations not found for profile %s\n", name)
-// 	}
-
-// 	return configurations
-// }
-
-// func askAboutConfigurationProfile(cmd *cobra.Command, profile model.ConfigurationProfile) model.ConfigurationProfile {
-// 	fmt.Println(">> Profile: " + profile.Name)
-// 	profile.Name = aid.GetUserInputAsString(cmd, ">>> Name", profile.Name)
-// 	profile.Description = aid.GetUserInputAsString(cmd, ">>> Description", profile.Description)
-// 	profile.Enabled = aid.GetUserInputAsBool(cmd, ">>> Enabled", profile.Enabled)
-
-// 	if profile.CreatedAt == "" {
-// 		profile.CreatedAt = time.Now().String()
-// 	}
-
-// 	profile.UpdatedAt = time.Now().String()
-
-// 	for i, configuration := range profile.Configurations {
-// 		profile.Configurations[i] = askAboutConfiguration(cmd, configuration)
-// 	}
-
-// 	return profile
-// }
