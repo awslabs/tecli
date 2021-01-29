@@ -3,8 +3,4 @@ use: |-
 
   Arguments:
     {{ arguments }}
-example: |-
-  How to ...
-short: o-auth-token ...
-long: |-
-  o-auth-token ...
+short: The oauth-token object represents a VCS configuration which includes the OAuth connection and the associated OAuth token. This object is used when creating a workspace to identify which VCS connection to use.

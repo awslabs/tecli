@@ -36,7 +36,6 @@ func RootCmd() *cobra.Command {
 	}
 
 	cmd := &cobra.Command{
-		Use:   man.Use,
 		Short: man.Short,
 		Long:  man.Long,
 	}

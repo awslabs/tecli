@@ -3,8 +3,4 @@ use: |-
 
   Arguments:
     {{ arguments }}
-example: |-
-  How to ...
-short: apply ...
-long: |-
-  apply ...
+short: An apply represents the results of applying a Terraform Run's execution plan.

@@ -3,8 +3,13 @@ use: |-
 
   Arguments:
     {{ arguments }}
-example: |-
-  How to ...
-short: run ...
+
 long: |-
-  run ...
+  Performing a run on a new configuration is a multi-step process.
+
+    Create a configuration version on the workspace.
+    Upload configuration files to the configuration version.
+    Create a run on the workspace; this is done automatically when a configuration file is uploaded.
+    Create and queue an apply on the run; if the run can't be auto-applied.
+
+  Alternatively, you can create a run with a pre-existing configuration version, even one from another workspace. This is useful for promoting known good code from one workspace to another.

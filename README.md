@@ -120,21 +120,21 @@ $ app deploy
 
 ## Commands
 ```
-(nonofficial) Terraform Enterprise/Cloud Command Line Interface
+Terraform Enterprise/Cloud Command Line Interface
 
 Usage:
    [command]
 
 Available Commands:
-  apply                 apply ...
-  configuration-version configuration-version ...
+  apply                 An apply represents the results of applying a Terraform Run's execution plan.
+  configuration-version 
   configure             Configures tecli global settings
   help                  Help about any command
-  o-auth-client         o-auth-client ...
-  o-auth-token          o-auth-token ...
-  plan                  plan ...
-  run                   run ...
-  ssh-key               TODO ...
+  o-auth-client         An OAuth Client represents the connection between an organization and a VCS provider.
+  o-auth-token          The oauth-token object represents a VCS configuration which includes the OAuth connection and the associated OAuth token. This object is used when creating a workspace to identify which VCS connection to use.
+  plan                  A plan represents the execution plan of a Run in a Terraform workspace.
+  run                   
+  ssh-key               
   version               Displays the version of tecli and all installed plugins
   workspace             Manage Terraform Cloud workspaces
 

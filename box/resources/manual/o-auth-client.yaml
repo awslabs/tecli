@@ -3,8 +3,5 @@ use: |-
 
   Arguments:
     {{ arguments }}
-example: |-
-  How to ...
-short: o-auth-client ...
-long: |-
-  o-auth-client ...
+
+short: An OAuth Client represents the connection between an organization and a VCS provider.

@@ -11,10 +11,10 @@ import (
 
 // Manual mapping the fields used by a Cobra command
 type Manual struct {
-	Use     string `yaml:"use"`
-	Example string `yaml:"example"`
-	Short   string `yaml:"short"`
-	Long    string `yaml:"long"`
+	Use     string `yaml:"use,omitempty"`
+	Example string `yaml:"example,omitempty"`
+	Short   string `yaml:"short,omitempty"`
+	Long    string `yaml:"long,omitempty"`
 }
 
 //GetManual returns the command's manuall
