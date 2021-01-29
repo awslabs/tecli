@@ -35,6 +35,10 @@ release:
       - tags
   stage: release
   script:
+    - apt-get install -y build-essential #Make
+    - go version
+    - go get ./...
+    - go generate ./...
     - mkdir -p dist
     - GOOS=darwin GOARCH=amd64 go build -o dist/tecli-darwin-amd64 main.go
     - GOOS=solaris GOARCH=amd64 go build -o dist/tecli-solaris-amd64 main.go
