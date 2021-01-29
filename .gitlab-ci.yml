@@ -41,7 +41,7 @@ release:
       - tags
   stage: release
   script:
-    - make tecli/release
+    - make tecli/build tecli/release
   artifacts:
     paths:
       - dist/tecli-*
