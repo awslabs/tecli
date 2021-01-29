@@ -1,7 +1,7 @@
-use: |- 
+use: |-
   workspace [argument] [flags]
 
-  Arguments: 
+  Arguments:
     {{ arguments }}
 example: |-
   # How to

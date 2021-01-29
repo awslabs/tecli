@@ -34,7 +34,7 @@ var planValidArgs = []string{"read", "logs"}
 
 // PlanCmd command to display tecli current version
 func PlanCmd() *cobra.Command {
-	man, err := helper.GetManualV2("plan", planValidArgs)
+	man, err := helper.GetManual("plan", planValidArgs)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -119,14 +119,14 @@ func planLogs(client *tfe.Client, planID string) (io.Reader, error) {
 
 }
 
-// StreamToByte TODO ..
+// StreamToByte converts io.Reader to []byte
 func StreamToByte(stream io.Reader) []byte {
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(stream)
 	return buf.Bytes()
 }
 
-// StreamToString TODO ...
+// StreamToString convert io.Reader to string
 func StreamToString(stream io.Reader) string {
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(stream)

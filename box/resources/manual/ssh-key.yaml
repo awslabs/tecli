@@ -1,7 +1,7 @@
 use: |-
   ssh-key [argument] [flags]
 
-  Arguments: 
+  Arguments:
     {{ arguments }}
 example: |-
   How to ...

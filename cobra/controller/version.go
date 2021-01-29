@@ -28,7 +28,7 @@ import (
 
 // VersionCmd command to display tecli current version
 func VersionCmd() *cobra.Command {
-	man, err := helper.GetManual("version")
+	man, err := helper.GetManual("version", []string{})
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)

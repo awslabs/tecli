@@ -1,9 +1,13 @@
-use: configure [delete]
-example: >
+use: |-
+  configure [argument] [flags]
+
+  Arguments:
+    {{ arguments }}
+example: |-
   If you want to create a new named profile:
     tecli configure --profile work
-    
+
   If you want to delete a named profile:
     tecli configure delete --profile work
 short: Configures tecli global settings
-long: Configures tecli global credentials and configurations used by commands
+long: Configures tecli global credentials used by commands

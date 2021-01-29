@@ -46,7 +46,7 @@ var workspaceValidArgs = []string{
 
 // WorkspaceCmd command to display tecli current version
 func WorkspaceCmd() *cobra.Command {
-	man, err := helper.GetManualV2("workspace", workspaceValidArgs)
+	man, err := helper.GetManual("workspace", workspaceValidArgs)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -63,7 +63,7 @@ func WorkspaceCmd() *cobra.Command {
 		RunE:      workspaceRun,
 	}
 
-	aid.SetWorkspaceFlagsV1(cmd)
+	aid.SetWorkspaceFlags(cmd)
 
 	return cmd
 }
@@ -288,7 +288,6 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 			return fmt.Errorf("unable to get flag id\n%v", err)
 		}
 
-		// TODO: need to fetch the SSH keys via the client.SSHKeys interface
 		options := aid.GetWorkspaceAssignSSHKeyOptions(cmd)
 		workspace, err := workspaceAssignSSHKey(client, id, options)
 		if err != nil {

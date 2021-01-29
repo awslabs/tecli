@@ -3,7 +3,7 @@
 (nonofficial) Terraform Enterprise/Cloud Command Line Interface
 
 Usage:
-  tecli [command]
+   [command]
 
 Available Commands:
   apply                 apply ...
@@ -12,7 +12,6 @@ Available Commands:
   help                  Help about any command
   o-auth-client         o-auth-client ...
   o-auth-token          o-auth-token ...
-  oauth                 A plan represents the execution plan of a Run in a Terraform workspace.
   plan                  plan ...
   run                   run ...
   ssh-key               TODO ...
@@ -20,12 +19,12 @@ Available Commands:
   workspace             Manage Terraform Cloud workspaces
 
 Flags:
-  -h, --help                   help for tecli
+  -h, --help                   help for this command
   -l, --log string             Enable or disable logs (found at $HOME/.tecli/logs.json). Log outputs will be shown on default output. (default "disable")
       --log-file-path string   Log file path. (default "/Users/valterh/.tecli/logs.json")
   -o, --organization string    Terraform Cloud Organization name
   -p, --profile string         Use a specific profile from your credentials and configurations file. (default "default")
   -v, --verbosity string       Valid log level:panic,fatal,error,warn,info,debug,trace). (default "error")
 
-Use "tecli [command] --help" for more information about a command.
+Use " [command] --help" for more information about a command.
 ```

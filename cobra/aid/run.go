@@ -82,7 +82,7 @@ func GetRunCreateOptions(cmd *cobra.Command) tfe.RunCreateOptions {
 	return options
 }
 
-// GetRunReadOptions TODO ...
+// GetRunReadOptions return options based on the command's flags value
 func GetRunReadOptions(cmd *cobra.Command) tfe.RunReadOptions {
 	var options tfe.RunReadOptions
 	include, err := cmd.Flags().GetString("include")
@@ -97,7 +97,7 @@ func GetRunReadOptions(cmd *cobra.Command) tfe.RunReadOptions {
 	return options
 }
 
-// GetRunApplyOptions TODO ..
+// GetRunApplyOptions return options based on the command's flags value
 func GetRunApplyOptions(cmd *cobra.Command) tfe.RunApplyOptions {
 	var options tfe.RunApplyOptions
 
@@ -113,7 +113,7 @@ func GetRunApplyOptions(cmd *cobra.Command) tfe.RunApplyOptions {
 	return options
 }
 
-// GetRunCancelOptions TODO ...
+// GetRunCancelOptions return options based on the command's flags value
 func GetRunCancelOptions(cmd *cobra.Command) tfe.RunCancelOptions {
 	var options tfe.RunCancelOptions
 
@@ -129,7 +129,7 @@ func GetRunCancelOptions(cmd *cobra.Command) tfe.RunCancelOptions {
 	return options
 }
 
-// GetRunForceCancelOptions TODO ...
+// GetRunForceCancelOptions return options based on the command's flags value
 func GetRunForceCancelOptions(cmd *cobra.Command) tfe.RunForceCancelOptions {
 	var options tfe.RunForceCancelOptions
 
@@ -145,7 +145,7 @@ func GetRunForceCancelOptions(cmd *cobra.Command) tfe.RunForceCancelOptions {
 	return options
 }
 
-// GetRunDiscardOptions TODO ...
+// GetRunDiscardOptions return options based on the command's flags value
 func GetRunDiscardOptions(cmd *cobra.Command) tfe.RunDiscardOptions {
 	var options tfe.RunDiscardOptions
 

@@ -26,11 +26,11 @@ import (
 	"gitlab.aws.dev/devops-aws/terraform-ce-cli/helper"
 )
 
-var configureValidArgs = []string{"delete"}
+var configureValidArgs = []string{"create", "delete"}
 
 // ConfigureCmd command to display tecli current version
 func ConfigureCmd() *cobra.Command {
-	man, err := helper.GetManual("configure")
+	man, err := helper.GetManual("configure", configureValidArgs)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -43,10 +43,29 @@ func ConfigureCmd() *cobra.Command {
 		Example:   man.Example,
 		ValidArgs: configureValidArgs,
 		Args:      cobra.OnlyValidArgs,
+		PreRunE:   configurePreRun,
 		RunE:      configureRun,
 	}
 
 	return cmd
+}
+
+func configurePreRun(cmd *cobra.Command, args []string) error {
+	if err := helper.ValidateCmdArgs(cmd, args, "configure"); err != nil {
+		return err
+	}
+
+	fArg := args[0]
+	switch fArg {
+	case "create", "delete":
+		if err := helper.ValidateCmdArgAndFlag(cmd, args, "configure", fArg, "profile"); err != nil {
+			return err
+		}
+
+	default:
+		return fmt.Errorf("unknown argument provided")
+	}
+	return nil
 }
 
 func configureRun(cmd *cobra.Command, args []string) error {
@@ -89,19 +108,3 @@ func updateCredentials(cmd *cobra.Command) {
 		dao.SaveCredentials(credentials)
 	}
 }
-
-// func createConfigurations(cmd *cobra.Command) {
-// 	answer := aid.GetUserInputAsBool(cmd, "Would you like to setup configurations?", false)
-// 	if answer {
-// 		configurations := view.CreateConfigurations(cmd, profile)
-// 		dao.SaveConfigurations(configurations)
-// 	}
-// }
-
-// func updateConfigurations(cmd *cobra.Command) {
-// 	answer := aid.GetUserInputAsBool(cmd, "Would you like to update configurations?", false)
-// 	if answer {
-// 		configurations := view.UpdateConfigurations(cmd, profile)
-// 		dao.SaveConfigurations(configurations)
-// 	}
-// }

@@ -372,7 +372,7 @@ func GetWorkspaceUpdateOptions(cmd *cobra.Command) tfe.WorkspaceUpdateOptions {
 	return options
 }
 
-// GetWorkspaceAssignSSHKeyOptions TODO ...
+// GetWorkspaceAssignSSHKeyOptions return options based on the command's flags value
 func GetWorkspaceAssignSSHKeyOptions(cmd *cobra.Command) tfe.WorkspaceAssignSSHKeyOptions {
 	var options tfe.WorkspaceAssignSSHKeyOptions
 

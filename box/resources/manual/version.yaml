@@ -1,4 +1,8 @@
-use: version [options]
+use: |-
+  version [argument] [flags]
+
+  Arguments:
+    {{ arguments }}
 short: Displays the version of tecli and all installed plugins
 long: |
   Displays the version of Terraform and all installed plugins in the following format:

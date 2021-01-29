@@ -124,7 +124,7 @@ func CopyFile(sourceFile string, destinationFile string) {
 	}
 }
 
-// CopyFileTo TODO...
+// CopyFileTo copy a file from sourceFile location to destinationFile location
 func CopyFileTo(sourceFile string, destinationFile string) error {
 	input, err := ioutil.ReadFile(sourceFile)
 	if err != nil {

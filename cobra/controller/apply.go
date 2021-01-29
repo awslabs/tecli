@@ -33,7 +33,7 @@ var applyValidArgs = []string{"read", "logs"}
 
 // ApplyCmd command to display tecli current version
 func ApplyCmd() *cobra.Command {
-	man, err := helper.GetManualV2("apply", applyValidArgs)
+	man, err := helper.GetManual("apply", applyValidArgs)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)

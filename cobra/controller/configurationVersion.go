@@ -31,7 +31,7 @@ var configurationVersionValidArgs = []string{"list", "create", "read", "upload"}
 
 // ConfigurationVersionCmd command to display tecli current version
 func ConfigurationVersionCmd() *cobra.Command {
-	man, err := helper.GetManualV2("configuration-version", configurationVersionValidArgs)
+	man, err := helper.GetManual("configuration-version", configurationVersionValidArgs)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)

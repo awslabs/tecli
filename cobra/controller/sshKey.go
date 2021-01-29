@@ -31,7 +31,7 @@ var sshKeyValidArgs = []string{"list", "create", "read", "update", "delete"}
 
 // SSHKeyCmd command to display tecli current version
 func SSHKeyCmd() *cobra.Command {
-	man, err := helper.GetManualV2("ssh-key", sshKeyValidArgs)
+	man, err := helper.GetManual("ssh-key", sshKeyValidArgs)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)

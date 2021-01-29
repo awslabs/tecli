@@ -36,7 +36,7 @@ var oAuthTokenValidArgs = []string{
 
 // OAuthTokenCmd command to display tecli current version
 func OAuthTokenCmd() *cobra.Command {
-	man, err := helper.GetManualV2("o-auth-token", oAuthTokenValidArgs)
+	man, err := helper.GetManual("o-auth-token", oAuthTokenValidArgs)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)

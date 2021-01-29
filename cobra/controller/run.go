@@ -39,7 +39,7 @@ var runValidArgs = []string{
 
 // RunCmd command to display tecli current version
 func RunCmd() *cobra.Command {
-	man, err := helper.GetManualV2("run", runValidArgs)
+	man, err := helper.GetManual("run", runValidArgs)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)

@@ -1,3 +1,2 @@
-use: tecli
 short: Terraform Enterprise/Cloud Command Line Interface
-long: (nonofficial) Terraform Enterprise/Cloud Command Line Interface
+long: Terraform Enterprise/Cloud Command Line Interface
