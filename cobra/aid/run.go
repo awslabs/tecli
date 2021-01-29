@@ -49,7 +49,7 @@ func SetRunFlags(cmd *cobra.Command) {
 
 }
 
-// GetRunCreateOptions  return options based on the flags values
+// GetRunCreateOptions return options based on the flags values
 func GetRunCreateOptions(cmd *cobra.Command) tfe.RunCreateOptions {
 	var options tfe.RunCreateOptions
 

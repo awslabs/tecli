@@ -50,7 +50,7 @@ func SetConfigurationVersionFlags(cmd *cobra.Command) {
 	cmd.Flags().String("path", "", usage)
 }
 
-// GetConfigurationVersionCreateOptions  return options based on the flags values
+// GetConfigurationVersionCreateOptions return options based on the flags values
 func GetConfigurationVersionCreateOptions(cmd *cobra.Command) tfe.ConfigurationVersionCreateOptions {
 	var options tfe.ConfigurationVersionCreateOptions
 
