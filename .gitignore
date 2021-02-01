@@ -255,3 +255,4 @@ dist/*
 examples/* 
 test/*
 *debug_bin*
+terminalizer-*.yml

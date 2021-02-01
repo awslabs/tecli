@@ -38,10 +38,16 @@ tecli/clean: ## Removes unnecessary files and directories
 	rm -rf dist/
 	rm -rf build/
 
+
 .PHONY: tecli/terminalizer
 tecli/terminalizer:
-	terminalizer record workspace --config clencli/terminalizer/config.yml --skip-sharing
-	terminalizer render workspace --output clencli/tecli.gif
+ifdef command
+	terminalizer record terminalizer-$(command) --config clencli/terminalizer.yml --skip-sharing
+	terminalizer render terminalizer-$(command) --output clencli/terminalizer/$(command).gif
+else
+	@echo 'Need to pass "command" parameter'
+endif	
+	
 
 .PHONY: tecli/update-readme
 tecli/update-readme: ## Renders template readme.tmpl with additional documents

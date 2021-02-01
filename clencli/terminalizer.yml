@@ -2,11 +2,11 @@
 # like `/bin/bash -l`, `ls`, or any other commands
 # the default is bash for Linux
 # or powershell.exe for Windows
-command: tecli --help
+command: /bin/bash -l
 
 # Specify the current working directory path
 # the default is the current working directory path
-cwd: null
+cwd: /tmp
 
 # Export additional ENV variables
 env:
@@ -15,12 +15,12 @@ env:
 # Explicitly set the number of columns
 # or use `auto` to take the current
 # number of columns of your shell
-cols: auto
+cols: 100
 
 # Explicitly set the number of rows
 # or use `auto` to take the current
 # number of rows of your shell
-rows: auto
+rows: 25
 
 # Amount of times to repeat GIF
 # If value is -1, play once
@@ -30,7 +30,7 @@ repeat: 0
 
 # Quality
 # 1 - 100
-quality: 100
+quality: 75
 
 # Delay between frames in ms
 # If the value is `auto` use the actual recording delays
@@ -46,12 +46,9 @@ maxIdleTime: 2000
 # To hide the title use the value null
 # Don't forget to add a backgroundColor style with a null as type
 frameBox:
-  type: floating
-  title: Terminalizer
-  style:
-    border: 0px black solid
-    # boxShadow: none
-    # margin: 0px
+  type: window
+  title: tecli
+  style: []
 
 # Add a watermark image to the rendered gif
 # You need to specify an absolute path for

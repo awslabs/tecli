@@ -28,9 +28,9 @@ A command line interface for the official Go API client for Terraform Cloud/Ente
  - [Usage](#usage) 
  - [Prerequisites](#prerequisites) 
  - [Installing](#installing) 
- - [Testing](#testing) 
- - [Deployment](#deployment) 
- - [Acknowledgments](#acknowledgments) 
+
+
+
  - [Contributors](#contributors) 
  - [References](#references) 
  - [License](#license) 
@@ -43,13 +43,33 @@ A command line interface for the official Go API client for Terraform Cloud/Ente
   <summary>Expand</summary>
 
 
-| ![how-to-build](clencli/tecli.gif) |
+| ![how-to-configure](clencli/terminalizer/configure.gif) |
 |:--:| 
-| *How to build* |
+| *How to configure* |
 
-| ![how-to-run](https://via.placeholder.com/512x256.png) |
+| ![how-to-create-a-workspace](clencli/terminalizer/workspace-create.gif) |
 |:--:| 
-| *How to run* |
+| *How to create a workspace* |
+
+| ![how-to-create-a-workspace-linked-to-a-repository](clencli/terminalizer/workspace-with-vcs-repo.gif) |
+|:--:| 
+| *How to create a workspace linked to a repository* |
+
+| ![how-to-create-a-run](clencli/terminalizer/run-create.gif) |
+|:--:| 
+| *How to create a run* |
+
+| ![how-to-read-plan-logs](clencli/terminalizer/plan-logs.gif) |
+|:--:| 
+| *How to read plan logs* |
+
+| ![how-to-read-apply-logs](clencli/terminalizer/apply-logs.gif) |
+|:--:| 
+| *How to read apply logs* |
+
+| ![how-to-delete-a-workspace](clencli/terminalizer/workspace-delete.gif) |
+|:--:| 
+| *How to delete a workspace* |
 
 </details>
 
@@ -60,8 +80,7 @@ A command line interface for the official Go API client for Terraform Cloud/Ente
 <details open>
   <summary>Expand</summary>
 
-Magnis dis parturient montes nascetur.
-Convallis posuere morbi leo urna molestie at.
+`tecli --help`
 </details>
 
 
@@ -71,7 +90,7 @@ Convallis posuere morbi leo urna molestie at.
 <details>
   <summary>Expand</summary>
 
-- [Eget arcu dictum](https://) - Nisi quis eleifend quam adipiscing.Lacus vel facilisis volutpat est velit egestas dui id.
+- [Terraform Cloud](https://terraform.io) - You will need a Terraform Cloud account and API Team Token.
 
 </details>
 
@@ -82,37 +101,12 @@ Convallis posuere morbi leo urna molestie at.
 <details open>
   <summary>Expand</summary>
 
-Donec adipiscing tristique risus nec feugiat.
-```
-$ sudo apt-get install vim
-```
+Just download the binary according to your platform and run it.
 </details>
 
 
 
-## Testing
----
-<details>
-  <summary>Expand</summary>
 
-Varius morbi enim nunc faucibus a pellentesque.
-```
-$ app test
-```
-</details>
-
-
-
-## Deployment
----
-<details>
-  <summary>Expand</summary>
-
-Adipiscing bibendum est ultricies integer.
-```
-$ app deploy
-```
-</details>
 
 
 
@@ -159,22 +153,11 @@ Use " [command] --help" for more information about a command.
 
 |     Name     |         Email        |       Role      |
 |:------------:|:--------------------:|:---------------:|
-|  LastName, FirstName  |  name@email.com  |  Job Role  |
+|  Silva, Valter  |  valterh@amazon.com  |  AWS Professional Services Cloud Architect  |
 
 </details>
 
 
-
-## Acknowledgments
----
-<details>
-  <summary>Expand</summary>
-
-Gratitude for assistance:
-  * LastName, FirstName - Job Role
-
-
-</details>
 
 
 
@@ -183,7 +166,9 @@ Gratitude for assistance:
 <details open>
   <summary>Expand</summary>
 
-  * [tecli](https://gitlab.aws.dev/devops-aws/terraform-ce-cli) - Cloud Engineer CLI
+  * [Terraform Cloud/Enterprise Go Client](https://github.com/hashicorp/go-tfe) - The official Go API client for Terraform Cloud/Enterprise.
+  * [clencli](https://github.com/awslabs/clencli) - Cloud Engineer CLI
+  * [terminalizer](https://github.com/faressoft/terminalizer) - Record your terminal and generate animated gif images or share a web player link terminalizer.com
 
 
 </details>
@@ -201,6 +186,6 @@ For more information please read [LICENSE](LICENSE).
 ## Copyright
 ---
 ```
-Company, Inc. or its affiliates. All Rights Reserved.
+Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 ```
 

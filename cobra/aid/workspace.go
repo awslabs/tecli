@@ -182,6 +182,7 @@ func GetWorkspaceCreateOptions(cmd *cobra.Command) tfe.WorkspaceCreateOptions {
 	}
 
 	repoOptions := GetVCSRepoFlags(cmd)
+	// repoOptions := tfe.VCSRepoOptions{}
 	if repoOptions != (tfe.VCSRepoOptions{}) {
 		options.VCSRepo = &repoOptions
 	}
@@ -218,12 +219,15 @@ func GetVCSRepoFlags(cmd *cobra.Command) tfe.VCSRepoOptions {
 		options.Identifier = &vcsRepoIdentifier
 	}
 
-	vcsRepoIngressSubmodules, err := cmd.Flags().GetBool("vcs-repo-ingress-submodules")
-	if err != nil {
-		logrus.Fatalf("unable to get flag vcsRepoIngressSubmodules\n%v\n", err)
-	}
+	// this check is necessary to avoid setting the vcsRepoIngressSubmodules false, even when the user didn't set it via commandline
+	if cmd.Flags().Changed("vcs-repo-ingress-submodules") {
+		vcsRepoIngressSubmodules, err := cmd.Flags().GetBool("vcs-repo-ingress-submodules")
+		if err != nil {
+			logrus.Fatalf("unable to get flag vcsRepoIngressSubmodules\n%v\n", err)
+		}
 
-	options.IngressSubmodules = &vcsRepoIngressSubmodules
+		options.IngressSubmodules = &vcsRepoIngressSubmodules
+	}
 
 	vcsRepoOauthTokenID, err := cmd.Flags().GetString("vcs-repo-oauth-token-id")
 	if err != nil {
