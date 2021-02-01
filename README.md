@@ -90,7 +90,7 @@ A command line interface for the official Go API client for Terraform Cloud/Ente
 <details>
   <summary>Expand</summary>
 
-- [Terraform Cloud](https://terraform.io) - You will need a Terraform Cloud account and API Team Token.
+- [pre-requisites](https://gitlab.aws.dev/devops-aws/tecli/-/wikis/Pre-Requisites) - Pre-Requisites
 
 </details>
 

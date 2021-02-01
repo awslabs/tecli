@@ -30,9 +30,9 @@ screenshots:
   url: clencli/terminalizer/workspace-delete.gif
 usage: '`tecli --help`'
 prerequisites:
-- description: You will need a Terraform Cloud account and API Team Token.
-  name: Terraform Cloud
-  url: https://terraform.io
+- description: Pre-Requisites
+  name: pre-requisites
+  url: https://gitlab.aws.dev/devops-aws/tecli/-/wikis/Pre-Requisites
 installing: Just download the binary according to your platform and run it.
 include:
 - COMMANDS.MD
