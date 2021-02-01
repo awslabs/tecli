@@ -46,6 +46,7 @@ tecli/release: ## Compile to multiple architectures
 
 	GOOS=windows GOARCH=386 go build -o dist/tecli-windows-386 main.go
 	GOOS=windows GOARCH=amd64 go build -o dist/tecli-windows-amd64 main.go
+	chmod +x dist/tecli-*
 
 .PHONY: tecli/clean
 tecli/clean: ## Removes unnecessary files and directories
