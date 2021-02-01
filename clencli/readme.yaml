@@ -34,7 +34,9 @@ prerequisites:
   name: pre-requisites
   url: https://gitlab.aws.dev/devops-aws/tecli/-/wikis/Pre-Requisites
 installing: '[Browse](https://gitlab.aws.dev/devops-aws/tecli/-/jobs/artifacts/master/browse?job=release)
-  the artificats page, and download the appropriate binary according to your platform.'
+  the artificats page, and download the appropriate binary according to your platform.
+  For more information, check the [Installation](https://gitlab.aws.dev/devops-aws/tecli/-/wikis/Installation)
+  Wiki page.'
 include:
 - COMMANDS.MD
 contributors:

@@ -101,7 +101,7 @@ A command line interface for the official Go API client for Terraform Cloud/Ente
 <details open>
   <summary>Expand</summary>
 
-[Browse](https://gitlab.aws.dev/devops-aws/tecli/-/jobs/artifacts/master/browse?job=release) the artificats page, and download the appropriate binary according to your platform.
+[Browse](https://gitlab.aws.dev/devops-aws/tecli/-/jobs/artifacts/master/browse?job=release) the artificats page, and download the appropriate binary according to your platform. For more information, check the [Installation](https://gitlab.aws.dev/devops-aws/tecli/-/wikis/Installation) Wiki page.
 </details>
 
 
