@@ -16,7 +16,7 @@ example: |-
 
   If you want to delete a named profile:
     tecli configure delete --profile work
-short: Manage Terraform Cloud workspaces
+short: Workspaces represent running infrastructure managed by Terraform.
 long: |-
   Workspaces represent running infrastructure managed by Terraform.
   Viewing a workspace (individually or in a list) requires permission to read runs.

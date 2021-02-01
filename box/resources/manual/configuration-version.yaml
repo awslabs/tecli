@@ -3,6 +3,7 @@ use: |-
 
   Arguments:
     {{ arguments }}
+short: A configuration version is a resource used to reference the uploaded configuration files.
 long: |-
   A configuration version (configuration-version) is a resource used to reference the uploaded configuration files. It is associated with the run to use the uploaded configuration files for performing the plan and apply.
   Listing and viewing configuration versions for a workspace requires permission to read runs; creating new configuration versions requires permission to queue plans. More info https://www.terraform.io/docs/cloud/users-teams-organizations/permissions.html

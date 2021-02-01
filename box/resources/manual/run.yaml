@@ -4,6 +4,7 @@ use: |-
   Arguments:
     {{ arguments }}
 
+short: A run performs a plan and apply, using a configuration version and the workspace’s current variables. 
 long: |-
   Performing a run on a new configuration is a multi-step process.
 

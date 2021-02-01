@@ -3,7 +3,7 @@ use: |-
 
   Arguments:
     {{ arguments }}
-
+short: The ssh-key object represents an SSH key which includes a name and the SSH private key. An organization can have multiple SSH keys available.
 long: |-
   The ssh-key object represents an SSH key which includes a name and the SSH private key. An organization can have multiple SSH keys available.
 
