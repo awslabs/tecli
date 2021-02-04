@@ -29,7 +29,7 @@ info:
 build:
   stage: build
   script:
-    - make tecli/build
+    - make gitlab/build
   artifacts:
     paths:
       - build/tecli
@@ -41,7 +41,7 @@ release:
       - tags
   stage: release
   script:
-    - make tecli/build tecli/release
+    - make gitlab/build gitlab/release
   artifacts:
     paths:
       - dist/tecli-*
