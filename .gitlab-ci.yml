@@ -17,12 +17,11 @@ before_script:
   - cd $GOPATH/src/$REPO_NAME
 
 stages:
-  - info
   - build
   - release
 
 info:
-  stage: info
+  stage: build
   script:
     - make go/version go/env
 
@@ -34,7 +33,7 @@ build:
     paths:
       - build/tecli
 
-release_darwin_amd64:
+darwin_amd64:
   only:
     refs:
       - master
@@ -46,7 +45,7 @@ release_darwin_amd64:
     paths:
       - dist/tecli-darwin-amd64
 
-release_solaris_amd64:
+solaris_amd64:
   only:
     refs:
       - master
@@ -58,7 +57,7 @@ release_solaris_amd64:
     paths:
       - dist/tecli-solaris-amd64
 
-release_freebsd_386:
+freebsd_386:
   only:
     refs:
       - master
@@ -70,7 +69,7 @@ release_freebsd_386:
     paths:
       - dist/tecli-freebsd-386
 
-release_freebsd_amd64:
+freebsd_amd64:
   only:
     refs:
       - master
@@ -82,7 +81,7 @@ release_freebsd_amd64:
     paths:
       - dist/tecli-freebsd-amd64
 
-release_freebsd_arm:
+freebsd_arm:
   only:
     refs:
       - master
@@ -94,7 +93,7 @@ release_freebsd_arm:
     paths:
       - dist/tecli-freebsd-arm
 
-release_openbsd_386:
+openbsd_386:
   only:
     refs:
       - master
@@ -106,7 +105,7 @@ release_openbsd_386:
     paths:
       - dist/tecli-openbsd-386
 
-release_openbsd_amd64:
+openbsd_amd64:
   only:
     refs:
       - master
@@ -118,7 +117,7 @@ release_openbsd_amd64:
     paths:
       - dist/tecli-openbsd-amd64
 
-release_openbsd_arm:
+openbsd_arm:
   only:
     refs:
       - master
@@ -130,7 +129,7 @@ release_openbsd_arm:
     paths:
       - dist/tecli-openbsd-arm
 
-release_linux_386:
+linux_386:
   only:
     refs:
       - master
@@ -142,7 +141,7 @@ release_linux_386:
     paths:
       - dist/tecli-linux-386
 
-release_linux_amd64:
+linux_amd64:
   only:
     refs:
       - master
@@ -154,7 +153,7 @@ release_linux_amd64:
     paths:
       - dist/tecli-linux-amd64
 
-release_linux_arm:
+linux_arm:
   only:
     refs:
       - master
@@ -166,7 +165,7 @@ release_linux_arm:
     paths:
       - dist/tecli-linux-arm
 
-release_windows_386:
+windows_386:
   only:
     refs:
       - master
@@ -178,7 +177,7 @@ release_windows_386:
     paths:
       - dist/tecli-windows-386
 
-release_windows_amd64:
+windows_amd64:
   only:
     refs:
       - master
