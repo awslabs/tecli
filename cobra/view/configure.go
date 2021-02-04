@@ -28,8 +28,16 @@ import (
 
 // CREDENTIALS
 
-// CreateCredentials create the credentials
-func CreateCredentials(cmd *cobra.Command, name string, credentials model.Credentials) model.Credentials {
+// CreateCredentialsNonInteractive create credentials based on input
+func CreateCredentialsNonInteractive(cmd *cobra.Command, name string, credentials model.Credentials) model.Credentials {
+	fmt.Println("> Credentials")
+	cProfile := createCredentialProfile(cmd, name)
+	credentials.Profiles = append(credentials.Profiles, cProfile)
+	return credentials
+}
+
+// CreateCredentialsInteractive ask user for input and create the credentials
+func CreateCredentialsInteractive(cmd *cobra.Command, name string, credentials model.Credentials) model.Credentials {
 	fmt.Println("> Credentials")
 	cProfile := createCredentialProfile(cmd, name)
 	credentials.Profiles = append(credentials.Profiles, cProfile)

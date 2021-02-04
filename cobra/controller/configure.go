@@ -49,6 +49,8 @@ func ConfigureCmd() *cobra.Command {
 		RunE:      configureRun,
 	}
 
+	aid.SetConfigureFlags(cmd)
+
 	return cmd
 }
 
@@ -112,13 +114,56 @@ func configureListCredentials() (model.Credentials, error) {
 }
 
 func configureCreateCredentials(cmd *cobra.Command) {
-	if !aid.ConfigurationsDirectoryExist() {
-		if created, dir := aid.CreateConfigurationsDirectory(); created {
-			fmt.Printf("tecli configuration directory created at %s\n", dir)
+	c := aid.GetCredentialProfileFlags(cmd)
+	var ft bool
+	if ft, dir := aid.HasCreatedConfigurationDir(); ft {
+		fmt.Printf("tecli configuration directory created at %s\n", dir)
+	}
 
-			creds := view.CreateCredentials(cmd, profile, model.Credentials{})
+	if (c != model.CredentialProfile{}) {
+		// non-interactive
+		if ft {
+			var creds model.Credentials
+			creds.Profiles = append(creds.Profiles, c)
 			dao.SaveCredentials(creds)
+		} else {
+			updateOrAppendCredential(c)
 		}
+	} else {
+		// interactive
+		configureCreateCredentialsInteractive(cmd)
+	}
+}
+
+func updateOrAppendCredential(c model.CredentialProfile) {
+	if aid.CredentialsFileExist() {
+		creds, err := dao.GetCredentials()
+		if err != nil {
+			logrus.Fatalf("unable to get credentials")
+		}
+
+		found := false
+		for i, p := range creds.Profiles {
+			if p.Name == profile || p.Name == c.Name {
+				creds.Profiles[i] = c
+				found = true
+			}
+		}
+
+		if !found {
+			creds.Profiles = append(creds.Profiles, c)
+		}
+
+		dao.SaveCredentials(creds)
+	} else {
+		logrus.Fatalln("tecli credentials file not found")
+	}
+}
+
+func configureCreateCredentialsInteractive(cmd *cobra.Command) {
+	if !aid.CredentialsFileExist() {
+		creds := view.CreateCredentialsInteractive(cmd, profile, model.Credentials{})
+		dao.SaveCredentials(creds)
 	} else {
 		if aid.CredentialsFileExist() {
 			creds, err := dao.GetCredentials()
@@ -135,7 +180,7 @@ func configureCreateCredentials(cmd *cobra.Command) {
 			}
 
 			if !found {
-				creds = view.CreateCredentials(cmd, profile, creds)
+				creds = view.CreateCredentialsInteractive(cmd, profile, creds)
 				dao.SaveCredentials(creds)
 			}
 		}

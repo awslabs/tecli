@@ -25,11 +25,111 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/model"
 	"gitlab.aws.dev/devops-aws/terraform-ce-cli/helper"
 	"gopkg.in/yaml.v2"
 )
+
+// SetConfigureFlags TODO ...
+func SetConfigureFlags(cmd *cobra.Command) {
+	usage := `Value for non-interactive configuration`
+	cmd.Flags().String("new-name", "", usage)
+
+	usage = `Value for non-interactive configuration`
+	cmd.Flags().String("description", "", usage)
+
+	usage = `Value for non-interactive configuration`
+	cmd.Flags().Bool("enabled", false, usage)
+
+	usage = `Value for non-interactive configuration`
+	cmd.Flags().String("user-token", "", usage)
+
+	usage = `Value for non-interactive configuration`
+	cmd.Flags().String("team-token", "", usage)
+
+	usage = `Value for non-interactive configuration`
+	cmd.Flags().String("organization-token", "", usage)
+}
+
+// GetCredentialProfileFlags TODO ...
+func GetCredentialProfileFlags(cmd *cobra.Command) model.CredentialProfile {
+	var cp model.CredentialProfile
+
+	profile, err := cmd.Flags().GetString("profile")
+	if err != nil {
+		logrus.Fatalf("unable to get flag profile\n%v", err)
+	}
+
+	if profile != "" {
+		cp.Name = profile
+	}
+
+	// new profile name replaces current profile name
+	newName, err := cmd.Flags().GetString("new-name")
+	if err != nil {
+		logrus.Fatalf("unable to get flag new-name\n%v", err)
+	}
+
+	if newName != "" {
+		cp.Name = newName
+	}
+
+	description, err := cmd.Flags().GetString("description")
+	if err != nil {
+		logrus.Fatalf("unable to get flag description\n%v", err)
+	}
+
+	if description != "" {
+		cp.Description = description
+	}
+
+	enabled, err := cmd.Flags().GetBool("enabled")
+	if err != nil {
+		logrus.Fatalf("unable to get flag enabled\n%v", err)
+	}
+
+	cp.Enabled = enabled
+
+	userToken, err := cmd.Flags().GetString("user-token")
+	if err != nil {
+		logrus.Fatalf("unable to get flag user-token\n%v", err)
+	}
+
+	if userToken != "" {
+		cp.UserToken = userToken
+	}
+
+	teamToken, err := cmd.Flags().GetString("team-token")
+	if err != nil {
+		logrus.Fatalf("unable to get flag team-token\n%v", err)
+	}
+
+	if teamToken != "" {
+		cp.TeamToken = teamToken
+	}
+
+	organizationToken, err := cmd.Flags().GetString("organization-token")
+	if err != nil {
+		logrus.Fatalf("unable to get flag organization-token\n%v", err)
+	}
+
+	if organizationToken != "" {
+		cp.OrganizationToken = organizationToken
+	}
+
+	return cp
+}
+
+// HasCreatedConfigurationDir return true if configuration directory was created, false if otherwise
+func HasCreatedConfigurationDir() (bool, string) {
+	if !ConfigurationsDirectoryExist() {
+		return CreateConfigurationsDirectory()
+	}
+	return false, ""
+}
 
 // ConfigurationsDirectoryExist returns `true` if the configuration directory exist, `false` otherwise
 func ConfigurationsDirectoryExist() bool {
