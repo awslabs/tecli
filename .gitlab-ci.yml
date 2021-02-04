@@ -33,104 +33,113 @@ build:
     paths:
       - build/tecli
 
-# darwin_amd64:
-#   only:
-#     refs:
-#       - tags
-#   stage: publish
-#   script:
-#     - make gitlab/release/darwin/amd64
-#   artifacts:
-#     paths:
-#       - dist/tecli-darwin-amd64
+darwin_amd64:
+  only:
+    refs:
+      - tags
+  stage: publish
+  script:
+    - make gitlab/release/darwin/amd64
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file dist/tecli-darwin-amd64 ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/tecli/${CI_COMMIT_REF_NAME}/tecli-darwin-amd64'
+  artifacts:
+    paths:
+      - dist/tecli-darwin-amd64
 
-# solaris_amd64:
-#   only:
-#     refs:
-#       - tags
-#   stage: publish
-#   script:
-#     - make gitlab/release/solaris/amd64
-#   artifacts:
-#     paths:
-#       - dist/tecli-solaris-amd64
+solaris_amd64:
+  only:
+    refs:
+      - tags
+  stage: publish
+  script:
+    - make gitlab/release/solaris/amd64
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file dist/tecli-solaris-amd64 ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/tecli/${CI_COMMIT_REF_NAME}/tecli-solaris-amd64'
+  artifacts:
+    paths:
+      - dist/tecli-solaris-amd64
 
-# freebsd_386:
-#   only:
-#     refs:
-#       - tags
-#   stage: publish
-#   script:
-#     - make gitlab/release/freebsd/386
-#   artifacts:
-#     paths:
-#       - dist/tecli-freebsd-386
+freebsd_386:
+  only:
+    refs:
+      - tags
+  stage: publish
+  script:
+    - make gitlab/release/freebsd/386
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file dist/tecli-freebsd-386 ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/tecli/${CI_COMMIT_REF_NAME}/tecli-freebsd-386'
+  artifacts:
+    paths:
+      - dist/tecli-freebsd-386
 
-# freebsd_amd64:
-#   only:
-#     refs:
-#       - tags
-#   stage: publish
-#   script:
-#     - make gitlab/release/freebsd/amd64
-#   artifacts:
-#     paths:
-#       - dist/tecli-freebsd-amd64
+freebsd_amd64:
+  only:
+    refs:
+      - tags
+  stage: publish
+  script:
+    - make gitlab/release/freebsd/amd64
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file dist/tecli-freebsd-amd64 ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/tecli/${CI_COMMIT_REF_NAME}/tecli-freebsd-amd64'
+  artifacts:
+    paths:
+      - dist/tecli-freebsd-amd64
 
-# freebsd_arm:
-#   only:
-#     refs:
-#       - tags
-#   stage: publish
-#   script:
-#     - make gitlab/release/freebsd/arm
-#   artifacts:
-#     paths:
-#       - dist/tecli-freebsd-arm
+freebsd_arm:
+  only:
+    refs:
+      - tags
+  stage: publish
+  script:
+    - make gitlab/release/freebsd/arm
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file dist/tecli-freebsd-arm ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/tecli/${CI_COMMIT_REF_NAME}/tecli-freebsd-arm'
+  artifacts:
+    paths:
+      - dist/tecli-freebsd-arm
 
-# openbsd_386:
-#   only:
-#     refs:
-#       - tags
-#   stage: publish
-#   script:
-#     - make gitlab/release/openbsd/386
-#   artifacts:
-#     paths:
-#       - dist/tecli-openbsd-386
+openbsd_386:
+  only:
+    refs:
+      - tags
+  stage: publish
+  script:
+    - make gitlab/release/openbsd/386
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file dist/tecli-openbsd-386 ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/tecli/${CI_COMMIT_REF_NAME}/tecli-openbsd-386'
+  artifacts:
+    paths:
+      - dist/tecli-openbsd-386
 
-# openbsd_amd64:
-#   only:
-#     refs:
-#       - tags
-#   stage: publish
-#   script:
-#     - make gitlab/release/openbsd/amd64
-#   artifacts:
-#     paths:
-#       - dist/tecli-openbsd-amd64
+openbsd_amd64:
+  only:
+    refs:
+      - tags
+  stage: publish
+  script:
+    - make gitlab/release/openbsd/amd64
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file dist/tecli-openbsd-amd64 ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/tecli/${CI_COMMIT_REF_NAME}/tecli-openbsd-amd64'
+  artifacts:
+    paths:
+      - dist/tecli-openbsd-amd64
 
-# openbsd_arm:
-#   only:
-#     refs:
-#       - tags
-#   stage: publish
-#   script:
-#     - make gitlab/release/openbsd/arm
-#   artifacts:
-#     paths:
-#       - dist/tecli-openbsd-arm
+openbsd_arm:
+  only:
+    refs:
+      - tags
+  stage: publish
+  script:
+    - make gitlab/release/openbsd/arm
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file dist/tecli-openbsd-arm ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/tecli/${CI_COMMIT_REF_NAME}/tecli-openbsd-arm'
+  artifacts:
+    paths:
+      - dist/tecli-openbsd-arm
 
-# linux_386:
-#   only:
-#     refs:
-#       - tags
-#   stage: publish
-#   script:
-#     - make gitlab/release/linux/386
-#   artifacts:
-#     paths:
-#       - dist/tecli-linux-386
+linux_386:
+  only:
+    refs:
+      - tags
+  stage: publish
+  script:
+    - make gitlab/release/linux/386
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file dist/tecli-linux-386 ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/tecli/${CI_COMMIT_REF_NAME}/tecli-linux-386'
+  artifacts:
+    paths:
+      - dist/tecli-linux-386
 
 linux_amd64:
   only:
@@ -156,27 +165,29 @@ linux_arm:
     paths:
       - dist/tecli-linux-arm
 
-# windows_386:
-#   only:
-#     refs:
-#       - tags
-#   stage: publish
-#   script:
-#     - make gitlab/release/windows/386
-#   artifacts:
-#     paths:
-#       - dist/tecli-windows-386
+windows_386:
+  only:
+    refs:
+      - tags
+  stage: publish
+  script:
+    - make gitlab/release/windows/386
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file dist/tecli-windows-386 ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/tecli/${CI_COMMIT_REF_NAME}/tecli-windows-386'
+  artifacts:
+    paths:
+      - dist/tecli-windows-386
 
-# windows_amd64:
-#   only:
-#     refs:
-#       - tags
-#   stage: publish
-#   script:
-#     - make gitlab/release/windows/amd64
-#   artifacts:
-#     paths:
-#       - dist/tecli-windows-amd64
+windows_amd64:
+  only:
+    refs:
+      - tags
+  stage: publish
+  script:
+    - make gitlab/release/windows/amd64
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file dist/tecli-windows-amd64 ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/tecli/${CI_COMMIT_REF_NAME}/tecli-windows-amd64'
+  artifacts:
+    paths:
+      - dist/tecli-windows-amd64
 
 # publish:
 #   stage: publish
