@@ -115,8 +115,9 @@ func configureListCredentials() (model.Credentials, error) {
 
 func configureCreateCredentials(cmd *cobra.Command) {
 	c := aid.GetCredentialProfileFlags(cmd)
-	var ft bool
-	if ft, dir := aid.HasCreatedConfigurationDir(); ft {
+	ft, dir := aid.HasCreatedConfigurationDir(); 
+	
+	if ft {
 		fmt.Printf("tecli configuration directory created at %s\n", dir)
 	}
 
