@@ -6,12 +6,12 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "make tecli/build"
-        },
-        {
-            "label": "teste",
-            "type": "shell",
-            "command": "make tecli/test"
+            "command": "make tecli/build",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         }
     ]
 }
