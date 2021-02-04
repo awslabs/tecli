@@ -144,17 +144,17 @@ linux_amd64:
     paths:
       - dist/tecli-linux-amd64
 
-linux_arm:
-  only:
-    refs:
-      - tags
-  stage: publish
-  script:
-    - make gitlab/release/linux/arm
-    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file dist/tecli-linux-arm ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/tecli/${CI_COMMIT_TAG}/tecli-linux-arm'
-  artifacts:
-    paths:
-      - dist/tecli-linux-arm
+# linux_arm:
+#   only:
+#     refs:
+#       - tags
+#   stage: publish
+#   script:
+#     - make gitlab/release/linux/arm
+#     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file dist/tecli-linux-arm ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/tecli/${CI_COMMIT_TAG}/tecli-linux-arm'
+#   artifacts:
+#     paths:
+#       - dist/tecli-linux-arm
 
 # windows_386:
 #   only:
