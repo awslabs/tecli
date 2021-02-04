@@ -15,9 +15,10 @@
 
 
 
-# Terraform Cloud API Command Line Interface  ( terraform-cloud-cli ) 
+# Terraform Cloud/Enterprise Command Line  ( terraform-cloud-cli ) 
 
 A command line interface for the official Go API client for Terraform Cloud/Enterprise.
+
 
 ## Table of Contents
 ---
@@ -101,7 +102,8 @@ A command line interface for the official Go API client for Terraform Cloud/Ente
 <details open>
   <summary>Expand</summary>
 
-[Browse](https://gitlab.aws.dev/devops-aws/tecli/-/jobs/artifacts/master/browse?job=release) the artificats page, and download the appropriate binary according to your platform. For more information, check the [Installation](https://gitlab.aws.dev/devops-aws/tecli/-/wikis/Installation) Wiki page.
+[Browse](https://gitlab.aws.dev/devops-aws/tecli/-/jobs/artifacts/master/browse?job=release) the artificats page, and download the appropriate binary according to your platform.
+For more information, check the [Installation](https://gitlab.aws.dev/devops-aws/tecli/-/wikis/Installation) Wiki page.
 </details>
 
 
@@ -114,7 +116,7 @@ A command line interface for the official Go API client for Terraform Cloud/Ente
 
 ## Commands
 ```
-Terraform Enterprise/Cloud Command Line Interface
+Terraform Cloud/Enterprise Command Line
 
 Usage:
    [command]
@@ -153,7 +155,7 @@ Use " [command] --help" for more information about a command.
 
 |     Name     |         Email        |       Role      |
 |:------------:|:--------------------:|:---------------:|
-|  Silva, Valter  |  valterh@amazon.com  |  AWS Professional Services Cloud Architect  |
+|  Silva, Valter  |  valterh@amazon.com  |  AWS Professional Services - Cloud Architect  |
 
 </details>
 
@@ -169,6 +171,7 @@ Use " [command] --help" for more information about a command.
   * [Terraform Cloud/Enterprise Go Client](https://github.com/hashicorp/go-tfe) - The official Go API client for Terraform Cloud/Enterprise.
   * [clencli](https://github.com/awslabs/clencli) - Cloud Engineer CLI
   * [terminalizer](https://github.com/faressoft/terminalizer) - Record your terminal and generate animated gif images or share a web player link terminalizer.com
+
 
 
 </details>
