@@ -34,14 +34,158 @@ build:
     paths:
       - build/tecli
 
-release:
+release_darwin_amd64:
   only:
     refs:
       - master
       - tags
   stage: release
   script:
-    - make gitlab/build gitlab/release
+    - make gitlab/release/darwin/amd64
   artifacts:
     paths:
-      - dist/tecli-*
+      - dist/tecli-darwin-amd64
+
+release_solaris_amd64:
+  only:
+    refs:
+      - master
+      - tags
+  stage: release
+  script:
+    - make gitlab/release/solaris/amd64
+  artifacts:
+    paths:
+      - dist/tecli-solaris-amd64
+
+release_freebsd_386:
+  only:
+    refs:
+      - master
+      - tags
+  stage: release
+  script:
+    - make gitlab/release/freebsd/386
+  artifacts:
+    paths:
+      - dist/tecli-freebsd-386
+
+release_freebsd_amd64:
+  only:
+    refs:
+      - master
+      - tags
+  stage: release
+  script:
+    - make gitlab/release/freebsd/amd64
+  artifacts:
+    paths:
+      - dist/tecli-freebsd-amd64
+
+release_freebsd_arm:
+  only:
+    refs:
+      - master
+      - tags
+  stage: release
+  script:
+    - make gitlab/release/freebsd/arm
+  artifacts:
+    paths:
+      - dist/tecli-freebsd-arm
+
+release_openbsd_386:
+  only:
+    refs:
+      - master
+      - tags
+  stage: release
+  script:
+    - make gitlab/release/openbsd/386
+  artifacts:
+    paths:
+      - dist/tecli-openbsd-386
+
+release_openbsd_amd64:
+  only:
+    refs:
+      - master
+      - tags
+  stage: release
+  script:
+    - make gitlab/release/openbsd/amd64
+  artifacts:
+    paths:
+      - dist/tecli-openbsd-amd64
+
+release_openbsd_arm:
+  only:
+    refs:
+      - master
+      - tags
+  stage: release
+  script:
+    - make gitlab/release/openbsd/arm
+  artifacts:
+    paths:
+      - dist/tecli-openbsd-arm
+
+release_linux_386:
+  only:
+    refs:
+      - master
+      - tags
+  stage: release
+  script:
+    - make gitlab/release/linux/386
+  artifacts:
+    paths:
+      - dist/tecli-linux-386
+
+release_linux_amd64:
+  only:
+    refs:
+      - master
+      - tags
+  stage: release
+  script:
+    - make gitlab/release/linux/amd64
+  artifacts:
+    paths:
+      - dist/tecli-linux-amd64
+
+release_linux_arm:
+  only:
+    refs:
+      - master
+      - tags
+  stage: release
+  script:
+    - make gitlab/release/linux/arm
+  artifacts:
+    paths:
+      - dist/tecli-linux-arm
+
+release_windows_386:
+  only:
+    refs:
+      - master
+      - tags
+  stage: release
+  script:
+    - make gitlab/release/windows/386
+  artifacts:
+    paths:
+      - dist/tecli-windows-386
+
+release_windows_amd64:
+  only:
+    refs:
+      - master
+      - tags
+  stage: release
+  script:
+    - make gitlab/release/windows/amd64
+  artifacts:
+    paths:
+      - dist/tecli-windows-amd64
