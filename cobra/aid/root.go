@@ -22,7 +22,7 @@ import (
 	tfe "github.com/hashicorp/go-tfe"
 	"github.com/mitchellh/go-homedir"
 	"github.com/sirupsen/logrus"
-	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/model"
+	"gitlab.aws.dev/devops-aws/tecli/cobra/model"
 )
 
 // GetAppInfo return information about tecli settings

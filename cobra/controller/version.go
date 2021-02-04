@@ -22,8 +22,8 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"gitlab.aws.dev/devops-aws/terraform-ce-cli/box"
-	"gitlab.aws.dev/devops-aws/terraform-ce-cli/helper"
+	"gitlab.aws.dev/devops-aws/tecli/box"
+	"gitlab.aws.dev/devops-aws/tecli/helper"
 )
 
 // VersionCmd command to display tecli current version

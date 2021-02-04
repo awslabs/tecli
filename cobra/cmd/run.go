@@ -16,7 +16,7 @@ limitations under the License.
 package cmd
 
 import (
-	controller "gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/controller"
+	controller "gitlab.aws.dev/devops-aws/tecli/cobra/controller"
 )
 
 var runCmd = controller.RunCmd()

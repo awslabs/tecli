@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/sirupsen/logrus"
-	"gitlab.aws.dev/devops-aws/terraform-ce-cli/box"
+	"gitlab.aws.dev/devops-aws/tecli/box"
 	yaml "gopkg.in/yaml.v2"
 )
 

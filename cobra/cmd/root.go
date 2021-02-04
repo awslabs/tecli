@@ -22,8 +22,8 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
-	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/aid"
-	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/controller"
+	"gitlab.aws.dev/devops-aws/tecli/cobra/aid"
+	"gitlab.aws.dev/devops-aws/tecli/cobra/controller"
 
 	"github.com/spf13/viper"
 )

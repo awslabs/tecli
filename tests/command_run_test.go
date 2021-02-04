@@ -19,7 +19,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/controller"
+	"gitlab.aws.dev/devops-aws/tecli/cobra/controller"
 )
 
 func TestRunList(t *testing.T) {

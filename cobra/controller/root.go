@@ -20,7 +20,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"gitlab.aws.dev/devops-aws/terraform-ce-cli/helper"
+	"gitlab.aws.dev/devops-aws/tecli/helper"
 )
 
 var profile string

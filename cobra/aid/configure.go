@@ -28,29 +28,29 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/model"
-	"gitlab.aws.dev/devops-aws/terraform-ce-cli/helper"
+	"gitlab.aws.dev/devops-aws/tecli/cobra/model"
+	"gitlab.aws.dev/devops-aws/tecli/helper"
 	"gopkg.in/yaml.v2"
 )
 
 // SetConfigureFlags TODO ...
 func SetConfigureFlags(cmd *cobra.Command) {
-	usage := `Value for non-interactive configuration`
+	usage := `The new name of your profile`
 	cmd.Flags().String("new-name", "", usage)
 
-	usage = `Value for non-interactive configuration`
+	usage = `A short description`
 	cmd.Flags().String("description", "", usage)
 
-	usage = `Value for non-interactive configuration`
+	usage = `Enable or disable the entire profile`
 	cmd.Flags().Bool("enabled", false, usage)
 
-	usage = `Value for non-interactive configuration`
+	usage = `API tokens may belong directly to a user. User tokens are the most flexible token type because they inherit permissions from the user they are associated with.`
 	cmd.Flags().String("user-token", "", usage)
 
-	usage = `Value for non-interactive configuration`
+	usage = `API tokens may belong to a specific team. Team API tokens allow access to the workspaces that the team has access to, without being tied to any specific user.`
 	cmd.Flags().String("team-token", "", usage)
 
-	usage = `Value for non-interactive configuration`
+	usage = `API tokens may generated for a specific organization. Organization API tokens allow access to the organization-level settings and resources, without being tied to any specific team or user.`
 	cmd.Flags().String("organization-token", "", usage)
 }
 

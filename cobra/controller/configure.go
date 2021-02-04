@@ -21,11 +21,11 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/aid"
-	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/dao"
-	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/model"
-	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/view"
-	"gitlab.aws.dev/devops-aws/terraform-ce-cli/helper"
+	"gitlab.aws.dev/devops-aws/tecli/cobra/aid"
+	"gitlab.aws.dev/devops-aws/tecli/cobra/dao"
+	"gitlab.aws.dev/devops-aws/tecli/cobra/model"
+	"gitlab.aws.dev/devops-aws/tecli/cobra/view"
+	"gitlab.aws.dev/devops-aws/tecli/helper"
 )
 
 var configureValidArgs = []string{"list", "create", "read", "update", "delete"}

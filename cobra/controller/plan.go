@@ -25,9 +25,9 @@ import (
 	"github.com/hashicorp/go-tfe"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/aid"
-	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/dao"
-	"gitlab.aws.dev/devops-aws/terraform-ce-cli/helper"
+	"gitlab.aws.dev/devops-aws/tecli/cobra/aid"
+	"gitlab.aws.dev/devops-aws/tecli/cobra/dao"
+	"gitlab.aws.dev/devops-aws/tecli/helper"
 )
 
 var planValidArgs = []string{"read", "logs"}

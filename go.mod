@@ -1,4 +1,4 @@
-module gitlab.aws.dev/devops-aws/terraform-ce-cli
+module gitlab.aws.dev/devops-aws/tecli
 
 go 1.15
 

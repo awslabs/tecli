@@ -19,8 +19,8 @@ import (
 	"fmt"
 
 	"github.com/sirupsen/logrus"
-	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/aid"
-	"gitlab.aws.dev/devops-aws/terraform-ce-cli/cobra/model"
+	"gitlab.aws.dev/devops-aws/tecli/cobra/aid"
+	"gitlab.aws.dev/devops-aws/tecli/cobra/model"
 )
 
 // GetCredentials read the current credentials file and return its model
