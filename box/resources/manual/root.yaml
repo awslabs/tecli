@@ -1,2 +1,2 @@
 use: tecli [command] [argument] [flags]
-short: Terraform Enterprise/Cloud Command Line Interface
+short: Terraform Cloud/Enterprise Command Line
