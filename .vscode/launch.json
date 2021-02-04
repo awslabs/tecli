@@ -20,6 +20,14 @@
             "mode": "debug",
             "program": "${workspaceFolder}/main.go",
             "args": ["workspace", "--help"]
+        },
+        {
+            "name": "configure",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${workspaceFolder}/main.go",
+            "args": ["configure", "create", "--profile",  "gitlab", "--team-token", "your-token", "--new-name", "new-gitlab"]
         }
     ]
 }
