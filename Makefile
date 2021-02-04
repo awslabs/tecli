@@ -26,6 +26,8 @@ tecli/clean: ## Removes unnecessary files and directories
 	rm -rf generated-*/
 	rm -rf dist/
 	rm -rf build/
+	rm -f box/blob.go
+	rm -f clencli/log.json
 
 .PHONY: tecli/terminalizer
 tecli/terminalizer:
