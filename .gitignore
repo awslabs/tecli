@@ -257,3 +257,4 @@ test/*
 *debug_bin*
 terminalizer-*.yml
 temp/*
+clencli/log.json
