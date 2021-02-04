@@ -17,12 +17,14 @@ before_script:
   - cd $GOPATH/src/$REPO_NAME
 
 stages:
+  - info
   - build
   - publish
 
 info:
-  stage: build
+  stage: info
   script:
+    - export # Show all GitLab variables
     - make go/version go/env
 
 build:
