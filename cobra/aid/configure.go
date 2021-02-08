@@ -35,7 +35,7 @@ import (
 
 // SetConfigureFlags TODO ...
 func SetConfigureFlags(cmd *cobra.Command) {
-	usage := `Mode: interactive or non-interactive. Interactive mode ask inputs to user. Non-interactive assumes all information is passed via flags`
+	usage := `Valid values: interactive or non-interactive. Interactive mode ask inputs to user. Non-interactive assumes all information is passed via flags`
 	cmd.Flags().String("mode", "interactive", usage)
 
 	usage = `The new name of your profile`
