@@ -36,6 +36,7 @@ var workspaceValidArgs = []string{
 	"update-by-id",
 	"delete",
 	"delete-by-id",
+	"find-by-name",
 	"remove-vcs-connection",
 	"remove-vcs-connection-by-id",
 	"lock",
@@ -85,6 +86,7 @@ func workspacePreRun(cmd *cobra.Command, args []string) error {
 		"read",
 		"update",
 		"delete",
+		"find-by-name",
 		"remove-vcs-connection":
 
 		if err := helper.ValidateCmdArgAndFlag(cmd, args, "workspace", fArg, "organization"); err != nil {
@@ -123,9 +125,21 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 	fArg := args[0]
 	switch fArg {
 	case "list":
-		list, err := workspaceList(client)
+		options := aid.GetWorkspaceListOptions(cmd)
+		list, err := workspaceList(client, options)
 		if err == nil {
 			aid.PrintWorkspaceList(list)
+		} else {
+			return fmt.Errorf("no workspace was found")
+		}
+	case "find-by-name":
+		list, err := workspaceList(client, tfe.WorkspaceListOptions{})
+		if err == nil {
+			w, err := workspaceFindByName(list, cmd)
+			if err != nil {
+				return err
+			}
+			fmt.Println(aid.ToJSON(w))
 		} else {
 			return fmt.Errorf("no workspace was found")
 		}
@@ -302,8 +316,24 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func workspaceList(client *tfe.Client) (*tfe.WorkspaceList, error) {
-	return client.Workspaces.List(context.Background(), organization, tfe.WorkspaceListOptions{})
+func workspaceList(client *tfe.Client, options tfe.WorkspaceListOptions) (*tfe.WorkspaceList, error) {
+	return client.Workspaces.List(context.Background(), organization, options)
+}
+
+func workspaceFindByName(list *tfe.WorkspaceList, cmd *cobra.Command) (*tfe.Workspace, error) {
+
+	name, err := cmd.Flags().GetString("name")
+	if err != nil {
+		return &tfe.Workspace{}, fmt.Errorf("unable to get flag name")
+	}
+
+	for _, item := range list.Items {
+		if item.Name == name {
+			return item, nil
+		}
+	}
+
+	return &tfe.Workspace{}, fmt.Errorf("workspace %s not found", name)
 }
 
 // Create is used to create a new workspace.

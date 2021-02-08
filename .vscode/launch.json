@@ -38,12 +38,20 @@
             "args": ["configure", "create"]
         },
         {
-            "name": "devops-ga-awsappteam",
+            "name": "list",
             "type": "go",
             "request": "launch",
             "mode": "debug",
             "program": "${workspaceFolder}/main.go",
             "args": ["workspace", "list",  "--profile", "bhp-app-migration", "--organization", "devops-ga-awsappteam", "--enabled", "true"]
+        },
+        {
+            "name": "find-by-name",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${workspaceFolder}/main.go",
+            "args": ["workspace", "find-by-name", "--name", "terraform-dummy", "--profile", "foo-org", "--organization", "foo-org"]
         }
     ]
 }

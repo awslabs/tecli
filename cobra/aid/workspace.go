@@ -95,6 +95,32 @@ func SetVCSRepoFlags(cmd *cobra.Command) {
 	cmd.Flags().String("vcs-repo-oauth-token-id", "", usage)
 }
 
+// GetWorkspaceListOptions TODO ...
+func GetWorkspaceListOptions(cmd *cobra.Command) tfe.WorkspaceListOptions {
+	var options tfe.WorkspaceListOptions
+
+	search, err := cmd.Flags().GetString("search")
+	if err != nil {
+		logrus.Fatalf("unable to get flag search")
+	}
+
+	if search != "" {
+		options.Search = &search
+	}
+
+	include, err := cmd.Flags().GetString("include")
+	if err != nil {
+		logrus.Fatalf("unable to get flag include")
+	}
+
+	if include != "" {
+		options.Include = &include
+	}
+
+	return options
+
+}
+
 // GetWorkspaceCreateOptions return options based on the flags values
 func GetWorkspaceCreateOptions(cmd *cobra.Command) tfe.WorkspaceCreateOptions {
 	var options tfe.WorkspaceCreateOptions
