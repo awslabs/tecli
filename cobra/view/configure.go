@@ -28,16 +28,8 @@ import (
 
 // CREDENTIALS
 
-// CreateCredentialsNonInteractive create credentials based on input
-func CreateCredentialsNonInteractive(cmd *cobra.Command, name string, credentials model.Credentials) model.Credentials {
-	fmt.Println("> Credentials")
-	cProfile := createCredentialProfile(cmd, name)
-	credentials.Profiles = append(credentials.Profiles, cProfile)
-	return credentials
-}
-
-// CreateCredentialsInteractive ask user for input and create the credentials
-func CreateCredentialsInteractive(cmd *cobra.Command, name string, credentials model.Credentials) model.Credentials {
+// CreateCredentials ask user for input and create the credentials
+func CreateCredentials(cmd *cobra.Command, name string, credentials model.Credentials) model.Credentials {
 	fmt.Println("> Credentials")
 	cProfile := createCredentialProfile(cmd, name)
 	credentials.Profiles = append(credentials.Profiles, cProfile)
@@ -68,7 +60,7 @@ func askAboutCredentialProfile(cmd *cobra.Command, cp model.CredentialProfile) m
 }
 
 // UpdateCredentials update the given credentials
-func UpdateCredentials(cmd *cobra.Command, name string) model.Credentials {
+func UpdateCredentials(cmd *cobra.Command, name string) (model.Credentials, error) {
 	fmt.Println("> Credentials")
 
 	credentials, err := dao.GetCredentials()
@@ -85,8 +77,8 @@ func UpdateCredentials(cmd *cobra.Command, name string) model.Credentials {
 	}
 
 	if !found {
-		fmt.Printf("No credentials not found for profile %s\n", name)
+		return model.Credentials{}, fmt.Errorf("profile %s not found", name)
 	}
 
-	return credentials
+	return credentials, nil
 }

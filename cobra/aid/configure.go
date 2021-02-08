@@ -35,7 +35,10 @@ import (
 
 // SetConfigureFlags TODO ...
 func SetConfigureFlags(cmd *cobra.Command) {
-	usage := `The new name of your profile`
+	usage := `Mode: interactive or non-interactive. Interactive mode ask inputs to user. Non-interactive assumes all information is passed via flags`
+	cmd.Flags().String("mode", "interactive", usage)
+
+	usage = `The new name of your profile`
 	cmd.Flags().String("new-name", "", usage)
 
 	usage = `A short description`
@@ -91,7 +94,9 @@ func GetCredentialProfileFlags(cmd *cobra.Command) model.CredentialProfile {
 		logrus.Fatalf("unable to get flag enabled\n%v", err)
 	}
 
-	cp.Enabled = enabled
+	if cp.Enabled != enabled {
+		cp.Enabled = enabled
+	}
 
 	userToken, err := cmd.Flags().GetString("user-token")
 	if err != nil {

@@ -28,6 +28,22 @@
             "mode": "debug",
             "program": "${workspaceFolder}/main.go",
             "args": ["configure", "create", "--profile",  "gitlab", "--team-token", "your-token", "--new-name", "new-gitlab"]
+        },
+        {
+            "name": "configure-create",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${workspaceFolder}/main.go",
+            "args": ["configure", "create"]
+        },
+        {
+            "name": "devops-ga-awsappteam",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${workspaceFolder}/main.go",
+            "args": ["workspace", "list",  "--profile", "bhp-app-migration", "--organization", "devops-ga-awsappteam", "--enabled", "true"]
         }
     ]
 }
