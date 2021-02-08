@@ -19,7 +19,7 @@
             "request": "launch",
             "mode": "debug",
             "program": "${workspaceFolder}/main.go",
-            "args": ["workspace", "--help"]
+            "args": ["workspace", "list", "--organization", "foo-org"]
         },
         {
             "name": "configure",
