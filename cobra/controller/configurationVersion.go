@@ -97,14 +97,11 @@ func configurationVersionRun(cmd *cobra.Command, args []string) error {
 
 		list, err := configurationVersionList(client, workspaceID, tfe.ConfigurationVersionListOptions{})
 		if err == nil {
-			if len(list.Items) > 0 {
-				for _, item := range list.Items {
-					fmt.Printf("%v,\n", aid.ToJSON(item))
-				}
-			} else {
-				return fmt.Errorf("no configurationVersion was found")
-			}
+			aid.PrintConfigurationVersionList(list)
+		} else {
+			return fmt.Errorf("no configurationVersion was found")
 		}
+
 	case "create":
 		workspaceID, err := cmd.Flags().GetString("workspace-id")
 		if err != nil {

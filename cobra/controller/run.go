@@ -93,14 +93,11 @@ func runRun(cmd *cobra.Command, args []string) error {
 
 		list, err := runList(client, workspaceID, tfe.RunListOptions{})
 		if err == nil {
-			if len(list.Items) > 0 {
-				for _, item := range list.Items {
-					fmt.Printf("%v,\n", aid.ToJSON(item))
-				}
-			} else {
-				return fmt.Errorf("no run was found")
-			}
+			aid.PrintRunList(list)
+		} else {
+			return fmt.Errorf("no run was found")
 		}
+
 	case "create":
 		options := aid.GetRunCreateOptions(cmd)
 

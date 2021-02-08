@@ -1,6 +1,8 @@
 package aid
 
 import (
+	"fmt"
+
 	tfe "github.com/hashicorp/go-tfe"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -390,4 +392,17 @@ func GetWorkspaceAssignSSHKeyOptions(cmd *cobra.Command) tfe.WorkspaceAssignSSHK
 	}
 
 	return options
+}
+
+// PrintWorkspaceList TODO ...
+func PrintWorkspaceList(list *tfe.WorkspaceList) {
+	if len(list.Items) > 0 {
+		for i, item := range list.Items {
+			if i < len(list.Items)-1 {
+				fmt.Printf("%v,\n", ToJSON(item))
+			} else {
+				fmt.Printf("%v\n", ToJSON(item))
+			}
+		}
+	}
 }

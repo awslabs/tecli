@@ -88,13 +88,9 @@ func oAuthTokenRun(cmd *cobra.Command, args []string) error {
 	case "list":
 		list, err := oAuthTokenList(client)
 		if err == nil {
-			if len(list.Items) > 0 {
-				for _, item := range list.Items {
-					fmt.Printf("%v,\n", aid.ToJSON(item))
-				}
-			} else {
-				return fmt.Errorf("no o-auth-tokens was found")
-			}
+			aid.PrintOAuthTokenList(list)
+		} else {
+			return fmt.Errorf("no o-auth-tokens was found")
 		}
 	case "read":
 		id, err := cmd.Flags().GetString("id")

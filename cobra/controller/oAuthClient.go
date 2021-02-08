@@ -108,14 +108,11 @@ func oAuthClientRun(cmd *cobra.Command, args []string) error {
 	case "list":
 		list, err := oAuthClientList(client)
 		if err == nil {
-			if len(list.Items) > 0 {
-				for _, item := range list.Items {
-					fmt.Printf("%v,\n", aid.ToJSON(item))
-				}
-			} else {
-				return fmt.Errorf("no o-auth-clients was found")
-			}
+			aid.PrintOAuthClientList(list)
+		} else {
+			return fmt.Errorf("no o-auth-clients was found")
 		}
+
 	case "create":
 		options := aid.GetOAuthClientCreateOptions(cmd)
 		oAuthClient, err := oAuthClientCreate(client, options)

@@ -121,14 +121,11 @@ func sshKeyRun(cmd *cobra.Command, args []string) error {
 	case "list":
 		list, err := sshKeyList(client, organization)
 		if err == nil {
-			if len(list.Items) > 0 {
-				for _, item := range list.Items {
-					fmt.Printf("%v\n", aid.ToJSON(item))
-				}
-			} else {
-				return fmt.Errorf("no ssh key was found")
-			}
+			aid.PrintSSHKeyList(list)
+		} else {
+			return fmt.Errorf("no ssh key was found")
 		}
+
 	case "create":
 		options := aid.GetSSHKeysCreateOptions(cmd)
 		sshKey, err = sshKeyCreate(client, options)

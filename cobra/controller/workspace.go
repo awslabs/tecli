@@ -125,13 +125,9 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 	case "list":
 		list, err := workspaceList(client)
 		if err == nil {
-			if list.TotalCount > 0 {
-				for _, item := range list.Items {
-					fmt.Printf("%v,\n", aid.ToJSON(item))
-				}
-			} else {
-				return fmt.Errorf("no workspace was found")
-			}
+			aid.PrintWorkspaceList(list)
+		} else {
+			return fmt.Errorf("no workspace was found")
 		}
 	case "create":
 		options := aid.GetWorkspaceCreateOptions(cmd)

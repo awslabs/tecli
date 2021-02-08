@@ -16,6 +16,8 @@ limitations under the License.
 package aid
 
 import (
+	"fmt"
+
 	tfe "github.com/hashicorp/go-tfe"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -125,4 +127,17 @@ func GetOAuthClientCreateOptions(cmd *cobra.Command) tfe.OAuthClientCreateOption
 	}
 
 	return options
+}
+
+// PrintOAuthClientList TODO ...
+func PrintOAuthClientList(list *tfe.OAuthClientList) {
+	if len(list.Items) > 0 {
+		for i, item := range list.Items {
+			if i < len(list.Items)-1 {
+				fmt.Printf("%v,\n", ToJSON(item))
+			} else {
+				fmt.Printf("%v\n", ToJSON(item))
+			}
+		}
+	}
 }
