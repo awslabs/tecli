@@ -67,9 +67,9 @@ gitlab/release/linux/arm: box/blob.go ## Build binary for linux arm
 .PHONY: gitlab/release/windows/386
 gitlab/release/windows/386: box/blob.go ## Build binary for windows 386
 	@mkdir -p dist
-	GOOS=windows GOARCH=386 go build -o dist/tecli-windows-386 main.go
+	GOOS=windows GOARCH=386 go build -o dist/tecli-windows-386.exe main.go
 
 .PHONY: gitlab/release/windows/amd64
 gitlab/release/windows/amd64: box/blob.go ## Build binary for windows amd64
 	@mkdir -p dist
-	GOOS=windows GOARCH=amd64 go build -o dist/tecli-windows-amd64 main.go
+	GOOS=windows GOARCH=amd64 go build -o dist/tecli-windows-amd64.exe main.go

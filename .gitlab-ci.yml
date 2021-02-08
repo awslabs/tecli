@@ -174,10 +174,10 @@ windows_386:
   stage: publish
   script:
     - make gitlab/release/windows/386
-    - 'curl --silent --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file dist/tecli-windows-386 ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/tecli/${CI_COMMIT_REF_NAME}/tecli-windows-386'
+    - 'curl --silent --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file dist/tecli-windows-386.exe ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/tecli/${CI_COMMIT_REF_NAME}/tecli-windows-386.exe'
   artifacts:
     paths:
-      - dist/tecli-windows-386
+      - dist/tecli-windows-386.exe
 
 windows_amd64:
   only:
@@ -186,13 +186,7 @@ windows_amd64:
   stage: publish
   script:
     - make gitlab/release/windows/amd64
-    - 'curl --silent --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file dist/tecli-windows-amd64 ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/tecli/${CI_COMMIT_REF_NAME}/tecli-windows-amd64'
+    - 'curl --silent --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file dist/tecli-windows-amd64.exe ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/tecli/${CI_COMMIT_REF_NAME}/tecli-windows-amd64.exe'
   artifacts:
     paths:
-      - dist/tecli-windows-amd64
-
-# publish:
-#   stage: publish
-#   script:
-#     - 'curl --silent --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file dist/tecli-linux-amd64 ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/my_package/0.0.1/file.txt'
-
+      - dist/tecli-windows-amd64.exe
