@@ -147,6 +147,11 @@ Use " [command] --help" for more information about a command.
 ```
 
 
+# Top Commands
+```
+tecli workspace list -o=Org-Name -p=Profile-Name
+```
+
 
 
 ## Contributors
@@ -157,6 +162,7 @@ Use " [command] --help" for more information about a command.
 |     Name     |         Email        |       Role      |
 |:------------:|:--------------------:|:---------------:|
 |  Silva, Valter  |  valterh@amazon.com  |  AWS Professional Services - Cloud Architect  |
+|  Dhingra, Prashit  |    |  AWS Professional Services - Cloud Architect  |
 
 </details>
 

@@ -101,9 +101,9 @@
 {{end}}
 
 {{ if has (ds "db") "include" }}
-{{ range $incl := (ds "db").include }}
-{{ defineDatasource "incl" $incl }}
-{{ include "incl" }}{{end}}
+{{ range $file := (ds "db").include }}
+{{ defineDatasource $file $file }}
+{{ include $file }}{{end}}
 {{end}}
 
 {{ if has (ds "db") "contributors" }}
