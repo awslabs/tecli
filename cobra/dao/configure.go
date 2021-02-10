@@ -60,6 +60,11 @@ func GetCredentialProfile(name string) (model.CredentialProfile, error) {
 
 // GetTeamToken return the team token from credentials file
 func GetTeamToken(name string) string {
+	teamToken := viper.GetString("TEAM_TOKEN")
+	if teamToken != "" {
+		return teamToken
+	}
+
 	cp, err := GetCredentialProfile(name)
 	if err != nil {
 		logrus.Fatalf("unable to read team token from credentials\n%v\n", err)
@@ -70,6 +75,11 @@ func GetTeamToken(name string) string {
 
 // GetOrganizationToken return the organization token from credentials file
 func GetOrganizationToken(name string) string {
+	orgToken := viper.GetString("ORGANIZATION_TOKEN")
+	if orgToken != "" {
+		return orgToken
+	}
+
 	cp, err := GetCredentialProfile(name)
 	if err != nil {
 		logrus.Fatalf("unable to read organization token from configurations\n%v\n", err)

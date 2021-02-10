@@ -56,6 +56,12 @@ func init() {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
+	// environment variables
+	viper.SetEnvPrefix("TFC") // will be uppercased automatically
+	viper.BindEnv("USER_TOKEN")
+	viper.BindEnv("TEAM_TOKEN")
+	viper.BindEnv("ORGANIZATION_TOKEN")
+
 	app := aid.GetAppInfo()
 
 	viper.SetConfigName(app.CredentialsName)
@@ -74,15 +80,12 @@ func initConfig() {
 
 	viper.AutomaticEnv() // read in environment variables that match
 
-	err := viper.ReadInConfig()     // Find and read the config file
-	if config == "" && err != nil { // Handle errors reading the config file
-		logrus.Fatalf("Error config file:\n%v", err)
-	}
-
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("using config file:", viper.ConfigFileUsed())
 	}
+
+	// if config is not found, that's okay, as the user might use env vars
 
 	if log == "enable" && logFilePath != "" {
 		if err := aid.SetupLoggingLevel(verbosity); err == nil {
