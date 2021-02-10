@@ -24,6 +24,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -93,10 +94,14 @@ func GetCredentialProfileFlags(cmd *cobra.Command) model.CredentialProfile {
 	if err != nil {
 		logrus.Fatalf("unable to get flag enabled\n%v", err)
 	}
+	cp.Enabled = enabled
 
-	if cp.Enabled != enabled {
-		cp.Enabled = enabled
-	}
+	// if !cmd.Flags().Changed("enabled") {
+	// 	// enable profile by default
+	// 	cp.Enabled = true
+	// } else {
+	// 	cp.Enabled = enabled
+	// }
 
 	userToken, err := cmd.Flags().GetString("user-token")
 	if err != nil {
@@ -128,6 +133,39 @@ func GetCredentialProfileFlags(cmd *cobra.Command) model.CredentialProfile {
 	return cp
 }
 
+// UpdateCredentialProfile update credential profile based on input flags
+func UpdateCredentialProfile(cmd *cobra.Command, old model.CredentialProfile) model.CredentialProfile {
+	f := GetCredentialProfileFlags(cmd)
+
+	if f.Name != "" && f.Name != old.Name {
+		old.Name = f.Name
+	}
+
+	if f.Description != "" && f.Description != old.Description {
+		old.Description = f.Description
+	}
+
+	if cmd.Flags().Changed("enabled") {
+		old.Enabled = f.Enabled
+	}
+
+	old.UpdatedAt = time.Now().String()
+
+	if f.UserToken != "" && f.UserToken != old.UserToken {
+		old.UserToken = f.UserToken
+	}
+
+	if f.TeamToken != "" && f.TeamToken != old.TeamToken {
+		old.TeamToken = f.TeamToken
+	}
+
+	if f.OrganizationToken != "" && f.OrganizationToken != old.OrganizationToken {
+		old.OrganizationToken = f.OrganizationToken
+	}
+
+	return old
+}
+
 // HasCreatedConfigurationDir return true if configuration directory was created, false if otherwise
 func HasCreatedConfigurationDir() (bool, string) {
 	if !ConfigurationsDirectoryExist() {
@@ -139,6 +177,21 @@ func HasCreatedConfigurationDir() (bool, string) {
 // ConfigurationsDirectoryExist returns `true` if the configuration directory exist, `false` otherwise
 func ConfigurationsDirectoryExist() bool {
 	return helper.DirOrFileExists(GetAppInfo().ConfigurationsDir)
+}
+
+// CheckConfigDirAndFile checks if configuration directory and file exist
+func CheckConfigDirAndFile() error {
+	if err := viper.ReadInConfig(); err != nil {
+		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
+			// Config file not found
+			return fmt.Errorf("configuration file not found\n%v", err)
+		}
+
+		// Config file was found but another error was produced
+		return fmt.Errorf("unable to read config file\n%v", err)
+	}
+
+	return nil
 }
 
 // ConfigurationsFileExist returns `true` if the configuration file exist, `false` otherwise
@@ -314,4 +367,51 @@ func GetUserInputAsString(cmd *cobra.Command, text string, info string) string {
 	}
 
 	return info
+}
+
+// RemoveCredential TODO ...
+func RemoveCredential(s []model.CredentialProfile, index int) []model.CredentialProfile {
+	return append(s[:index], s[index+1:]...)
+}
+
+// HasCreatedConfigDir TODO ...
+func HasCreatedConfigDir(cmd *cobra.Command) (bool, error) {
+	config, err := cmd.Flags().GetString("config")
+	if err != nil {
+		return false, fmt.Errorf("unable to get flag config\n%v", err)
+	}
+
+	err = viper.ReadInConfig()
+	if err := viper.ReadInConfig(); err != nil {
+		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
+			// Config file not found
+
+			if config != "" {
+				if helper.MkDirsIfNotExist(config) {
+					fmt.Printf("tecli configuration directory created at %s\n", config)
+					return true, nil
+				}
+			}
+
+		} else {
+			// Config file was found but another error was produced
+		}
+	}
+
+	return false, nil
+}
+
+// GetConfigFilePath TODO ...
+func GetConfigFilePath(cmd *cobra.Command) (string, error) {
+	config, err := cmd.Flags().GetString("config")
+	if err != nil {
+		return "", fmt.Errorf("unable to get flag config\n%v", err)
+	}
+
+	if config != "" {
+		app := GetAppInfo()
+		return helper.BuildPath(config + "/" + app.CredentialsName + "." + app.CredentialsType), nil
+	}
+
+	return viper.GetViper().ConfigFileUsed(), nil
 }

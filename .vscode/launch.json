@@ -30,12 +30,20 @@
             "args": ["configure", "create", "--profile",  "gitlab", "--team-token", "your-token", "--new-name", "new-gitlab"]
         },
         {
-            "name": "configure-create",
+            "name": "configure-create-1",
             "type": "go",
             "request": "launch",
             "mode": "debug",
             "program": "${workspaceFolder}/main.go",
-            "args": ["configure", "create"]
+            "args": ["configure", "create", "--config", "generated-config", "--profile", "test1"]
+        },
+        {
+            "name": "configure-create-2",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${workspaceFolder}/main.go",
+            "args": ["configure", "create", "--config", "generated-config", "--profile", "test2"]
         },
         {
             "name": "list",
@@ -51,7 +59,16 @@
             "request": "launch",
             "mode": "debug",
             "program": "${workspaceFolder}/main.go",
-            "args": ["workspace", "find-by-name", "--name", "terraform-dummy", "--profile", "foo-org", "--organization", "foo-org"]
+            "args": ["workspace", "find-by-name", "--name", "terraform-dummy", "--profile", "foo", "--organization", "foo-org"]
+        },
+        {
+            "name": "run-create",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${workspaceFolder}/main.go",
+            "args": ["run", "create", "--workspace-id", "ws-yxnpTvagYRdNiFf8", "--configuration-version-id", "cv-qeYg8Uz7ZxEjRg63", "--profile", "foo"]
         }
+        // tecli run create --workspace-id=ws-yxnpTvagYRdNiFf8 --configuration-version-id=cv-qeYg8Uz7ZxEjRg63 --profile=foo --verbosity=trace
     ]
 }

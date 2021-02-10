@@ -11,3 +11,4 @@ RUN chmod +x tecli* \
     && ./tecli workspace list --organization=foo-org
 
 RUN ls -ltha /etc
+

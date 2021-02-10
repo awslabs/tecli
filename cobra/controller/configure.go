@@ -18,6 +18,7 @@ package controller
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -85,45 +86,36 @@ func configureRun(cmd *cobra.Command, args []string) error {
 		if err != nil {
 			logrus.Fatalf("unable to list credentials\n%v", err)
 		}
-
 		fmt.Println(aid.ToJSON(creds))
-	case "create":
-		if mode == "interactive" {
-			err = configureCreateCredentialsInteractive(cmd)
-		} else if mode == "non-interactive" {
-			err = configureCreateCredentialsNonInteractive(cmd)
-		}
 
+	case "create":
+		err = configureCreateCredentials(cmd, mode)
 		if err != nil {
 			return fmt.Errorf("unable to create profile\n%v", err)
 		}
-
 		fmt.Printf("profile %s created successfully\n", profile)
+
 	case "read":
 		c, err := configureReadCredentials(cmd)
 		if err != nil {
 			return fmt.Errorf("unable to read credential")
 		}
 		fmt.Println(aid.ToJSON(c))
-	case "update":
-		if mode == "interactive" {
-			err = configureUpdateCredentialsInteractive(cmd)
-		} else if mode == "non-interactive" {
-			err = configureUpdateCredentialsNonInteractive(cmd)
-		}
 
+	case "update":
+		err = configureUpdateCredentials(cmd, mode)
 		if err != nil {
 			return fmt.Errorf("unable to update profile\n%v", err)
 		}
-
 		fmt.Printf("profile %s updated successfully\n", profile)
+
 	case "delete":
 		err := configureDeleteCredential()
 		if err != nil {
 			return fmt.Errorf("unable to delete profile\n%v", err)
 		}
-
 		fmt.Printf("profile %s delete successfully\n", profile)
+
 	default:
 		return fmt.Errorf("unknown argument provided")
 	}
@@ -140,21 +132,34 @@ func configureListCredentials() (model.Credentials, error) {
 	return creds, nil
 }
 
-func configureCreateCredentialsInteractive(cmd *cobra.Command) error {
-	ft, dir := aid.HasCreatedConfigurationDir()
-
-	if ft {
-		fmt.Printf("tecli configuration directory created at %s\n", dir)
+func configureCreateCredentials(cmd *cobra.Command, mode string) error {
+	created, err := aid.HasCreatedConfigDir(cmd)
+	if err != nil {
+		return err
 	}
 
-	if !aid.CredentialsFileExist() {
-		creds := view.CreateCredentials(cmd, profile, model.Credentials{})
-		return dao.SaveCredentials(creds)
+	if created {
+		var creds model.Credentials
+		if mode == "interactive" {
+			creds = view.CreateCredentials(cmd, profile, model.Credentials{})
+		} else if mode == "non-interactive" {
+			c := aid.GetCredentialProfileFlags(cmd)
+			c.CreatedAt = time.Now().String()
+			c.UpdatedAt = time.Now().String()
+			creds.Profiles = append(creds.Profiles, c)
+		}
+
+		path, err := aid.GetConfigFilePath(cmd)
+		if err != nil {
+			return err
+		}
+		fmt.Printf("tecli configurations will be created at %s\n", path)
+		return dao.SaveCredentialsV2(creds, path)
 	}
 
 	creds, err := dao.GetCredentials()
 	if err != nil {
-		logrus.Fatalf("unable to get credentials")
+		logrus.Fatalf("unable to get credentials\n%v", err)
 	}
 
 	found := false
@@ -170,48 +175,13 @@ func configureCreateCredentialsInteractive(cmd *cobra.Command) error {
 	}
 
 	// append new cred to credentials file
-	creds = view.CreateCredentials(cmd, profile, creds)
-	return dao.SaveCredentials(creds)
-}
-
-func configureCreateCredentialsNonInteractive(cmd *cobra.Command) error {
-	c := aid.GetCredentialProfileFlags(cmd)
-
-	// enable profile by default
-	if !cmd.Flags().Changed("enabled") {
-		c.Enabled = true
-	}
-
-	ft, dir := aid.HasCreatedConfigurationDir()
-
-	if ft {
-		fmt.Printf("tecli configuration directory created at %s\n", dir)
-	}
-
-	if !aid.CredentialsFileExist() {
-		var creds model.Credentials
+	if mode == "interactive" {
+		creds = view.CreateCredentials(cmd, profile, creds)
+	} else if mode == "non-interactive" {
+		c := aid.GetCredentialProfileFlags(cmd)
 		creds.Profiles = append(creds.Profiles, c)
-		return dao.SaveCredentials(creds)
 	}
 
-	creds, err := dao.GetCredentials()
-	if err != nil {
-		logrus.Fatalf("unable to get credentials")
-	}
-
-	found := false
-	for _, p := range creds.Profiles {
-		if p.Name == profile {
-			found = true
-		}
-	}
-
-	if found {
-		// don't add duplicates
-		return fmt.Errorf("profile %s already exist, profile names must be unique", profile)
-	}
-
-	creds.Profiles = append(creds.Profiles, c)
 	return dao.SaveCredentials(creds)
 }
 
@@ -219,54 +189,34 @@ func configureReadCredentials(cmd *cobra.Command) (model.CredentialProfile, erro
 	return dao.GetCredentialProfile(profile)
 }
 
-func configureUpdateCredentialsInteractive(cmd *cobra.Command) error {
-	if !aid.ConfigurationsDirectoryExist() {
-		return fmt.Errorf("tecli configuration directory not found\nplease run configure create")
-	}
-
-	if !aid.CredentialsFileExist() {
-		return fmt.Errorf("credentials file not found\nplease run configure create")
-	}
-
-	creds, err := view.UpdateCredentials(cmd, profile)
-	if err != nil {
-		return err
-	}
-
-	return dao.SaveCredentials(creds)
-}
-
-func configureUpdateCredentialsNonInteractive(cmd *cobra.Command) error {
-	if !aid.ConfigurationsDirectoryExist() {
-		return fmt.Errorf("configuration directory not found\nplease run configure create")
-	}
-
-	if !aid.CredentialsFileExist() {
-		return fmt.Errorf("credentials file not found\nplease run configure create")
-	}
-
-	creds, err := dao.GetCredentials()
-	if err != nil {
-		logrus.Fatalf("unable to update credentials\n%v\n", err)
-	}
-
-	found := false
-	for i, p := range creds.Profiles {
-		if p.Name == profile {
-			found = true
-			creds.Profiles[i] = aid.GetCredentialProfileFlags(cmd)
+func configureUpdateCredentials(cmd *cobra.Command, mode string) error {
+	var err error
+	if err = aid.CheckConfigDirAndFile(); err == nil {
+		creds, err := dao.GetCredentials()
+		if err != nil {
+			logrus.Fatalf("unable to update credentials\n%v\n", err)
 		}
+
+		found := false
+		for i, p := range creds.Profiles {
+			if p.Name == profile {
+				found = true
+				if mode == "interactive" {
+					creds.Profiles[i] = view.AskAboutCredentialProfile(cmd, p)
+				} else if mode == "non-interactive" {
+					creds.Profiles[i] = aid.UpdateCredentialProfile(cmd, p)
+				}
+			}
+		}
+
+		if !found {
+			return fmt.Errorf("profile %s not found", profile)
+		}
+
+		return dao.SaveCredentials(creds)
 	}
 
-	if !found {
-		return fmt.Errorf("profile %s not found", profile)
-	}
-
-	return dao.SaveCredentials(creds)
-}
-
-func removeCredential(s []model.CredentialProfile, index int) []model.CredentialProfile {
-	return append(s[:index], s[index+1:]...)
+	return err
 }
 
 func configureDeleteCredential() error {
@@ -281,7 +231,7 @@ func configureDeleteCredential() error {
 			found = true
 
 			var newCreds model.Credentials
-			newCreds.Profiles = removeCredential(creds.Profiles, i)
+			newCreds.Profiles = aid.RemoveCredential(creds.Profiles, i)
 			dao.SaveCredentials(newCreds)
 			break
 		}

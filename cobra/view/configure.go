@@ -44,10 +44,11 @@ func createCredentialProfile(cmd *cobra.Command, name string) model.CredentialPr
 	cp.CreatedAt = time.Now().String()
 	cp.UpdatedAt = time.Now().String()
 
-	return askAboutCredentialProfile(cmd, cp)
+	return AskAboutCredentialProfile(cmd, cp)
 }
 
-func askAboutCredentialProfile(cmd *cobra.Command, cp model.CredentialProfile) model.CredentialProfile {
+// AskAboutCredentialProfile TODO ...
+func AskAboutCredentialProfile(cmd *cobra.Command, cp model.CredentialProfile) model.CredentialProfile {
 	fmt.Println(">> Profile: " + cp.Name)
 	cp.Name = aid.GetUserInputAsString(cmd, ">> Name", cp.Name)
 	cp.Description = aid.GetUserInputAsString(cmd, ">> Description", cp.Description)
@@ -55,6 +56,7 @@ func askAboutCredentialProfile(cmd *cobra.Command, cp model.CredentialProfile) m
 	cp.UserToken = aid.GetUserInputAsString(cmd, ">> User Token", cp.UserToken)
 	cp.TeamToken = aid.GetUserInputAsString(cmd, ">> Team Token", cp.TeamToken)
 	cp.OrganizationToken = aid.GetUserInputAsString(cmd, ">> Organization Token", cp.OrganizationToken)
+	cp.UpdatedAt = time.Now().String()
 
 	return cp
 }
@@ -72,7 +74,7 @@ func UpdateCredentials(cmd *cobra.Command, name string) (model.Credentials, erro
 	for i, profile := range credentials.Profiles {
 		if profile.Name == name {
 			found = true
-			credentials.Profiles[i] = askAboutCredentialProfile(cmd, profile)
+			credentials.Profiles[i] = AskAboutCredentialProfile(cmd, profile)
 		}
 	}
 

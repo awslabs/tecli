@@ -25,6 +25,7 @@ import (
 
 var profile string
 
+// var config string
 var organization string
 
 // RootCmd represents the base command when called without any subcommands
@@ -41,6 +42,7 @@ func RootCmd() *cobra.Command {
 	}
 
 	// Cobra supports persistent flags, which, if defined here will be global for your application.
+	// cmd.PersistentFlags().StringVarP(&config, "config", "c", "", "Override the default directory location of the application. Example --config=tecli to locate under the current working directory.")
 	cmd.PersistentFlags().StringVarP(&profile, "profile", "p", "default", "Use a specific profile from your credentials and configurations file.")
 	cmd.PersistentFlags().StringVarP(&organization, "organization", "o", "", "Terraform Cloud Organization name")
 

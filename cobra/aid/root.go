@@ -32,14 +32,8 @@ func GetAppInfo() model.App {
 	app.Name = "tecli"
 	app.HomeDir = getHomeDir()
 	app.ConfigurationsDir = app.HomeDir + "/" + "." + app.Name
-	app.ConfigurationsName = "configurations"
-	app.ConfigurationsType = "yaml"
-	app.ConfigurationsPath = app.ConfigurationsDir + "/" + app.ConfigurationsName + "." + app.ConfigurationsType
-	app.ConfigurationsPermissions = os.ModePerm
 	app.CredentialsName = "credentials"
 	app.CredentialsType = "yaml"
-	app.CredentialsPath = app.ConfigurationsDir + "/" + app.CredentialsName + "." + app.CredentialsType
-	app.CredentialsPermissions = os.ModePerm
 	app.LogsDir = app.ConfigurationsDir
 	app.LogsName = "logs"
 	app.LogsType = "json"

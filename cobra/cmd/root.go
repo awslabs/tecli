@@ -30,7 +30,7 @@ import (
 
 var rootCmd = controller.RootCmd()
 
-//The verbose flag value
+var config string
 var verbosity string
 var log string
 var logFilePath string
@@ -47,6 +47,7 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
+	rootCmd.PersistentFlags().StringVarP(&config, "config", "c", "", "Override the default directory location of the application. Example --config=tecli to locate under the current working directory.")
 	rootCmd.PersistentFlags().StringVarP(&verbosity, "verbosity", "v", logrus.ErrorLevel.String(), "Valid log level:panic,fatal,error,warn,info,debug,trace).")
 	rootCmd.PersistentFlags().StringVarP(&log, "log", "l", "disable", "Enable or disable logs (found at $HOME/.tecli/logs.json). Log outputs will be shown on default output.")
 	rootCmd.PersistentFlags().StringVar(&logFilePath, "log-file-path", aid.GetAppInfo().LogsPath, "Log file path.")
@@ -56,9 +57,27 @@ func init() {
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
 	app := aid.GetAppInfo()
-	viper.AddConfigPath(app.ConfigurationsDir) // global directory
-	viper.SetConfigName(app.ConfigurationsName)
+
+	viper.SetConfigName(app.CredentialsName)
+	viper.SetConfigType(app.CredentialsType) // REQUIRED if the config file does not have the extension in the name
+
+	// user override config path
+	if config != "" {
+		viper.AddConfigPath(config)
+	} else {
+		// global directory
+		viper.AddConfigPath(app.ConfigurationsDir)
+
+		// optionally look for config in the working directory
+		viper.AddConfigPath("." + app.Name)
+	}
+
 	viper.AutomaticEnv() // read in environment variables that match
+
+	err := viper.ReadInConfig()     // Find and read the config file
+	if config == "" && err != nil { // Handle errors reading the config file
+		logrus.Fatalf("Error config file:\n%v", err)
+	}
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {

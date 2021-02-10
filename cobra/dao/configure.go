@@ -19,6 +19,7 @@ import (
 	"fmt"
 
 	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 	"gitlab.aws.dev/devops-aws/tecli/cobra/aid"
 	"gitlab.aws.dev/devops-aws/tecli/cobra/model"
 )
@@ -26,12 +27,12 @@ import (
 // GetCredentials read the current credentials file and return its model
 func GetCredentials() (model.Credentials, error) {
 	var creds model.Credentials
-	v, err := aid.ReadConfig(aid.GetAppInfo().CredentialsName)
+	err := viper.ReadInConfig()
 	if err != nil {
 		return creds, fmt.Errorf("unable to read credentials\n%v", err)
 	}
 
-	err = v.Unmarshal(&creds)
+	err = viper.Unmarshal(&creds)
 	if err != nil {
 		return creds, fmt.Errorf("unable to unmarshall credentials\n%v", err)
 	}
@@ -77,5 +78,10 @@ func GetOrganizationToken(name string) string {
 
 // SaveCredentials saves the given credential onto the credentials file
 func SaveCredentials(credentials model.Credentials) error {
-	return aid.WriteInterfaceToFile(credentials, aid.GetAppInfo().CredentialsPath)
+	return aid.WriteInterfaceToFile(credentials, viper.ConfigFileUsed())
+}
+
+// SaveCredentialsV2 saves the given credential onto the credentials file
+func SaveCredentialsV2(credentials model.Credentials, path string) error {
+	return aid.WriteInterfaceToFile(credentials, path)
 }
