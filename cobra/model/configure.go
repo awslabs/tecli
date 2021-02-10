@@ -13,6 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// Package model represents an object carrying data. It can also have logic to update controller if its data changes.
 package model
 
 // Credentials model

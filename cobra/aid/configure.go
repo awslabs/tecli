@@ -96,13 +96,6 @@ func GetCredentialProfileFlags(cmd *cobra.Command) model.CredentialProfile {
 	}
 	cp.Enabled = enabled
 
-	// if !cmd.Flags().Changed("enabled") {
-	// 	// enable profile by default
-	// 	cp.Enabled = true
-	// } else {
-	// 	cp.Enabled = enabled
-	// }
-
 	userToken, err := cmd.Flags().GetString("user-token")
 	if err != nil {
 		logrus.Fatalf("unable to get flag user-token\n%v", err)
@@ -381,7 +374,6 @@ func HasCreatedConfigDir(cmd *cobra.Command) (bool, error) {
 		return false, fmt.Errorf("unable to get flag config\n%v", err)
 	}
 
-	err = viper.ReadInConfig()
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
 			// Config file not found
@@ -394,7 +386,7 @@ func HasCreatedConfigDir(cmd *cobra.Command) (bool, error) {
 			}
 
 		} else {
-			// Config file was found but another error was produced
+			return false, err
 		}
 	}
 

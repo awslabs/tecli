@@ -10,7 +10,6 @@ import (
 	"os"
 
 	"github.com/sirupsen/logrus"
-	log "github.com/sirupsen/logrus"
 
 	"gitlab.aws.dev/devops-aws/tecli/box"
 )
@@ -26,7 +25,7 @@ func WriteFile(filename string, data []byte) bool {
 	err := ioutil.WriteFile(filename, data, os.ModePerm)
 
 	if err != nil {
-		log.Fatal(err)
+		logrus.Fatal(err)
 		return false
 	}
 
@@ -38,7 +37,7 @@ func WriteFileFromBox(source string, dest string) bool {
 	bytes, found := box.Get(BuildPath(source))
 
 	if !found {
-		log.Errorf("file \"%s\" not found under box/resources", BuildPath(source))
+		logrus.Errorf("file \"%s\" not found under box/resources", BuildPath(source))
 		return false
 	}
 
@@ -165,7 +164,7 @@ func ListFiles(dir string) []os.FileInfo {
 	files, err := ioutil.ReadDir(dir)
 
 	if err != nil {
-		log.Fatal(err)
+		logrus.Fatal(err)
 	}
 
 	return files

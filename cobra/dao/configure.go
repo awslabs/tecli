@@ -13,6 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// Package dao represents the Data Access Object Pattern or DAO pattern is used to separate low level data accessing API or operations from high level business services
 package dao
 
 import (

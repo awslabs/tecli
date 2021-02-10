@@ -13,6 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// Package view represents the visualization of the data that model contains.
 package view
 
 import (

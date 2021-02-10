@@ -13,6 +13,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// Package aid assist Cobra commands individually. Example: a command under `cmd/foo.go`, has its respective `aid/foo.go`.
+// This allows a more cleaner and readable code.
 package aid
 
 import (
