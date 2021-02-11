@@ -11,7 +11,11 @@
 
 -->
 
-{{ if has (ds "db") "logo" }}![{{ (ds "db").logo.label }}]({{ (ds "db").logo.url }}){{end}}
+{{ if has (ds "db") "logo" }}
+![{{ (ds "db").logo.label }}]({{ (ds "db").logo.url }})
+
+> {{ (ds "db").logo.label }}
+{{end}}
 
 {{ if has (ds "db") "shields" }}{{ range $badge := (ds "db").shields.badges }}{{ if ne $badge.image "" }}[![{{ $badge.description }}]({{$badge.image}})]({{$badge.url}}){{ else }}![{{ $badge.description }}]({{ $badge.url }}){{ end }}{{ end }}{{ end }}
 
