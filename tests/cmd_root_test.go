@@ -26,5 +26,5 @@ func TestRootWithNoArgAndNoFlags(t *testing.T) {
 	args := []string{""}
 	out, err := executeCommand(t, controller.RootCmd(), args)
 	assert.Nil(t, err)
-	assert.Contains(t, out, "The Cloud Engineer CLI")
+	assert.Contains(t, out, "Command Line Interface for Terraform Enterprise/Cloud")
 }

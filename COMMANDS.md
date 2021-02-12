@@ -1,6 +1,6 @@
 ## Commands
 ```
-Terraform Cloud/Enterprise Command Line
+Command Line Interface for Terraform Enterprise/Cloud
 
 Usage:
    [command]

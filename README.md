@@ -120,7 +120,7 @@ For more information, check the [Installation](https://gitlab.aws.dev/devops-aws
 
 ## Commands
 ```
-Terraform Cloud/Enterprise Command Line
+Command Line Interface for Terraform Enterprise/Cloud
 
 Usage:
    [command]
