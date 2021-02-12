@@ -71,11 +71,12 @@ func initConfig() {
 	if config != "" {
 		viper.AddConfigPath(config)
 	} else {
-		// global directory
+		// user override global dir
+		viper.AddConfigPath("." + app.Name)
+
+		// (default) global directory
 		viper.AddConfigPath(app.ConfigurationsDir)
 
-		// optionally look for config in the working directory
-		viper.AddConfigPath("." + app.Name)
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match

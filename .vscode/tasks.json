@@ -4,6 +4,16 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "cleanup",
+            "type": "shell",
+            "command": "make tecli/clean",
+        },
+        {
+            "label": "cleanup-configure-create",
+            "type": "shell",
+            "command": "make tecli/clean/all && make go/generate",
+        },
+        {
             "label": "build",
             "type": "shell",
             "command": "make tecli/build",

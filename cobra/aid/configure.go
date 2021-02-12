@@ -22,6 +22,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path"
 	"strconv"
 	"strings"
 	"time"
@@ -367,26 +368,53 @@ func RemoveCredential(s []model.CredentialProfile, index int) []model.Credential
 	return append(s[:index], s[index+1:]...)
 }
 
+// USES CASES
+// 	load viper read in config
+// 		search for default locations
+//			if found
+// 				return false
+//			if not found
+// 				create the directory in the global conf dir
+// 				create credentials file in the global conf dir
+//				return true
+
 // HasCreatedConfigDir TODO ...
 func HasCreatedConfigDir(cmd *cobra.Command) (bool, error) {
-	config, err := cmd.Flags().GetString("config")
-	if err != nil {
-		return false, fmt.Errorf("unable to get flag config\n%v", err)
-	}
-
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			// Config file not found
+			// not found anywhere, crea dir
 
-			if config != "" {
-				if helper.MkDirsIfNotExist(config) {
-					fmt.Printf("tecli configuration directory created at %s\n", config)
-					return true, nil
-				}
+			config, err := cmd.Flags().GetString("config")
+			if err != nil {
+				return false, fmt.Errorf("unable to get flag config\n%v", err)
 			}
 
-		} else {
-			return false, err
+			var dirPath string
+			if config != "" {
+				// create dir based on config dir
+				dirPath = path.Dir(config)
+			} else {
+				// create dir on global config dir location
+				dirPath = GetAppInfo().ConfigurationsDir
+			}
+
+			if helper.MkDirsIfNotExist(dirPath) {
+				fmt.Printf("tecli configuration directory created at %s\n", dirPath)
+
+				// necessary to create an empty file for Viper
+				credentialsPath := dirPath + "/" + GetAppInfo().CredentialsName + "." + GetAppInfo().CredentialsType
+				f, err := os.Create(credentialsPath)
+				if err != nil {
+					return false, fmt.Errorf("unable to create empty credentials file\n%v", err)
+				}
+				f.Close()
+
+				if err := viper.ReadInConfig(); err == nil {
+					fmt.Println("using config file:", viper.ConfigFileUsed())
+				}
+
+				return true, nil
+			}
 		}
 	}
 

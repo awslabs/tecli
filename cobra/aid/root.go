@@ -34,6 +34,7 @@ func GetAppInfo() model.App {
 	app.ConfigurationsDir = app.HomeDir + "/" + "." + app.Name
 	app.CredentialsName = "credentials"
 	app.CredentialsType = "yaml"
+	app.CredentialsPath = app.ConfigurationsDir + "/" + app.CredentialsName + "." + app.CredentialsType
 	app.LogsDir = app.ConfigurationsDir
 	app.LogsName = "logs"
 	app.LogsType = "json"

@@ -149,12 +149,7 @@ func configureCreateCredentials(cmd *cobra.Command, mode string) error {
 			creds.Profiles = append(creds.Profiles, c)
 		}
 
-		path, err := aid.GetConfigFilePath(cmd)
-		if err != nil {
-			return err
-		}
-		fmt.Printf("tecli configurations will be created at %s\n", path)
-		return dao.SaveCredentialsV2(creds, path)
+		return dao.SaveCredentials(creds)
 	}
 
 	creds, err := dao.GetCredentials()
