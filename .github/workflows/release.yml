@@ -1,0 +1,159 @@
+name: Release
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - '*' # Push events to matching v*, i.e. v1.0, v20.15.10
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.15.2' # The Go version to download (if necessary) and use.
+      - run: go version
+      - run: go get ./... 
+      - run: go generate ./...
+      - run: make tecli/compile
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body_path: CHANGELOG.md
+          draft: true # true to create a draft (unpublished) release, false to create a published one. Default: false
+          prerelease: true # true to identify the release as a prerelease. false to identify the release as a full release. Default: false
+      - name: Upload Release Asset (tecli-darwin-amd64)
+        id: upload-release-asset-tecli-darwin-amd64
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/tecli-darwin-amd64
+          asset_name: tecli-darwin-amd64
+          asset_content_type: application/x-tecli
+      - name: Upload Release Asset (tecli-solaris-amd64)
+        id: upload-release-asset-tecli-solaris-amd64
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/tecli-solaris-amd64
+          asset_name: tecli-solaris-amd64
+          asset_content_type: application/x-tecli
+      - name: Upload Release Asset (tecli-freebsd-386)
+        id: upload-release-asset-tecli-freebsd-386
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/tecli-freebsd-386
+          asset_name: tecli-freebsd-386
+          asset_content_type: application/x-tecli
+      - name: Upload Release Asset (tecli-freebsd-amd64)
+        id: upload-release-asset-tecli-freebsd-amd64
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/tecli-freebsd-amd64
+          asset_name: tecli-freebsd-amd64
+          asset_content_type: application/x-tecli
+      - name: Upload Release Asset (tecli-freebsd-arm)
+        id: upload-release-asset-tecli-freebsd-arm
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/tecli-freebsd-arm
+          asset_name: tecli-freebsd-arm
+          asset_content_type: application/x-tecli
+      - name: Upload Release Asset (tecli-openbsd-386)
+        id: upload-release-asset-tecli-openbsd-386
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/tecli-openbsd-386
+          asset_name: tecli-openbsd-386
+          asset_content_type: application/x-tecli
+      - name: Upload Release Asset (tecli-openbsd-amd64)
+        id: upload-release-asset-tecli-openbsd-amd64
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/tecli-openbsd-amd64
+          asset_name: tecli-openbsd-amd64
+          asset_content_type: application/x-tecli
+      - name: Upload Release Asset (tecli-openbsd-arm)
+        id: upload-release-asset-tecli-openbsd-arm
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/tecli-openbsd-arm
+          asset_name: tecli-openbsd-arm
+          asset_content_type: application/x-tecli
+      - name: Upload Release Asset (tecli-linux-386)
+        id: upload-release-asset-tecli-linux-386
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/tecli-linux-386
+          asset_name: tecli-linux-386
+          asset_content_type: application/x-tecli
+      - name: Upload Release Asset (tecli-linux-amd64)
+        id: upload-release-asset-tecli-linux-amd64
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/tecli-linux-amd64
+          asset_name: tecli-linux-amd64
+          asset_content_type: application/x-tecli
+      - name: Upload Release Asset (tecli-linux-arm)
+        id: upload-release-asset-tecli-linux-arm
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/tecli-linux-arm
+          asset_name: tecli-linux-arm
+          asset_content_type: application/x-tecli
+      - name: Upload Release Asset (tecli-windows-386)
+        id: upload-release-asset-tecli-windows-386
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/tecli-windows-386.exe
+          asset_name: tecli-windows-386.exe
+          asset_content_type: application/x-tecli
+      - name: Upload Release Asset (tecli-windows-amd64)
+        id: upload-release-asset-tecli-windows-amd64
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/tecli-windows-amd64.exe
+          asset_name: tecli-windows-amd64.exe
+          asset_content_type: application/x-tecli
