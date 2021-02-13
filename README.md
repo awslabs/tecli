@@ -15,7 +15,7 @@
 
 
 
-# Terraform Cloud/Enterprise Command Line  ( terraform-cloud-cli ) 
+# Command Line Interface for Terraform Cloud  ( terraform-cloud-cli ) 
 
 A command line interface for the official Go API client for Terraform Cloud/Enterprise.
 

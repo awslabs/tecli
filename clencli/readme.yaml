@@ -2,7 +2,7 @@ logo:
   url: https://images.unsplash.com/photo-1611182758520-e3cad0366193?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MXwxOTEyNTB8MHwxfHJhbmRvbXx8fHx8fHx8&ixlib=rb-1.2.1&q=80&w=1080
   label: logo
 app:
-  name: Terraform Cloud/Enterprise Command Line
+  name: Command Line Interface for Terraform Cloud
   function: |
     A command line interface for the official Go API client for Terraform Cloud/Enterprise.
   id: terraform-cloud-cli
