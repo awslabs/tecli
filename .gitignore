@@ -258,3 +258,4 @@ test/*
 terminalizer-*.yml
 temp/*
 clencli/log.json
+docker/
