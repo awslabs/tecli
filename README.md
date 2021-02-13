@@ -11,13 +11,17 @@
 
 -->
 
-![logo](https://images.unsplash.com/photo-1611182758520-e3cad0366193?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MXwxOTEyNTB8MHwxfHJhbmRvbXx8fHx8fHx8&ixlib=rb-1.2.1&q=80&w=1080)
+
+![Photo by [Gabriel Menchaca](https://unsplash.com/gabrielmenchaca) on [Unsplash](https://unsplash.com)](clencli/logo.jpeg)
+
+> Photo by [Gabriel Menchaca](https://unsplash.com/gabrielmenchaca) on [Unsplash](https://unsplash.com)
 
 
 
-# Command Line Interface for Terraform Cloud  ( terraform-cloud-cli ) 
 
-A command line interface for the official Go API client for Terraform Cloud/Enterprise.
+# Command Line Interface for Terraform Cloud  ( tecli ) 
+
+A non-official command line interface for Terraform Cloud/Enterprise.
 
 
 ## Table of Contents
