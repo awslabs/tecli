@@ -35,7 +35,8 @@ var runValidArgs = []string{
 	"apply",
 	"cancel",
 	"force-cancel",
-	"discard"}
+	"discard",
+	"discard-all"}
 
 // RunCmd command to display tecli current version
 func RunCmd() *cobra.Command {
@@ -214,9 +215,49 @@ func runRun(cmd *cobra.Command, args []string) error {
 		if err != nil {
 			return fmt.Errorf("unable to discard run\n%v", err)
 		}
+	case "discard-all":
+		workspaceID, err := cmd.Flags().GetString("workspace-id")
+		if err != nil {
+			return fmt.Errorf("unable to get flag workspace-id\n%v", err)
+		}
 
+		list, err := runList(client, workspaceID, tfe.RunListOptions{})
+		if err == nil {
+			for _, r := range list.Items {
+				if r.Actions.IsCancelable {
+					fmt.Printf("attempting to cancel run (%s)\n", r.ID)
+					options := aid.GetRunCancelOptions(cmd)
+					err := runCancel(client, r.ID, options)
+					if err != nil {
+						return fmt.Errorf("unable to cancel run (%s)", r.ID)
+					}
+					fmt.Printf("run (%s) cancelled successfully\n", r.ID)
+				}
+
+				if r.Actions.IsDiscardable {
+					fmt.Printf("attempting to discard run (%s)\n", r.ID)
+					options := aid.GetRunDiscardOptions(cmd)
+					err := runDiscard(client, r.ID, options)
+					if err != nil {
+						return fmt.Errorf("unable to discard run (%s)", r.ID)
+					}
+					fmt.Printf("run (%s) discarded successfully\n", r.ID)
+				}
+
+				if r.Actions.IsForceCancelable {
+					fmt.Printf("attempting to force-cancel run (%s)\n", r.ID)
+					options := aid.GetRunForceCancelOptions(cmd)
+					err := runForceCancel(client, r.ID, options)
+					if err != nil {
+						return fmt.Errorf("unable to force cancel run (%s)", r.ID)
+					}
+					fmt.Printf("run (%s) force-cancelled successfully\n", r.ID)
+				}
+			}
+		} else {
+			return fmt.Errorf("no run was found")
+		}
 	}
-
 	return nil
 }
 
