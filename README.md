@@ -19,9 +19,9 @@
 
 
 
-# Terraform Cloud/Enterprise Command Line  ( terraform-cloud-cli ) 
+# Command Line Interface for Terraform Enterprise/Cloud  ( tecli ) 
 
-A command line interface for the official Go API client for Terraform Cloud/Enterprise.
+A non-official command line interface for Terraform Cloud/Enterprise.
 
 
 ## Table of Contents

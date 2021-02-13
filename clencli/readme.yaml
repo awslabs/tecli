@@ -2,10 +2,10 @@ logo:
   url: clencli/logo.jpeg
   label: Photo by [Gabriel Menchaca](https://unsplash.com/gabrielmenchaca) on [Unsplash](https://unsplash.com)
 app:
-  name: Terraform Cloud/Enterprise Command Line
+  name: Command Line Interface for Terraform Enterprise/Cloud
   function: |
-    A command line interface for the official Go API client for Terraform Cloud/Enterprise.
-  id: terraform-cloud-cli
+    A non-official command line interface for Terraform Cloud/Enterprise.
+  id: tecli
 screenshots:
 - caption: How to configure
   label: how-to-configure
