@@ -19,7 +19,7 @@
 
 
 
-# Command Line Interface for Terraform Cloud  ( tecli ) 
+# Command Line Interface for Terraform Enterprise/Cloud  ( tecli ) 
 
 A non-official command line interface for Terraform Cloud/Enterprise.
 

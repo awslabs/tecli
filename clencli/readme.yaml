@@ -2,7 +2,7 @@ logo:
   url: clencli/logo.jpeg
   label: Photo by [Gabriel Menchaca](https://unsplash.com/gabrielmenchaca) on [Unsplash](https://unsplash.com)
 app:
-  name: Command Line Interface for Terraform Cloud
+  name: Command Line Interface for Terraform Enterprise/Cloud
   function: |
     A non-official command line interface for Terraform Cloud/Enterprise.
   id: tecli
