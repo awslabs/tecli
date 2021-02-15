@@ -34,7 +34,9 @@ var runValidArgs = []string{
 	"read-with-options",
 	"apply",
 	"cancel",
+	"cancel-all",
 	"force-cancel",
+	"force-cancel-all",
 	"discard",
 	"discard-all"}
 
@@ -190,7 +192,30 @@ func runRun(cmd *cobra.Command, args []string) error {
 		}
 
 		fmt.Println("run cancelled successfully")
+	case "cancel-all":
+		workspaceID, err := cmd.Flags().GetString("workspace-id")
+		if err != nil {
+			return fmt.Errorf("unable to get flag workspace-id\n%v", err)
+		}
 
+		list, err := runList(client, workspaceID, tfe.RunListOptions{})
+		if err == nil {
+			for _, r := range list.Items {
+				if r.Actions.IsCancelable {
+
+					fmt.Printf("attempting to cancel run (%s)\n", r.ID)
+					options := aid.GetRunCancelOptions(cmd)
+					err := runCancel(client, r.ID, options)
+					if err != nil {
+						return fmt.Errorf("unable to cancel run (%s)", r.ID)
+					}
+
+					fmt.Printf("run (%s) cancelled successfully\n", r.ID)
+				}
+			}
+		} else {
+			return fmt.Errorf("no run was found")
+		}
 	case "force-cancel":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
@@ -204,6 +229,29 @@ func runRun(cmd *cobra.Command, args []string) error {
 		}
 
 		fmt.Println("run cancelled successfully")
+	case "force-cancel-all":
+		workspaceID, err := cmd.Flags().GetString("workspace-id")
+		if err != nil {
+			return fmt.Errorf("unable to get flag workspace-id\n%v", err)
+		}
+
+		list, err := runList(client, workspaceID, tfe.RunListOptions{})
+		if err == nil {
+			for _, r := range list.Items {
+				if r.Actions.IsForceCancelable {
+					fmt.Printf("attempting to force-cancel run (%s)\n", r.ID)
+					options := aid.GetRunForceCancelOptions(cmd)
+					err := runForceCancel(client, r.ID, options)
+					if err != nil {
+						return fmt.Errorf("unable to force cancel run (%s)", r.ID)
+					}
+					fmt.Printf("run (%s) force-cancelled successfully\n", r.ID)
+				}
+			}
+		} else {
+			return fmt.Errorf("no run was found")
+		}
+
 	case "discard":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
@@ -224,16 +272,6 @@ func runRun(cmd *cobra.Command, args []string) error {
 		list, err := runList(client, workspaceID, tfe.RunListOptions{})
 		if err == nil {
 			for _, r := range list.Items {
-				if r.Actions.IsCancelable {
-					fmt.Printf("attempting to cancel run (%s)\n", r.ID)
-					options := aid.GetRunCancelOptions(cmd)
-					err := runCancel(client, r.ID, options)
-					if err != nil {
-						return fmt.Errorf("unable to cancel run (%s)", r.ID)
-					}
-					fmt.Printf("run (%s) cancelled successfully\n", r.ID)
-				}
-
 				if r.Actions.IsDiscardable {
 					fmt.Printf("attempting to discard run (%s)\n", r.ID)
 					options := aid.GetRunDiscardOptions(cmd)
@@ -242,16 +280,6 @@ func runRun(cmd *cobra.Command, args []string) error {
 						return fmt.Errorf("unable to discard run (%s)", r.ID)
 					}
 					fmt.Printf("run (%s) discarded successfully\n", r.ID)
-				}
-
-				if r.Actions.IsForceCancelable {
-					fmt.Printf("attempting to force-cancel run (%s)\n", r.ID)
-					options := aid.GetRunForceCancelOptions(cmd)
-					err := runForceCancel(client, r.ID, options)
-					if err != nil {
-						return fmt.Errorf("unable to force cancel run (%s)", r.ID)
-					}
-					fmt.Printf("run (%s) force-cancelled successfully\n", r.ID)
 				}
 			}
 		} else {
