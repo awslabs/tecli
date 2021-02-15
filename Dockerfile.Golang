@@ -28,5 +28,8 @@ WORKDIR /dist
 # Copy binary from build to main folder
 RUN cp /build/tecli .
 
+# Cleanup
+RUN rm -rf /build
+
 # Command to run when starting the container
 CMD ["/dist/tecli"]
