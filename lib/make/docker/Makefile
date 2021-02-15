@@ -26,7 +26,7 @@ docker/publish/go:
 	docker push valtersilvaau/tecli-go:$(TAG)
 
 .PHONY: docker/publish/alpine
-docker/publish/alpine:
+docker/publish/alpine: docker/build
 	docker tag tecli-alpine valtersilvaau/tecli-alpine:$(TAG)
 	docker push valtersilvaau/tecli-alpine:$(TAG)
 
