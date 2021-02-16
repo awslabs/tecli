@@ -7,7 +7,7 @@ tecli/test:
 	@cd tests && go test -v
 
 .PHONY: tecli/build
-tecli/build: go/mod/tidy go/version go/get go/fmt go/generate go/build tecli/update-readme ## Builds the app
+tecli/build: tecli/clean go/mod/tidy go/version go/get go/fmt go/generate go/build tecli/update-readme ## Builds the app
 
 .PHONY: tecli/install
 tecli/install: go/get go/fmt go/generate go/install ## Builds the app and install all dependencies
@@ -78,6 +78,8 @@ tecli/update-readme: ## Renders template readme.tmpl with additional documents
 tecli/test: go/test
 
 .DEFAULT_GOAL := help
+
+# TODO: create  target that for every build detects if there's unstaged files, then forces user to commit the changes, then uses that and tags to generate a version on VERSION file
 
 .PHONY: help
 help: ## This HELP message
