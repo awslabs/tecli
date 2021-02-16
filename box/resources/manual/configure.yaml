@@ -4,10 +4,18 @@ use: |-
   Arguments:
     {{ arguments }}
 example: |-
-  If you want to create a new named profile:
+  To create a new named profile:
     tecli configure --profile work
 
-  If you want to delete a named profile:
+  To delete a named profile:
     tecli configure delete --profile work
-short: Configures tecli global settings
-long: Configures tecli global credentials used by commands
+
+  To crate a new named profile non-interactivelly:
+    tecli configure create --profile cicd --mode=non-interactive
+
+short: Configures tecli settings
+long: |
+  Configure TECLI options. If this command is run with create argument, you will be prompted for configuration values such as your Terraform Cloud Team Token. 
+  You can configure a named profile using the --profile argument. If your config file does not exist (the default location is ~/.tecli/credentials), the TECLI will create it for you. 
+  To keep an existing value, hit enter when prompted for the value. When you are prompted for information, the current value will be displayed in [brackets]. 
+  If the config item has no value, it won't be displayed. Note that the configure command only works with values from the config file. It does not use any configuration values from environment variables.
