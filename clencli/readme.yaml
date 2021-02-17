@@ -1,11 +1,28 @@
 logo:
   url: clencli/logo.jpeg
   label: Photo by [Gabriel Menchaca](https://unsplash.com/gabrielmenchaca) on [Unsplash](https://unsplash.com)
+shields:
+  badges:
+  - description: GitHub issues
+    image: https://img.shields.io/github/issues/awslabs/tecli
+    url: https://github.com/awslabs/tecli/issues
+  - description: GitHub forks
+    image: https://img.shields.io/github/forks/awslabs/tecli
+    url: https://github.com/awslabs/tecli/network
+  - description: GitHub stars
+    image: https://img.shields.io/github/stars/awslabs/tecli
+    url: https://github.com/awslabs/tecli/stargazers
+  - description: GitHub license
+    image: https://img.shields.io/github/license/awslabs/tecli
+    url: https://github.com/awslabs/tecli/blob/master/LICENSE
+  - description: Twitter
+    image: https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Fawslabs%2Ftecli
+    url: https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fawslabs%2Ftecli
 app:
   name: Command Line Interface for Terraform Enterprise/Cloud
   function: |-
     In a world where everything is Terraform, teams use [Terraform Cloud API](https://www.terraform.io/docs/cloud/api/index.html) to manage their workloads.
-    TECLI increases teams productivy by facilitating such interaction and by providing easy commands that can be executed on a terminal or on [CI/CD](https://en.wikipedia.org/wiki/CI/CD) systems.
+    TECLI increases teams productivity by facilitating such interaction and by providing easy commands that can be executed on a terminal or on CI/CD systems.
   id: tecli
 screenshots:
 - caption: How to configure
