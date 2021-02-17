@@ -3,6 +3,16 @@
 All the following commands require [TEAM API TOKEN](https://www.terraform.io/docs/cloud/users-teams-organizations/api-tokens.html#team-api-tokens). 
 You can run `tecli configure create` to configure TECLI options. Alternatively, you can export [environment varibles](https://github.com/awslabs/tecli/wiki/Environment-Variables).
 
+To export environment variables:
+
+```
+# on Linux:
+export TFC_TEAM_TOKEN=XXX
+
+# on Windows (powershell):
+$Env:TFC_TEAM_TOKEN="XXX"
+```
+
 To list all workspaces part of an organization:
 ```
 tecli workspace list -o=${TFC_ORGANIZATION} -p=${PROFILE}
