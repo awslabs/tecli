@@ -17,7 +17,7 @@
 > Photo by [Gabriel Menchaca](https://unsplash.com/gabrielmenchaca) on [Unsplash](https://unsplash.com)
 
 
-
+[![GitHub issues](https://img.shields.io/github/issues/awslabs/tecli)](https://github.com/awslabs/tecli/issues)[![GitHub forks](https://img.shields.io/github/forks/awslabs/tecli)](https://github.com/awslabs/tecli/network)[![GitHub stars](https://img.shields.io/github/stars/awslabs/tecli)](https://github.com/awslabs/tecli/stargazers)[![GitHub license](https://img.shields.io/github/license/awslabs/tecli)](https://github.com/awslabs/tecli/blob/master/LICENSE)[![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Fawslabs%2Ftecli)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fawslabs%2Ftecli)
 
 # Command Line Interface for Terraform Enterprise/Cloud  ( tecli ) 
 
@@ -155,6 +155,16 @@ Use " [command] --help" for more information about a command.
 
 All the following commands require [TEAM API TOKEN](https://www.terraform.io/docs/cloud/users-teams-organizations/api-tokens.html#team-api-tokens). 
 You can run `tecli configure create` to configure TECLI options. Alternatively, you can export [environment varibles](https://github.com/awslabs/tecli/wiki/Environment-Variables).
+
+To export environment variables:
+
+```
+# on Linux:
+export TFC_TEAM_TOKEN=XXX
+
+# on Windows (powershell):
+$Env:TFC_TEAM_TOKEN="XXX"
+```
 
 To list all workspaces part of an organization:
 ```
