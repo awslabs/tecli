@@ -3,8 +3,9 @@ logo:
   label: Photo by [Gabriel Menchaca](https://unsplash.com/gabrielmenchaca) on [Unsplash](https://unsplash.com)
 app:
   name: Command Line Interface for Terraform Enterprise/Cloud
-  function: To help Terraform users thrive by enabling all teams to work together
-    effortlessly.
+  function: |-
+    In a world where everything is Terraform, teams use Terraform Cloud API to manage their workloads.
+    TECLI increases teams productivy by facilitating such interaction and by providing easy commands that can be executed on a terminal or on CI/CD systems.
   id: tecli
 screenshots:
 - caption: How to configure

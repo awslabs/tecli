@@ -21,7 +21,8 @@
 
 # Command Line Interface for Terraform Enterprise/Cloud  ( tecli ) 
 
-To help Terraform users thrive by enabling all teams to work together effortlessly.
+In a world where everything is Terraform, teams use Terraform Cloud API to manage their workloads.
+TECLI increases teams productivy by facilitating such interaction and by providing easy commands that can be executed on a terminal or on CI/CD systems.
 
 ## Table of Contents
 ---
