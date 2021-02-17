@@ -19,10 +19,10 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/awslabs/tecli/cobra/model"
 	tfe "github.com/hashicorp/go-tfe"
 	"github.com/mitchellh/go-homedir"
 	"github.com/sirupsen/logrus"
-	"gitlab.aws.dev/devops-aws/tecli/cobra/model"
 )
 
 // GetAppInfo return information about tecli settings

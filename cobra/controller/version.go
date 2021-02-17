@@ -20,10 +20,10 @@ import (
 	"os"
 	"runtime"
 
+	"github.com/awslabs/tecli/box"
+	"github.com/awslabs/tecli/helper"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"gitlab.aws.dev/devops-aws/tecli/box"
-	"gitlab.aws.dev/devops-aws/tecli/helper"
 )
 
 // VersionCmd command to display tecli current version

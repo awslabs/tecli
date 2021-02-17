@@ -19,10 +19,10 @@ package dao
 import (
 	"fmt"
 
+	"github.com/awslabs/tecli/cobra/aid"
+	"github.com/awslabs/tecli/cobra/model"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	"gitlab.aws.dev/devops-aws/tecli/cobra/aid"
-	"gitlab.aws.dev/devops-aws/tecli/cobra/model"
 )
 
 // GetCredentials read the current credentials file and return its model

@@ -20,13 +20,13 @@ import (
 	"os"
 	"time"
 
+	"github.com/awslabs/tecli/cobra/aid"
+	"github.com/awslabs/tecli/cobra/dao"
+	"github.com/awslabs/tecli/cobra/model"
+	"github.com/awslabs/tecli/cobra/view"
+	"github.com/awslabs/tecli/helper"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"gitlab.aws.dev/devops-aws/tecli/cobra/aid"
-	"gitlab.aws.dev/devops-aws/tecli/cobra/dao"
-	"gitlab.aws.dev/devops-aws/tecli/cobra/model"
-	"gitlab.aws.dev/devops-aws/tecli/cobra/view"
-	"gitlab.aws.dev/devops-aws/tecli/helper"
 )
 
 var configureValidArgs = []string{"list", "create", "read", "update", "delete"}

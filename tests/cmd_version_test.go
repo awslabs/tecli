@@ -3,8 +3,8 @@ package tests
 import (
 	"testing"
 
+	"github.com/awslabs/tecli/cobra/controller"
 	"github.com/stretchr/testify/assert"
-	"gitlab.aws.dev/devops-aws/tecli/cobra/controller"
 )
 
 func TestVersionCmd(t *testing.T) {

@@ -1,4 +1,4 @@
-module gitlab.aws.dev/devops-aws/tecli
+module github.com/awslabs/tecli
 
 go 1.15
 

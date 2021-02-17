@@ -20,11 +20,11 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/awslabs/tecli/cobra/aid"
+	"github.com/awslabs/tecli/cobra/dao"
+	"github.com/awslabs/tecli/cobra/model"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"gitlab.aws.dev/devops-aws/tecli/cobra/aid"
-	"gitlab.aws.dev/devops-aws/tecli/cobra/dao"
-	"gitlab.aws.dev/devops-aws/tecli/cobra/model"
 )
 
 // CREDENTIALS

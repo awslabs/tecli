@@ -19,8 +19,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/awslabs/tecli/helper"
 	"github.com/spf13/cobra"
-	"gitlab.aws.dev/devops-aws/tecli/helper"
 )
 
 var profile string

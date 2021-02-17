@@ -27,11 +27,11 @@ import (
 	"strings"
 	"time"
 
+	"github.com/awslabs/tecli/cobra/model"
+	"github.com/awslabs/tecli/helper"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"gitlab.aws.dev/devops-aws/tecli/cobra/model"
-	"gitlab.aws.dev/devops-aws/tecli/helper"
 	"gopkg.in/yaml.v2"
 )
 

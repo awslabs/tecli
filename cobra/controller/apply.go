@@ -22,12 +22,12 @@ import (
 	"io"
 	"os"
 
+	"github.com/awslabs/tecli/cobra/aid"
+	"github.com/awslabs/tecli/cobra/dao"
+	"github.com/awslabs/tecli/helper"
 	"github.com/hashicorp/go-tfe"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"gitlab.aws.dev/devops-aws/tecli/cobra/aid"
-	"gitlab.aws.dev/devops-aws/tecli/cobra/dao"
-	"gitlab.aws.dev/devops-aws/tecli/helper"
 )
 
 var applyValidArgs = []string{"read", "logs"}

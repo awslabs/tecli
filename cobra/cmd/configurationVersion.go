@@ -16,7 +16,7 @@ limitations under the License.
 package cmd
 
 import (
-	controller "gitlab.aws.dev/devops-aws/tecli/cobra/controller"
+	controller "github.com/awslabs/tecli/cobra/controller"
 )
 
 var configurationVersionCmd = controller.ConfigurationVersionCmd()

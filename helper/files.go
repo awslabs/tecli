@@ -11,7 +11,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"gitlab.aws.dev/devops-aws/tecli/box"
+	"github.com/awslabs/tecli/box"
 )
 
 // BuildPath changes the given path to a more cross platform friendly format

@@ -6,10 +6,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/awslabs/tecli/cobra/controller"
+	"github.com/awslabs/tecli/helper"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"gitlab.aws.dev/devops-aws/tecli/cobra/controller"
-	"gitlab.aws.dev/devops-aws/tecli/helper"
 )
 
 /* SETUP */

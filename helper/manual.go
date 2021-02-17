@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/awslabs/tecli/box"
 	"github.com/sirupsen/logrus"
-	"gitlab.aws.dev/devops-aws/tecli/box"
 	yaml "gopkg.in/yaml.v2"
 )
 
