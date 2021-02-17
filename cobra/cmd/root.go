@@ -50,7 +50,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&config, "config", "c", "", "Override the default directory location of the application. Example --config=tecli to locate under the current working directory.")
 	rootCmd.PersistentFlags().StringVarP(&verbosity, "verbosity", "v", logrus.ErrorLevel.String(), "Valid log level:panic,fatal,error,warn,info,debug,trace).")
 	rootCmd.PersistentFlags().StringVarP(&log, "log", "l", "disable", "Enable or disable logs (found at $HOME/.tecli/logs.json). Log outputs will be shown on default output.")
-	rootCmd.PersistentFlags().StringVar(&logFilePath, "log-file-path", aid.GetAppInfo().LogsPath, "Log file path.")
+	rootCmd.PersistentFlags().StringVar(&logFilePath, "log-file-path", "", "Log file path.")
 
 }
 
@@ -87,6 +87,11 @@ func initConfig() {
 	}
 
 	// if config is not found, that's okay, as the user might use env vars
+
+	// set default for log file if not defined by user
+	if logFilePath == "" {
+		logFilePath = aid.GetAppInfo().LogsPath
+	}
 
 	if log == "enable" && logFilePath != "" {
 		if err := aid.SetupLoggingLevel(verbosity); err == nil {
