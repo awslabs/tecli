@@ -21,8 +21,8 @@
 
 # Command Line Interface for Terraform Enterprise/Cloud  ( tecli ) 
 
-In a world where everything is Terraform, teams use Terraform Cloud API to manage their workloads.
-TECLI increases teams productivy by facilitating such interaction and by providing easy commands that can be executed on a terminal or on CI/CD systems.
+In a world where everything is Terraform, teams use [Terraform Cloud API](https://www.terraform.io/docs/cloud/api/index.html) to manage their workloads.
+TECLI increases teams productivy by facilitating such interaction and by providing easy commands that can be executed on a terminal or on [CI/CD](https://en.wikipedia.org/wiki/CI/CD) systems.
 
 ## Table of Contents
 ---
@@ -244,6 +244,7 @@ tecli apply logs --id=${APPLY_ID}
 <details open>
   <summary>Expand</summary>
 
+  * [Terraform Cloud](https://www.terraform.io/docs/cloud/index.html) - Terraform Cloud is an application that helps teams use Terraform together.
   * [Terraform Cloud/Enterprise Go Client](https://github.com/hashicorp/go-tfe) - The official Go API client for Terraform Cloud/Enterprise.
   * [clencli](https://github.com/awslabs/clencli) - Cloud Engineer CLI
   * [terminalizer](https://github.com/faressoft/terminalizer) - Record your terminal and generate animated gif images or share a web player link terminalizer.com
