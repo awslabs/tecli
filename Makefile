@@ -3,7 +3,7 @@
 include lib/make/*/Makefile
 
 .PHONY: tecli/test
-tecli/test:
+tecli/test: go/generate ## Execute Golang tests
 	@cd tests && go test -v
 
 .PHONY: tecli/build
@@ -13,7 +13,7 @@ tecli/build: tecli/clean go/mod/tidy go/version go/get go/fmt go/generate go/bui
 tecli/install: go/get go/fmt go/generate go/install ## Builds the app and install all dependencies
 
 .PHONY: tecli/run
-tecli/run: go/fmt ## Run a command
+tecli/run: go/fmt ## Run a Cobra command
 ifdef command
 	make go/run command='$(command)'
 else
@@ -52,7 +52,7 @@ tecli/clean: ## Removes unnecessary files and directories
 	rm -f clencli/log.json
 
 .PHONY: tecli/clean/all
-tecli/clean/all: tecli/clean
+tecli/clean/all: tecli/clean ## Clean and remove configurations directory
 	rm -rf .tecli ~/.tecli
 
 .PHONY: tecli/terminalizer
@@ -73,9 +73,6 @@ tecli/update-readme: ## Renders template readme.tmpl with additional documents
 	@echo '```' >> COMMANDS.md
 	@echo "COMMANDS.md generated successfully"
 	@clencli render template --name readme
-
-.PHONY: tecli/test
-tecli/test: go/test
 
 .DEFAULT_GOAL := help
 
