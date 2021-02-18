@@ -1,6 +1,7 @@
 package helper
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"strings"
@@ -10,6 +11,7 @@ import (
 	"os"
 
 	"github.com/sirupsen/logrus"
+	yaml "gopkg.in/yaml.v2"
 
 	"github.com/awslabs/tecli/box"
 )
@@ -42,6 +44,24 @@ func WriteFileFromBox(source string, dest string) bool {
 	}
 
 	return WriteFile(BuildPath(dest), bytes)
+}
+
+// WriteInterfaceToFile write the given interface into a file
+func WriteInterfaceToFile(in interface{}, path string) error {
+	b, err := yaml.Marshal(&in)
+	if err != nil {
+		_, ok := err.(*json.UnsupportedTypeError)
+		if ok {
+			return fmt.Errorf("json unsupported type error")
+		}
+	}
+
+	err = ioutil.WriteFile(path, b, os.ModePerm)
+	if err != nil {
+		return fmt.Errorf("unable to update:%s\n%v", path, err)
+	}
+
+	return err
 }
 
 // DownloadFileTo downloads a file and saves into the given directory with the given file name
