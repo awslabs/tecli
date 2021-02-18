@@ -19,8 +19,8 @@ package dao
 import (
 	"fmt"
 
-	"github.com/awslabs/tecli/cobra/aid"
 	"github.com/awslabs/tecli/cobra/model"
+	"github.com/awslabs/tecli/helper"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
@@ -89,10 +89,5 @@ func GetOrganizationToken(name string) string {
 
 // SaveCredentials saves the given credential onto the credentials file
 func SaveCredentials(credentials model.Credentials) error {
-	return aid.WriteInterfaceToFile(credentials, viper.ConfigFileUsed())
-}
-
-// SaveCredentialsV2 saves the given credential onto the credentials file
-func SaveCredentialsV2(credentials model.Credentials, path string) error {
-	return aid.WriteInterfaceToFile(credentials, path)
+	return helper.WriteInterfaceToFile(credentials, viper.ConfigFileUsed())
 }
