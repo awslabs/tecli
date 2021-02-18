@@ -4,40 +4,18 @@ import (
 	"bytes"
 	"os"
 	"testing"
-	"time"
 
 	"github.com/awslabs/tecli/cobra/controller"
-	"github.com/awslabs/tecli/helper"
-	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
-
-/* SETUP */
-
-func beforeSetup() {
-	format := "2006-01-02-15-04-05.000000000"
-	dt := time.Now().Format(format)
-
-	dir := helper.CreateTempDir(os.TempDir(), "tecli-"+dt)
-
-	// enter the new directory
-	err := os.Chdir(dir)
-	if err != nil {
-		logrus.Fatal(err)
-	}
-}
-
-func TestMain(m *testing.M) {
-	beforeSetup()
-	os.Exit(m.Run())
-}
 
 /* COBRA */
 
 func executeCommand(t *testing.T, cmd *cobra.Command, args []string) (stdout string, err error) {
-	wd := createAndEnterTestDirectory(t)
-	_, stdout, err = executeCommandC(cmd, args)
+	wd := t.TempDir()
+	// execute the command within the new working directory
 	os.Chdir(wd)
+	_, stdout, err = executeCommandC(cmd, args)
 
 	return stdout, err
 }
@@ -46,28 +24,6 @@ func executeCommand(t *testing.T, cmd *cobra.Command, args []string) (stdout str
 func executeCommandOnly(t *testing.T, cmd *cobra.Command, args []string) (stdout string, err error) {
 	_, stdout, err = executeCommandC(cmd, args)
 	return stdout, err
-}
-
-// return the current working directory, useful to return to the previous directory
-func createAndEnterTestDirectory(t *testing.T) string {
-	wd, err := os.Getwd()
-	if err != nil {
-		logrus.Fatalf("unable to get current working directory")
-	}
-
-	dir := createTestDirectory(t)
-	os.Chdir(dir)
-	return wd
-}
-
-// createTestDirectory create the testing directory and enters it
-func createTestDirectory(t *testing.T) string {
-	created := helper.MkDirsIfNotExist(t.Name())
-	if !created {
-		logrus.Infoln("directory already exist, skipping...")
-	}
-
-	return t.Name()
 }
 
 func executeCommandC(cmd *cobra.Command, args []string) (command *cobra.Command, stdout string, err error) {
@@ -83,10 +39,4 @@ func executeCommandC(cmd *cobra.Command, args []string) (command *cobra.Command,
 	command, err = rootCmd.ExecuteC()
 	stdout = buf.String()
 	return command, stdout, err
-}
-
-// InitRootAndChildCmd initializes Cobra `root` command and add the `childCmd` to it
-func InitRootAndChildCmd(rootCmd *cobra.Command, childCmd *cobra.Command) (*cobra.Command, *cobra.Command) {
-	rootCmd.AddCommand(childCmd)
-	return rootCmd, childCmd
 }

@@ -13,11 +13,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// Package test contains unit and integration tests
 package tests
 
 import (
+	"os"
 	"testing"
 
+	"github.com/awslabs/tecli/cobra/aid"
 	"github.com/awslabs/tecli/cobra/controller"
 	"github.com/stretchr/testify/assert"
 )
@@ -47,9 +50,13 @@ func TestConfigureCmdFlags(t *testing.T) {
 }
 
 func TestConfigureCreateWithNoArgAndNoFlags(t *testing.T) {
-	args := []string{"configure", "create", "--organization", "terraform-cloud-pipeline", "--name", "my-configure"}
+	// need to remove global tecli configuration directory
+	err := os.RemoveAll(aid.GetAppInfo().AppDir)
+	assert.Nil(t, err)
+
+	// need to find a way to run/debug test in interactive mode
+	args := []string{"configure", "create", "--mode", "non-interactive"}
 	out, err := executeCommandOnly(t, controller.ConfigureCmd(), args)
-	assert.NotNil(t, err)
-	assert.Equal(t, "this command requires one argument", err.Error())
-	assert.Contains(t, out, "")
+	assert.Nil(t, err)
+	assert.Contains(t, out, "created successfully")
 }
