@@ -23,6 +23,7 @@ import (
 	tfe "github.com/hashicorp/go-tfe"
 	"github.com/mitchellh/go-homedir"
 	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 )
 
 // GetAppInfo return information about tecli settings
@@ -30,21 +31,30 @@ func GetAppInfo() model.App {
 	var err error
 	var app model.App
 	app.Name = "tecli"
+
+	// ~/.tecli
 	app.HomeDir = getHomeDir()
-	app.ConfigurationsDir = app.HomeDir + "/" + "." + app.Name
-	app.CredentialsName = "credentials"
-	app.CredentialsType = "yaml"
-	app.CredentialsPath = app.ConfigurationsDir + "/" + app.CredentialsName + "." + app.CredentialsType
-	app.LogsDir = app.ConfigurationsDir
-	app.LogsName = "logs"
-	app.LogsType = "json"
-	app.LogsPath = app.LogsDir + "/" + app.LogsName + "." + app.LogsType
-	app.LogsPermissions = os.ModePerm
-	app.WorkingDir, err = os.Getwd()
+	app.AppDir = app.HomeDir + "/" + "." + app.Name
+
+	// ~/.tecli/credentials.yaml
+	app.CredentialsFileName = "credentials"
+	app.CredentialsFileType = "yaml"
+	app.CredentialsFilePath = app.AppDir + "/" + app.CredentialsFileName + "." + app.CredentialsFileType
+
+	// ~/.tecli/logs.json
+	app.LogsFileName = "logs"
+	app.LogsFileType = "json"
+	app.LogsFilePath = app.AppDir + "/" + app.LogsFileName + "." + app.LogsFileType
+	app.LogsFilePermissions = os.ModePerm
+
+	// $(pwd)
+	wd, err := os.Getwd()
 	if err != nil {
 		fmt.Printf("Unable to detect the current directory\n%v\n", err)
 		os.Exit(1)
 	}
+
+	app.WorkingDir = wd
 
 	return app
 }
@@ -60,9 +70,9 @@ func getHomeDir() string {
 
 // SetupLoggingOutput set logrun output file
 func SetupLoggingOutput(path string) error {
+	// define default path
 	if path == "" {
-		app := GetAppInfo()
-		path = app.LogsPath
+		path = GetAppInfo().LogsFilePath
 	}
 
 	file, err := os.OpenFile(path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, os.ModePerm)
@@ -74,6 +84,39 @@ func SetupLoggingOutput(path string) error {
 	logrus.SetOutput(file)
 
 	return nil
+}
+
+// LoadViper setup project setting
+func LoadViper(config string) {
+	// environment variables
+	viper.SetEnvPrefix("TFC") // will be uppercased automatically
+	viper.BindEnv("USER_TOKEN")
+	viper.BindEnv("TEAM_TOKEN")
+	viper.BindEnv("ORGANIZATION_TOKEN")
+
+	app := GetAppInfo()
+
+	viper.SetConfigName(app.CredentialsFileName)
+	viper.SetConfigType(app.CredentialsFileType) // REQUIRED if the config file does not have the extension in the name
+
+	// user override config path
+	if config != "" {
+		viper.AddConfigPath(config)
+	} else {
+		// user override global dir, search current project directory
+		viper.AddConfigPath("." + app.Name)
+
+		// (default) global directory
+		viper.AddConfigPath(app.AppDir)
+	}
+
+	viper.AutomaticEnv() // read in environment variables that match
+
+	// If a config file is found, read it in.
+	if err := viper.ReadInConfig(); err == nil {
+		fmt.Println("using config file:", viper.ConfigFileUsed())
+	}
+	// if config is not found, that's okay, as the user might use env vars
 }
 
 // SetupLoggingLevel set logrus level

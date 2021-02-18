@@ -24,8 +24,6 @@ import (
 
 	"github.com/awslabs/tecli/cobra/aid"
 	"github.com/awslabs/tecli/cobra/controller"
-
-	"github.com/spf13/viper"
 )
 
 var rootCmd = controller.RootCmd()
@@ -56,41 +54,11 @@ func init() {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	// environment variables
-	viper.SetEnvPrefix("TFC") // will be uppercased automatically
-	viper.BindEnv("USER_TOKEN")
-	viper.BindEnv("TEAM_TOKEN")
-	viper.BindEnv("ORGANIZATION_TOKEN")
-
-	app := aid.GetAppInfo()
-
-	viper.SetConfigName(app.CredentialsName)
-	viper.SetConfigType(app.CredentialsType) // REQUIRED if the config file does not have the extension in the name
-
-	// user override config path
-	if config != "" {
-		viper.AddConfigPath(config)
-	} else {
-		// user override global dir
-		viper.AddConfigPath("." + app.Name)
-
-		// (default) global directory
-		viper.AddConfigPath(app.ConfigurationsDir)
-
-	}
-
-	viper.AutomaticEnv() // read in environment variables that match
-
-	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("using config file:", viper.ConfigFileUsed())
-	}
-
-	// if config is not found, that's okay, as the user might use env vars
+	aid.LoadViper(config)
 
 	// set default for log file if not defined by user
 	if logFilePath == "" {
-		logFilePath = aid.GetAppInfo().LogsPath
+		logFilePath = aid.GetAppInfo().LogsFilePath
 	}
 
 	if log == "enable" && logFilePath != "" {
