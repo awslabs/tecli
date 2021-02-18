@@ -70,6 +70,18 @@ func configurePreRun(cmd *cobra.Command, args []string) error {
 	default:
 		return fmt.Errorf("unknown argument provided")
 	}
+
+	if cmd.Flags().Changed("mode") {
+		mode, err := cmd.Flags().GetString("mode")
+		if err != nil {
+			return fmt.Errorf("unable to get flag mode\n%v", err)
+		}
+
+		if mode != "interactive" && mode != "non-interactive" {
+			return fmt.Errorf("invalid mode provided, mode can be only: interactive or non-interactive")
+		}
+	}
+
 	return nil
 }
 
@@ -133,7 +145,7 @@ func configureListCredentials() (model.Credentials, error) {
 }
 
 func configureCreateCredentials(cmd *cobra.Command, mode string) error {
-	created, err := aid.HasCreatedConfigDir(cmd)
+	created, err := aid.HasCreatedAppDir(cmd)
 	if err != nil {
 		return err
 	}
@@ -186,7 +198,7 @@ func configureReadCredentials(cmd *cobra.Command) (model.CredentialProfile, erro
 
 func configureUpdateCredentials(cmd *cobra.Command, mode string) error {
 	var err error
-	if err = aid.CheckConfigDirAndFile(); err == nil {
+	if err = aid.CheckAppDirAndFile(); err == nil {
 		creds, err := dao.GetCredentials()
 		if err != nil {
 			logrus.Fatalf("unable to update credentials\n%v\n", err)
