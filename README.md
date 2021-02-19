@@ -185,9 +185,9 @@ tecli workspace create --organization=${TFC_ORGANIZATION} --name=${TFC_WORKSPACE
 To create a plan (if you want to upload your code to Terraform Cloud):
 
 ```
-tecli configuration-version create --workspace-id=${W_ID}
+tecli configuration-version create --workspace-id=${WORKSPACE_ID}
 tecli configuration-version upload --url=${CV_UPLOAD_URL} --path=./
-tecli run create --workspace-id=${W_ID} --comment="${COMMENT}" 
+tecli run create --workspace-id=${WORKSPACE_ID} --comment="${COMMENT}" 
 ```
 
 To check the staus of a run:
@@ -209,7 +209,7 @@ tecli plan logs --id=${PLAN_ID}
 To leave a comment on a plan:
 
 ```
-tecli run create --workspace-id=${W_ID} --comment="${COMMENT}" --is-destroy=true
+tecli run create --workspace-id=${WORKSPACE_ID} --comment="${COMMENT}" --is-destroy=true
 ```
 
 To discard a run:
@@ -219,7 +219,7 @@ tecli run discard --id=${RUN_ID}
 
 To discard all runs:
 ```
-tecli run discard-all --workspace-id=${W_ID}
+tecli run discard-all --workspace-id=${WORKSPACE_ID}
 ```
 
 To apply a plan:
@@ -230,6 +230,29 @@ tecli run apply --id=${RUN_ID} --comment="${COMMENT}"
 To display the apply logs:
 ```
 tecli apply logs --id=${APPLY_ID}
+```
+
+To create a sensitive terraform variable:
+```
+tecli variable update --key=${VARIABLE_KEY} --value=${VARIABLE_VALUE} --workspace-id=${WORKSPACE_ID} --category=terraform --sensitive=true
+```
+
+To create a sensitive environment variable:
+```
+tecli variable create --key=${VARIABLE_KEY} --value=${VARIABLE_VALUE} --workspace-id=${WORKSPACE_ID} --category=env --sensitive=true
+
+# AWS CLI ENVIRONMENT VARIABLES
+tecli variable create --key=AWS_ACCESS_KEY_ID --value=${AWS_ACCESS_KEY_ID} --workspace-id=${WORKSPACE_ID} --category=env --sensitive=true
+tecli variable create --key=AWS_SECRET_ACCESS_KEY --value=${AWS_SECRET_ACCESS_KEY} --workspace-id=${WORKSPACE_ID} --category=env --sensitive=true
+tecli variable create --key=AWS_DEFAULT_REGION --value=${AWS_DEFAULT_REGION} --workspace-id=${WORKSPACE_ID} --category=env --sensitive=true
+
+## IF YOU ALSO NEED TO EXPORT AWS_SESSION_TOKEN:
+tecli variable create --key=AWS_SESSION_TOKEN --value=${AWS_SESSION_TOKEN} --workspace-id=${WORKSPACE_ID} --category=env --sensitive=true
+```
+
+To delete all variables (be careful):
+```
+tecli variable delete-all --workspace-id=${WORKSPACE_ID}
 ```
 
 
