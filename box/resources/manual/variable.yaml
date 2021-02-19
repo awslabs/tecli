@@ -1,0 +1,6 @@
+use: |-
+  variable [argument] [flags]
+
+  Arguments:
+    {{ arguments }}
+short: Operations on variables.

@@ -135,6 +135,7 @@ Available Commands:
   plan                  A plan represents the execution plan of a Run in a Terraform workspace.
   run                   A run performs a plan and apply, using a configuration version and the workspace’s current variables.
   ssh-key               The ssh-key object represents an SSH key which includes a name and the SSH private key. An organization can have multiple SSH keys available.
+  variable              Operations on variables.
   version               Displays the version of tecli and all installed plugins
   workspace             Workspaces represent running infrastructure managed by Terraform.
 
