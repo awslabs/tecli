@@ -47,17 +47,51 @@ func ValidateCmdArgs(cmd *cobra.Command, args []string, cmdName string) error {
 	return nil
 }
 
+// ValidateCmdArgsV2 check if first arg is valid
+func ValidateCmdArgsV2(cmd *cobra.Command, args []string) error {
+	logrus.Tracef("start: validate args")
+	if cmd == nil {
+		logrus.Error("cobra command is nil")
+		return fmt.Errorf("invalid cobra command")
+	}
+
+	err := cmd.ValidateArgs(args)
+	if err != nil {
+		logrus.Errorf("cobra unable to validate args")
+		return fmt.Errorf("invalid arguments\n%v", err)
+	}
+
+	if len(args) == 0 {
+		logrus.Error("args is zero")
+		return fmt.Errorf("command requires one argument at least: %v", cmd.ValidArgs)
+	}
+
+	if len(args) > 1 {
+		logrus.Errorf("args is bigger than one")
+		return fmt.Errorf("command requires no more than one argument: %v", cmd.ValidArgs)
+	}
+
+	if !ContainsString(cmd.ValidArgs, args[0]) {
+		logrus.Errorf("unknow argument: %v", args[0])
+		logrus.Errorf("command valid arguments are: %v", cmd.ValidArgs)
+		return fmt.Errorf("unknown argument provided: %s", args[0])
+	}
+
+	logrus.Tracef("end: validate args")
+	return nil
+}
+
 // ValidateCmdArgAndFlag basic validation for the given arg on args, and if flag is empty, return error if fails
 func ValidateCmdArgAndFlag(cmd *cobra.Command, args []string, cmdName string, arg string, flag string) error {
 	logrus.Tracef("start: validate command %s --%s", cmdName, flag)
 	if args[0] == arg {
-		pName, err := cmd.Flags().GetString(flag)
+		s, err := cmd.Flags().GetString(flag)
 		if err != nil {
 			logrus.Errorf("unable to access --%s: %s", flag, err.Error())
 			return err
 		}
 
-		if pName == "" {
+		if s == "" {
 			logrus.Errorf("empty value passed to --%s", flag)
 			return fmt.Errorf("--%s must be defined", flag)
 		}
@@ -67,4 +101,33 @@ func ValidateCmdArgAndFlag(cmd *cobra.Command, args []string, cmdName string, ar
 	}
 	logrus.Tracef("end: validate command %s --%s", cmdName, flag)
 	return nil
+}
+
+// ValidateCmdFlagString check if there's any error with a flag of string type
+func ValidateCmdFlagString(cmd *cobra.Command, flag string) error {
+	logrus.Tracef("start: validate flag")
+	value, err := cmd.Flags().GetString(flag)
+	if err != nil {
+		return fmt.Errorf("unable to get flag %s\n%v", flag, err)
+	}
+
+	if value == "" {
+		return fmt.Errorf("--%s is required", flag)
+	}
+
+	logrus.Tracef("end: validate flag")
+	return nil
+}
+
+// GetCmdFlagString return the value of a flag string
+func GetCmdFlagString(cmd *cobra.Command, flag string) string {
+	if cmd.Flags().Changed(flag) {
+		id, err := cmd.Flags().GetString(flag)
+		if err != nil {
+			logrus.Fatalf("unable to get flag %s\n%v", flag, err)
+		}
+		return id
+	}
+
+	return ""
 }
