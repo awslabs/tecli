@@ -103,10 +103,10 @@ func LoadViper(config string) {
 	if config != "" {
 		viper.AddConfigPath(config)
 	} else {
-		// user override global dir, search current project directory
+		// user override global dir, search current project directory first
 		viper.AddConfigPath("." + app.Name)
 
-		// (default) global directory
+		// search default global directory second
 		viper.AddConfigPath(app.AppDir)
 	}
 

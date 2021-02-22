@@ -19,10 +19,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/sirupsen/logrus"
-	"github.com/spf13/cobra"
-
-	"github.com/awslabs/tecli/cobra/aid"
 	"github.com/awslabs/tecli/cobra/controller"
 )
 
@@ -42,33 +38,33 @@ func Execute() {
 	}
 }
 
-func init() {
-	cobra.OnInitialize(initConfig)
+// func init() {
+// cobra.OnInitialize(initConfig)
 
-	rootCmd.PersistentFlags().StringVarP(&config, "config", "c", "", "Override the default directory location ($HOME/.tecli) of the application. Example --config=tecli to locate under the current working directory.")
-	rootCmd.PersistentFlags().StringVarP(&verbosity, "verbosity", "v", logrus.ErrorLevel.String(), "Valid log level:panic,fatal,error,warn,info,debug,trace).")
-	rootCmd.PersistentFlags().StringVarP(&log, "log", "l", "disable", "Enable or disable logs (found at $HOME/.tecli/logs.json). If disabled, log outputs will be shown on default output.")
-	rootCmd.PersistentFlags().StringVar(&logFilePath, "log-file-path", "", "Log file path.")
+// rootCmd.PersistentFlags().StringVarP(&config, "config", "c", "", "Override the default directory location ($HOME/.tecli) of the application. Example --config=tecli to locate under the current working directory.")
+// rootCmd.PersistentFlags().StringVarP(&verbosity, "verbosity", "v", logrus.ErrorLevel.String(), "Valid log level:panic,fatal,error,warn,info,debug,trace).")
+// rootCmd.PersistentFlags().StringVarP(&log, "log", "l", "disable", "Enable or disable logs (found at $HOME/.tecli/logs.json). If disabled, log outputs will be shown on default output.")
+// rootCmd.PersistentFlags().StringVar(&logFilePath, "log-file-path", "", "Log file path.")
 
-}
+// }
 
 // initConfig reads in config file and ENV variables if set.
-func initConfig() {
-	aid.LoadViper(config)
+// func initConfig() {
+// 	aid.LoadViper(config)
 
-	// set default for log file if not defined by user
-	if logFilePath == "" {
-		logFilePath = aid.GetAppInfo().LogsFilePath
-	}
+// // set default for log file if not defined by user
+// if logFilePath == "" {
+// 	logFilePath = aid.GetAppInfo().LogsFilePath
+// }
 
-	if log == "enable" && logFilePath != "" {
-		if err := aid.SetupLoggingLevel(verbosity); err == nil {
-			fmt.Printf("logging level: %s\n", verbosity)
-		}
+// if log == "enable" && logFilePath != "" {
+// 	if err := aid.SetupLoggingLevel(verbosity); err == nil {
+// 		fmt.Printf("logging level: %s\n", verbosity)
+// 	}
 
-		if err := aid.SetupLoggingOutput(logFilePath); err == nil {
-			fmt.Printf("logging path: %s\n", logFilePath)
-		}
-	}
+// 	if err := aid.SetupLoggingOutput(logFilePath); err == nil {
+// 		fmt.Printf("logging path: %s\n", logFilePath)
+// 	}
+// }
 
-}
+// }

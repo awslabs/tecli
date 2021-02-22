@@ -19,13 +19,14 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/awslabs/tecli/cobra/aid"
 	"github.com/awslabs/tecli/helper"
 	"github.com/spf13/cobra"
 )
 
 var profile string
 
-// var config string
+var config string
 var organization string
 
 // RootCmd represents the base command when called without any subcommands
@@ -41,8 +42,17 @@ func RootCmd() *cobra.Command {
 		Long:  man.Long,
 	}
 
+	cmd.PersistentFlags().StringVarP(&config, "config", "c", "", "Override the default directory location ($HOME/.tecli) of the application. Example --config=tecli to locate under the current working directory.")
 	cmd.PersistentFlags().StringVarP(&profile, "profile", "p", "default", "Use a specific profile from your credentials and configurations file.")
 	cmd.PersistentFlags().StringVarP(&organization, "organization", "o", "", "Terraform Cloud Organization name")
 
 	return cmd
+}
+
+func init() {
+	cobra.OnInitialize(initConfig)
+}
+
+func initConfig() {
+	aid.LoadViper(config)
 }

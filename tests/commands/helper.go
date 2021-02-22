@@ -7,6 +7,8 @@ import (
 	"testing"
 
 	"github.com/awslabs/tecli/cobra/controller"
+	tfe "github.com/hashicorp/go-tfe"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -41,3 +43,23 @@ func executeCommandC(cmd *cobra.Command, args []string) (command *cobra.Command,
 	stdout = buf.String()
 	return command, stdout, err
 }
+
+/* TFE */
+
+// GetTFEClient returns a new terraform api client given a token
+func GetTFEClient() *tfe.Client {
+	token := os.Getenv("TFC_TEAM_TOKEN")
+
+	config := &tfe.Config{
+		Token: token,
+	}
+
+	client, err := tfe.NewClient(config)
+	if err != nil {
+		logrus.Errorln("unable to get terraform cloud api client")
+		logrus.Fatalln(err)
+	}
+
+	return client
+}
+

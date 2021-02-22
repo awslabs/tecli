@@ -51,8 +51,12 @@ func TestConfigureCmdFlags(t *testing.T) {
 
 func TestConfigureCreateWithNoArgAndNoFlags(t *testing.T) {
 	// need to remove global tecli configuration directory
-	err := os.RemoveAll(aid.GetAppInfo().AppDir)
+	dir := aid.GetAppInfo().AppDir
+	err := os.RemoveAll(dir)
 	assert.Nil(t, err)
+
+	// cleanup after test ends
+	defer os.RemoveAll(dir)
 
 	// TODO: need to find a way to run/debug test in interactive mode
 	args := []string{"configure", "create", "--mode", "non-interactive"}

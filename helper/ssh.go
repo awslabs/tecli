@@ -10,12 +10,14 @@ import (
 	"io/ioutil"
 	"log"
 
+	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/ssh"
 )
 
-func main() {
-	savePrivateFileTo := "./id_rsa_test"
-	savePublicFileTo := "./id_rsa_test.pub"
+// GenerateSSHKeys create SSH keys (private and public) into a given directory
+func GenerateSSHKeys(dir string) {
+	savePrivateFileTo := dir + "/id_rsa"
+	savePublicFileTo := dir + "/id_rsa.pub"
 	bitSize := 4096
 
 	privateKey, err := GeneratePrivateSSHKey(bitSize)
@@ -55,7 +57,7 @@ func GeneratePrivateSSHKey(bitSize int) (*rsa.PrivateKey, error) {
 		return nil, err
 	}
 
-	log.Println("Private Key generated")
+	logrus.Traceln("Private Key generated")
 	return privateKey, nil
 }
 
@@ -87,7 +89,7 @@ func GeneratePublicSSHKey(privatekey *rsa.PublicKey) ([]byte, error) {
 
 	pubKeyBytes := ssh.MarshalAuthorizedKey(publicRsaKey)
 
-	log.Println("Public key generated")
+	logrus.Traceln("Public key generated")
 	return pubKeyBytes, nil
 }
 

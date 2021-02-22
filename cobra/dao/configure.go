@@ -19,7 +19,6 @@ package dao
 import (
 	"fmt"
 
-	"github.com/awslabs/tecli/cobra/aid"
 	"github.com/awslabs/tecli/cobra/model"
 	"github.com/awslabs/tecli/helper"
 	"github.com/sirupsen/logrus"

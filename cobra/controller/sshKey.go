@@ -24,6 +24,7 @@ import (
 	"github.com/awslabs/tecli/cobra/dao"
 	"github.com/awslabs/tecli/helper"
 	"github.com/hashicorp/go-tfe"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -109,6 +110,12 @@ func sshKeyPreRun(cmd *cobra.Command, args []string) error {
 }
 
 func sshKeyRun(cmd *cobra.Command, args []string) error {
+	// config, err := cmd.Flags().GetString("config")
+	// if err != nil {
+	// 	return fmt.Errorf("unable to get flag config\n%v", err)
+	// }
+
+	// aid.LoadViper(config)
 
 	token := dao.GetTeamToken(profile)
 	client := aid.GetTFEClient(token)
@@ -129,6 +136,10 @@ func sshKeyRun(cmd *cobra.Command, args []string) error {
 	case "create":
 		options := aid.GetSSHKeysCreateOptions(cmd)
 		sshKey, err = sshKeyCreate(client, options)
+		if err != nil {
+			logrus.Errorln("unable to create ssh key")
+			return err
+		}
 
 		if err == nil && sshKey.ID != "" {
 			cmd.Println(aid.ToJSON(sshKey))

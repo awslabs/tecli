@@ -16,20 +16,41 @@ limitations under the License.
 package commands
 
 import (
+	"context"
 	"log"
 	"testing"
 
 	"github.com/awslabs/tecli/cobra/controller"
 	"github.com/awslabs/tecli/helper"
+	tfe "github.com/hashicorp/go-tfe"
+	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 )
 
-// func TestSSHKeyList(t *testing.T) {
-// 	args := []string{"ssh-key", "list", "--organization", "tecli-test-org"}
-// 	out, err := executeCommandOnly(t, controller.SSHKeyCmd(), args)
-// 	assert.Nil(t, err)
-// 	assert.Contains(t, out, "\"ID\": \"sshkey-")
-// }
+func TestSSHKeyList(t *testing.T) {
+	args := []string{"ssh-key", "list", "--organization", "tecli-test-org"}
+	out, err := executeCommandOnly(t, controller.SSHKeyCmd(), args)
+	assert.Nil(t, err)
+	assert.Contains(t, out, "\"ID\": \"sshkey-")
+}
+
+func getSSHKeyID() string {
+	client := GetTFEClient()
+	list, err := client.SSHKeys.List(context.Background(), "tecli-test-org", tfe.SSHKeyListOptions{})
+	if err != nil {
+		logrus.Fatalln(err)
+	}
+
+	for _, item := range list.Items {
+		if item.Name == "foo" {
+			return item.ID
+		}
+	}
+
+	logrus.Fatalln("unable to find ssh key id")
+
+	return ""
+}
 
 func TestSSHKeyCreate(t *testing.T) {
 	privateKey, err := helper.GeneratePrivateSSHKey(4096)
@@ -42,26 +63,27 @@ func TestSSHKeyCreate(t *testing.T) {
 	args := []string{"ssh-key", "create", "--organization", "tecli-test-org", "--name", "foo", "--value", string(privateKeyBytes)}
 	out, err := executeCommandOnly(t, controller.SSHKeyCmd(), args)
 	assert.Nil(t, err)
-	assert.Contains(t, out, "")
+	assert.Contains(t, out, "\"ID\": \"sshkey-")
+	assert.Contains(t, out, "\"Name\": \"foo\"")
 }
 
-// func TestSSHKeyRead(t *testing.T) {
-// 	args := []string{"ssh-key", "read", "--organization", "tecli-test-org", "--id", "sshkey-BmNjgGuyA8sP7NUK"}
-// 	out, err := executeCommandOnly(t, controller.SSHKeyCmd(), args)
-// 	assert.Nil(t, err)
-// 	assert.Contains(t, out, "")
-// }
+func TestSSHKeyRead(t *testing.T) {
+	args := []string{"ssh-key", "read", "--organization", "tecli-test-org", "--id", getSSHKeyID()}
+	out, err := executeCommandOnly(t, controller.SSHKeyCmd(), args)
+	assert.Nil(t, err)
+	assert.Contains(t, out, "\"ID\": \"sshkey-")
+}
 
 // func TestSSHKeyUpdate(t *testing.T) {
-// 	args := []string{"ssh-key", "update", "--name", "bar", "--value", tempSSHPrivateKey, "--id", "sshkey-BmNjgGuyA8sP7NUK"}
+// 	args := []string{"ssh-key", "update", "--name", "bar", "--value", tempSSHPrivateKey, "--id", getSSHKeyID()}
 // 	out, err := executeCommandOnly(t, controller.SSHKeyCmd(), args)
 // 	assert.Nil(t, err)
 // 	assert.Contains(t, out, "")
 // }
 
-// func TestSSHKeyDelete(t *testing.T) {
-// 	args := []string{"ssh-key", "delete", "--id", "sshkey-BmNjgGuyA8sP7NUK"}
-// 	out, err := executeCommandOnly(t, controller.SSHKeyCmd(), args)
-// 	assert.Nil(t, err)
-// 	assert.Contains(t, out, "")
-// }
+func TestSSHKeyDelete(t *testing.T) {
+	args := []string{"ssh-key", "delete", "--id", getSSHKeyID()}
+	out, err := executeCommandOnly(t, controller.SSHKeyCmd(), args)
+	assert.Nil(t, err)
+	assert.Contains(t, out, "")
+}
