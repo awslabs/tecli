@@ -19,6 +19,7 @@ package dao
 import (
 	"fmt"
 
+	"github.com/awslabs/tecli/cobra/aid"
 	"github.com/awslabs/tecli/cobra/model"
 	"github.com/awslabs/tecli/helper"
 	"github.com/sirupsen/logrus"
@@ -27,6 +28,8 @@ import (
 
 // GetCredentials read the current credentials file and return its model
 func GetCredentials() (model.Credentials, error) {
+	// aid.LoadViper("")
+
 	var creds model.Credentials
 	err := viper.ReadInConfig()
 	if err != nil {
@@ -67,7 +70,8 @@ func GetTeamToken(name string) string {
 
 	cp, err := GetCredentialProfile(name)
 	if err != nil {
-		logrus.Fatalf("unable to read team token from credentials\n%v\n", err)
+		logrus.Errorln("unable to read team token from credentials")
+		logrus.Fatalf("%v", err)
 	}
 
 	return cp.TeamToken

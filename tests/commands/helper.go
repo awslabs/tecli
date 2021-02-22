@@ -1,4 +1,5 @@
-package tests
+// Package commands contains tests for Cobra commands
+package commands
 
 import (
 	"bytes"

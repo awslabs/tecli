@@ -45,9 +45,9 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	rootCmd.PersistentFlags().StringVarP(&config, "config", "c", "", "Override the default directory location of the application. Example --config=tecli to locate under the current working directory.")
+	rootCmd.PersistentFlags().StringVarP(&config, "config", "c", "", "Override the default directory location ($HOME/.tecli) of the application. Example --config=tecli to locate under the current working directory.")
 	rootCmd.PersistentFlags().StringVarP(&verbosity, "verbosity", "v", logrus.ErrorLevel.String(), "Valid log level:panic,fatal,error,warn,info,debug,trace).")
-	rootCmd.PersistentFlags().StringVarP(&log, "log", "l", "disable", "Enable or disable logs (found at $HOME/.tecli/logs.json). Log outputs will be shown on default output.")
+	rootCmd.PersistentFlags().StringVarP(&log, "log", "l", "disable", "Enable or disable logs (found at $HOME/.tecli/logs.json). If disabled, log outputs will be shown on default output.")
 	rootCmd.PersistentFlags().StringVar(&logFilePath, "log-file-path", "", "Log file path.")
 
 }

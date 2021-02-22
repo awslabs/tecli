@@ -14,7 +14,7 @@ limitations under the License.
 */
 
 // Package test contains unit and integration tests
-package tests
+package commands
 
 import (
 	"os"
@@ -54,7 +54,7 @@ func TestConfigureCreateWithNoArgAndNoFlags(t *testing.T) {
 	err := os.RemoveAll(aid.GetAppInfo().AppDir)
 	assert.Nil(t, err)
 
-	// need to find a way to run/debug test in interactive mode
+	// TODO: need to find a way to run/debug test in interactive mode
 	args := []string{"configure", "create", "--mode", "non-interactive"}
 	out, err := executeCommandOnly(t, controller.ConfigureCmd(), args)
 	assert.Nil(t, err)

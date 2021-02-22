@@ -4,7 +4,7 @@ include lib/make/*/Makefile
 
 .PHONY: tecli/test
 tecli/test: go/generate ## Execute Golang tests
-	@cd tests && go test -v
+	@cd tests/commands && go test -v
 
 .PHONY: tecli/build
 tecli/build: tecli/clean go/mod/tidy go/version go/get go/fmt go/generate go/build tecli/update-readme ## Builds the app

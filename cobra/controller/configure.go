@@ -98,35 +98,35 @@ func configureRun(cmd *cobra.Command, args []string) error {
 		if err != nil {
 			logrus.Fatalf("unable to list credentials\n%v", err)
 		}
-		fmt.Println(aid.ToJSON(creds))
+		cmd.Println(aid.ToJSON(creds))
 
 	case "create":
 		err = configureCreateCredentials(cmd, mode)
 		if err != nil {
 			return fmt.Errorf("unable to create profile\n%v", err)
 		}
-		fmt.Printf("profile %s created successfully\n", profile)
+		cmd.Printf("profile %s created successfully\n", profile)
 
 	case "read":
 		c, err := configureReadCredentials(cmd)
 		if err != nil {
 			return fmt.Errorf("unable to read credential")
 		}
-		fmt.Println(aid.ToJSON(c))
+		cmd.Println(aid.ToJSON(c))
 
 	case "update":
 		err = configureUpdateCredentials(cmd, mode)
 		if err != nil {
 			return fmt.Errorf("unable to update profile\n%v", err)
 		}
-		fmt.Printf("profile %s updated successfully\n", profile)
+		cmd.Printf("profile %s updated successfully\n", profile)
 
 	case "delete":
 		err := configureDeleteCredential()
 		if err != nil {
 			return fmt.Errorf("unable to delete profile\n%v", err)
 		}
-		fmt.Printf("profile %s delete successfully\n", profile)
+		cmd.Printf("profile %s delete successfully\n", profile)
 
 	default:
 		return fmt.Errorf("unknown argument provided")

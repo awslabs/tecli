@@ -121,7 +121,7 @@ func sshKeyRun(cmd *cobra.Command, args []string) error {
 	case "list":
 		list, err := sshKeyList(client, organization)
 		if err == nil {
-			aid.PrintSSHKeyList(list)
+			cmd.Println(aid.ToJSON(list))
 		} else {
 			return fmt.Errorf("no ssh key was found")
 		}
@@ -131,7 +131,7 @@ func sshKeyRun(cmd *cobra.Command, args []string) error {
 		sshKey, err = sshKeyCreate(client, options)
 
 		if err == nil && sshKey.ID != "" {
-			fmt.Println(aid.ToJSON(sshKey))
+			cmd.Println(aid.ToJSON(sshKey))
 		}
 	case "read":
 		id, err := cmd.Flags().GetString("id")
@@ -141,7 +141,7 @@ func sshKeyRun(cmd *cobra.Command, args []string) error {
 
 		sshKey, err := sshKeyRead(client, id)
 		if err == nil {
-			fmt.Println(aid.ToJSON(sshKey))
+			cmd.Println(aid.ToJSON(sshKey))
 		} else {
 			return fmt.Errorf("ssh key %s not found\n%v", id, err)
 		}
@@ -155,7 +155,7 @@ func sshKeyRun(cmd *cobra.Command, args []string) error {
 		options := aid.GetSSHKeysUpdateOptions(cmd)
 		sshKey, err = sshKeyUpdate(client, id, options)
 		if err == nil && sshKey.ID != "" {
-			fmt.Println(aid.ToJSON(sshKey))
+			cmd.Println(aid.ToJSON(sshKey))
 		} else {
 			return fmt.Errorf("unable to update ssh key\n%v", err)
 		}
@@ -167,7 +167,7 @@ func sshKeyRun(cmd *cobra.Command, args []string) error {
 
 		err = sshKeyDelete(client, id)
 		if err == nil {
-			fmt.Printf("ssh key %s deleted successfully\n", id)
+			cmd.Printf("ssh key %s deleted successfully\n", id)
 		} else {
 			return fmt.Errorf("unable to delete ssh key %s\n%v", id, err)
 		}
