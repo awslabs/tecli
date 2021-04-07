@@ -21,13 +21,18 @@ import (
 
 	"github.com/awslabs/tecli/cobra/aid"
 	"github.com/awslabs/tecli/helper"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
 var profile string
-
 var config string
 var organization string
+
+// logging
+var verbosity string
+var log string
+var logFilePath string
 
 // RootCmd represents the base command when called without any subcommands
 func RootCmd() *cobra.Command {
@@ -46,6 +51,11 @@ func RootCmd() *cobra.Command {
 	cmd.PersistentFlags().StringVarP(&profile, "profile", "p", "default", "Use a specific profile from your credentials and configurations file.")
 	cmd.PersistentFlags().StringVarP(&organization, "organization", "o", "", "Terraform Cloud Organization name")
 
+	// logging
+	cmd.PersistentFlags().StringVarP(&verbosity, "verbosity", "v", logrus.ErrorLevel.String(), "Valid log level:panic,fatal,error,warn,info,debug,trace).")
+	cmd.PersistentFlags().StringVarP(&log, "log", "l", "disable", "Enable or disable logs (found at $HOME/.tecli/logs.json). If disabled, log outputs will be shown on default output.")
+	cmd.PersistentFlags().StringVar(&logFilePath, "log-file-path", "", "Log file path.")
+
 	return cmd
 }
 
@@ -55,4 +65,19 @@ func init() {
 
 func initConfig() {
 	aid.LoadViper(config)
+	// set default for log file if not defined by user
+	if logFilePath == "" {
+		logFilePath = aid.GetAppInfo().LogsFilePath
+	}
+
+	if log == "enable" && logFilePath != "" {
+		if err := aid.SetupLoggingLevel(verbosity); err == nil {
+			fmt.Printf("logging level: %s\n", verbosity)
+		}
+
+		if err := aid.SetupLoggingOutput(logFilePath); err == nil {
+			fmt.Printf("logging path: %s\n", logFilePath)
+		}
+	}
+
 }

@@ -62,4 +62,3 @@ func GetTFEClient() *tfe.Client {
 
 	return client
 }
-
