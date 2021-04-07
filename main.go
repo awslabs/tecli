@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "gitlab.aws.dev/devops-aws/tecli/cobra/cmd"
+import "github.com/awslabs/tecli/cobra/cmd"
 
 func main() {
 	cmd.Execute()

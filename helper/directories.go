@@ -14,13 +14,13 @@ import (
 func MkDirsIfNotExist(name string) bool {
 	_, err := os.Stat(name)
 	if os.IsNotExist(err) {
-		logrus.Infof("creating directory %s", name)
+		logrus.Tracef("creating directory %s", name)
 		err = os.MkdirAll(BuildPath(name), os.ModePerm)
 		if err != nil {
 			logrus.Errorf("unable to create %s directory", name)
 			return false
 		}
-		logrus.Infof("directory %s created", name)
+		logrus.Tracef("directory %s created", name)
 		return true
 	}
 

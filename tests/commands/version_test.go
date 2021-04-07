@@ -13,18 +13,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package tests
+package commands
 
 import (
 	"testing"
 
+	"github.com/awslabs/tecli/cobra/controller"
 	"github.com/stretchr/testify/assert"
-	"gitlab.aws.dev/devops-aws/tecli/cobra/controller"
 )
 
-func TestRootWithNoArgAndNoFlags(t *testing.T) {
-	args := []string{""}
-	out, err := executeCommand(t, controller.RootCmd(), args)
+func TestVersionCmd(t *testing.T) {
+	args := []string{"version"}
+	cmd := controller.VersionCmd()
+	out, err := executeCommand(t, cmd, args)
 	assert.Nil(t, err)
-	assert.Contains(t, out, "Command Line Interface for Terraform Enterprise/Cloud")
+	assert.Contains(t, out, "tecli v")
 }

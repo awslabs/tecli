@@ -20,10 +20,10 @@ import (
 	"os"
 	"runtime"
 
+	"github.com/awslabs/tecli/box"
+	"github.com/awslabs/tecli/helper"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"gitlab.aws.dev/devops-aws/tecli/box"
-	"gitlab.aws.dev/devops-aws/tecli/helper"
 )
 
 // VersionCmd command to display tecli current version
@@ -56,7 +56,7 @@ func versionRun(cmd *cobra.Command, args []string) error {
 	goVersion := runtime.Version()
 	goArch := runtime.GOARCH
 
-	fmt.Printf("tecli v%s %s %s %s\n", version, goVersion, goOS, goArch)
+	cmd.Printf("tecli v%s %s %s %s\n", version, goVersion, goOS, goArch)
 
 	return nil
 }

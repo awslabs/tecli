@@ -13,14 +13,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package cmd
+package commands
 
 import (
-	controller "github.com/awslabs/tecli/cobra/controller"
+	"testing"
+
+	"github.com/awslabs/tecli/cobra/controller"
+	"github.com/stretchr/testify/assert"
 )
 
-var configureCmd = controller.ConfigureCmd()
-
-func init() {
-	rootCmd.AddCommand(configureCmd)
+func TestRootWithNoArgAndNoFlags(t *testing.T) {
+	args := []string{""}
+	out, err := executeCommand(t, controller.RootCmd(), args)
+	assert.Nil(t, err)
+	assert.Contains(t, out, "Command Line Interface for Terraform Enterprise/Cloud")
 }

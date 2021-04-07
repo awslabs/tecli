@@ -19,21 +19,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/sirupsen/logrus"
-	"github.com/spf13/cobra"
-
-	"gitlab.aws.dev/devops-aws/tecli/cobra/aid"
-	"gitlab.aws.dev/devops-aws/tecli/cobra/controller"
-
-	"github.com/spf13/viper"
+	"github.com/awslabs/tecli/cobra/controller"
 )
 
 var rootCmd = controller.RootCmd()
-
-var config string
-var verbosity string
-var log string
-var logFilePath string
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
@@ -42,60 +31,4 @@ func Execute() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-}
-
-func init() {
-	cobra.OnInitialize(initConfig)
-
-	rootCmd.PersistentFlags().StringVarP(&config, "config", "c", "", "Override the default directory location of the application. Example --config=tecli to locate under the current working directory.")
-	rootCmd.PersistentFlags().StringVarP(&verbosity, "verbosity", "v", logrus.ErrorLevel.String(), "Valid log level:panic,fatal,error,warn,info,debug,trace).")
-	rootCmd.PersistentFlags().StringVarP(&log, "log", "l", "disable", "Enable or disable logs (found at $HOME/.tecli/logs.json). Log outputs will be shown on default output.")
-	rootCmd.PersistentFlags().StringVar(&logFilePath, "log-file-path", aid.GetAppInfo().LogsPath, "Log file path.")
-
-}
-
-// initConfig reads in config file and ENV variables if set.
-func initConfig() {
-	// environment variables
-	viper.SetEnvPrefix("TFC") // will be uppercased automatically
-	viper.BindEnv("USER_TOKEN")
-	viper.BindEnv("TEAM_TOKEN")
-	viper.BindEnv("ORGANIZATION_TOKEN")
-
-	app := aid.GetAppInfo()
-
-	viper.SetConfigName(app.CredentialsName)
-	viper.SetConfigType(app.CredentialsType) // REQUIRED if the config file does not have the extension in the name
-
-	// user override config path
-	if config != "" {
-		viper.AddConfigPath(config)
-	} else {
-		// user override global dir
-		viper.AddConfigPath("." + app.Name)
-
-		// (default) global directory
-		viper.AddConfigPath(app.ConfigurationsDir)
-
-	}
-
-	viper.AutomaticEnv() // read in environment variables that match
-
-	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("using config file:", viper.ConfigFileUsed())
-	}
-
-	// if config is not found, that's okay, as the user might use env vars
-
-	if log == "enable" && logFilePath != "" {
-		if err := aid.SetupLoggingLevel(verbosity); err == nil {
-			fmt.Printf("logging level: %s\n", verbosity)
-		}
-
-		if err := aid.SetupLoggingOutput(logFilePath); err == nil {
-			fmt.Printf("logging path: %s\n", logFilePath)
-		}
-	}
-
 }

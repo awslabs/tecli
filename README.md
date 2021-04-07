@@ -140,10 +140,10 @@ Available Commands:
   workspace             Workspaces represent running infrastructure managed by Terraform.
 
 Flags:
-  -c, --config string          Override the default directory location of the application. Example --config=tecli to locate under the current working directory.
+  -c, --config string          Override the default directory location ($HOME/.tecli) of the application. Example --config=tecli to locate under the current working directory.
   -h, --help                   help for this command
-  -l, --log string             Enable or disable logs (found at $HOME/.tecli/logs.json). Log outputs will be shown on default output. (default "disable")
-      --log-file-path string   Log file path. (default "/Users/valterh/.tecli/logs.json")
+  -l, --log string             Enable or disable logs (found at $HOME/.tecli/logs.json). If disabled, log outputs will be shown on default output. (default "disable")
+      --log-file-path string   Log file path.
   -o, --organization string    Terraform Cloud Organization name
   -p, --profile string         Use a specific profile from your credentials and configurations file. (default "default")
   -v, --verbosity string       Valid log level:panic,fatal,error,warn,info,debug,trace). (default "error")

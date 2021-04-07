@@ -3,8 +3,18 @@
 include lib/make/*/Makefile
 
 .PHONY: tecli/test
-tecli/test:
-	@cd tests && go test -v
+tecli/test: go/generate tecli/test/configure ## Execute Golang tests sequentially
+
+.PHONY: tecli/test/configure
+tecli/test/configure:
+	@cd tests/commands && go test -run ConfigureCmdFlags
+	@cd tests/commands && go test -run ConfigureCreate
+	@cd tests/commands && go test -run ConfigureList
+	@cd tests/commands && go test -run ConfigureRead
+	@cd tests/commands && go test -run ConfigureUpdate
+	@cd tests/commands && go test -run ConfigureDelete
+
+# @cd tests/commands && export TFC_TEAM_TOKEN=$(TFC_TEAM_TOKEN) && go test helper.go ssh_key_test.go
 
 .PHONY: tecli/build
 tecli/build: tecli/clean go/mod/tidy go/version go/get go/fmt go/generate go/build tecli/update-readme ## Builds the app
@@ -13,7 +23,7 @@ tecli/build: tecli/clean go/mod/tidy go/version go/get go/fmt go/generate go/bui
 tecli/install: go/get go/fmt go/generate go/install ## Builds the app and install all dependencies
 
 .PHONY: tecli/run
-tecli/run: go/fmt ## Run a command
+tecli/run: go/fmt ## Run a Cobra command
 ifdef command
 	make go/run command='$(command)'
 else
@@ -52,7 +62,7 @@ tecli/clean: ## Removes unnecessary files and directories
 	rm -f clencli/log.json
 
 .PHONY: tecli/clean/all
-tecli/clean/all: tecli/clean
+tecli/clean/all: tecli/clean ## Clean and remove configurations directory
 	rm -rf .tecli ~/.tecli
 
 .PHONY: tecli/terminalizer
@@ -73,9 +83,6 @@ tecli/update-readme: ## Renders template readme.tmpl with additional documents
 	@echo '```' >> COMMANDS.md
 	@echo "COMMANDS.md generated successfully"
 	@clencli render template --name readme
-
-.PHONY: tecli/test
-tecli/test: go/test
 
 .DEFAULT_GOAL := help
 

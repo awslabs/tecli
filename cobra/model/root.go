@@ -20,22 +20,18 @@ import "os"
 // App represents the all the necessary information about tecli
 type App struct {
 	// Name of file to look for inside the path
-	Name                      string
-	HomeDir                   string
-	ConfigurationsDir         string
-	ConfigurationsName        string
-	ConfigurationsType        string
-	ConfigurationsPath        string
-	ConfigurationsPermissions os.FileMode
-	CredentialsName           string
-	CredentialsType           string
-	CredentialsPath           string
-	CredentialsPermissions    os.FileMode
-	LogsDir                   string
-	LogsName                  string
-	LogsType                  string
-	LogsPath                  string
-	LogsPermissions           os.FileMode
+	Name                       string
+	HomeDir                    string
+	AppDir                     string
+	CredentialsFileName        string
+	CredentialsFileType        string
+	CredentialsFilePath        string
+	CredentialsFilePermissions os.FileMode
+	LogsDir                    string
+	LogsFileName               string
+	LogsFileType               string
+	LogsFilePath               string
+	LogsFilePermissions        os.FileMode
 
 	WorkingDir string
 }

@@ -20,13 +20,13 @@ import (
 	"os"
 	"time"
 
+	"github.com/awslabs/tecli/cobra/aid"
+	"github.com/awslabs/tecli/cobra/dao"
+	"github.com/awslabs/tecli/cobra/model"
+	"github.com/awslabs/tecli/cobra/view"
+	"github.com/awslabs/tecli/helper"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"gitlab.aws.dev/devops-aws/tecli/cobra/aid"
-	"gitlab.aws.dev/devops-aws/tecli/cobra/dao"
-	"gitlab.aws.dev/devops-aws/tecli/cobra/model"
-	"gitlab.aws.dev/devops-aws/tecli/cobra/view"
-	"gitlab.aws.dev/devops-aws/tecli/helper"
 )
 
 var configureValidArgs = []string{"list", "create", "read", "update", "delete"}
@@ -70,6 +70,18 @@ func configurePreRun(cmd *cobra.Command, args []string) error {
 	default:
 		return fmt.Errorf("unknown argument provided")
 	}
+
+	if cmd.Flags().Changed("mode") {
+		mode, err := cmd.Flags().GetString("mode")
+		if err != nil {
+			return fmt.Errorf("unable to get flag mode\n%v", err)
+		}
+
+		if mode != "interactive" && mode != "non-interactive" {
+			return fmt.Errorf("invalid mode provided, mode can be only: interactive or non-interactive")
+		}
+	}
+
 	return nil
 }
 
@@ -86,35 +98,35 @@ func configureRun(cmd *cobra.Command, args []string) error {
 		if err != nil {
 			logrus.Fatalf("unable to list credentials\n%v", err)
 		}
-		fmt.Println(aid.ToJSON(creds))
+		cmd.Println(aid.ToJSON(creds))
 
 	case "create":
 		err = configureCreateCredentials(cmd, mode)
 		if err != nil {
 			return fmt.Errorf("unable to create profile\n%v", err)
 		}
-		fmt.Printf("profile %s created successfully\n", profile)
+		cmd.Printf("profile %s created successfully\n", profile)
 
 	case "read":
 		c, err := configureReadCredentials(cmd)
 		if err != nil {
 			return fmt.Errorf("unable to read credential")
 		}
-		fmt.Println(aid.ToJSON(c))
+		cmd.Println(aid.ToJSON(c))
 
 	case "update":
 		err = configureUpdateCredentials(cmd, mode)
 		if err != nil {
 			return fmt.Errorf("unable to update profile\n%v", err)
 		}
-		fmt.Printf("profile %s updated successfully\n", profile)
+		cmd.Printf("profile %s updated successfully\n", profile)
 
 	case "delete":
 		err := configureDeleteCredential()
 		if err != nil {
 			return fmt.Errorf("unable to delete profile\n%v", err)
 		}
-		fmt.Printf("profile %s delete successfully\n", profile)
+		cmd.Printf("profile %s deleted successfully\n", profile)
 
 	default:
 		return fmt.Errorf("unknown argument provided")
@@ -133,7 +145,7 @@ func configureListCredentials() (model.Credentials, error) {
 }
 
 func configureCreateCredentials(cmd *cobra.Command, mode string) error {
-	created, err := aid.HasCreatedConfigDir(cmd)
+	created, err := aid.HasCreatedAppDir(cmd)
 	if err != nil {
 		return err
 	}
@@ -186,7 +198,7 @@ func configureReadCredentials(cmd *cobra.Command) (model.CredentialProfile, erro
 
 func configureUpdateCredentials(cmd *cobra.Command, mode string) error {
 	var err error
-	if err = aid.CheckConfigDirAndFile(); err == nil {
+	if err = aid.CheckAppDirAndFile(); err == nil {
 		creds, err := dao.GetCredentials()
 		if err != nil {
 			logrus.Fatalf("unable to update credentials\n%v\n", err)

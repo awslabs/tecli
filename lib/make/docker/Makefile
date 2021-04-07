@@ -16,24 +16,21 @@ docker/build: docker/delete
 docker/delete:
 	docker stop tecli-go || true && docker rm tecli-go || true
 
-# docker tag tecli-ubuntu:20.04 valtersilvaau/tecli-ubuntu:20.04
-# docker push tecli-ubuntu:20.04 valtersilvaau/tecli-ubuntu:20.04
-
 # don't forget to login: docker login
 .PHONY: docker/publish/go
 docker/publish/go:
-	docker tag tecli-go valtersilvaau/tecli-go:$(TAG)
-	docker push valtersilvaau/tecli-go:$(TAG)
+	docker tag tecli-go ${DOCKERHUB_USERNAME}/tecli-go:$(TAG)
+	docker push ${DOCKERHUB_USERNAME}/tecli-go:$(TAG)
 
 .PHONY: docker/publish/alpine
 docker/publish/alpine: docker/build
-	docker tag tecli-alpine valtersilvaau/tecli-alpine:$(TAG)
-	docker push valtersilvaau/tecli-alpine:$(TAG)
+	docker tag tecli-alpine ${DOCKERHUB_USERNAME}/tecli-alpine:$(TAG)
+	docker push ${DOCKERHUB_USERNAME}/tecli-alpine:$(TAG)
 
 .PHONY: docker/publish/ubuntu
 docker/publish/ubuntu:
-	docker tag tecli-ubuntu valtersilvaau/tecli-ubuntu:$(TAG)
-	docker push valtersilvaau/tecli-ubuntu:$(TAG)
+	docker tag tecli-ubuntu ${DOCKERHUB_USERNAME}/tecli-ubuntu:$(TAG)
+	docker push ${DOCKERHUB_USERNAME}/tecli-ubuntu:$(TAG)
 
 .PHONY: docker/publish
 docker/publish: docker/publish/go docker/publish/alpine docker/publish/ubuntu

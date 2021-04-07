@@ -15,7 +15,7 @@ limitations under the License.
 
 package cmd
 
-import "gitlab.aws.dev/devops-aws/tecli/cobra/controller"
+import "github.com/awslabs/tecli/cobra/controller"
 
 var variableCmd = controller.VariableCmd()
 
