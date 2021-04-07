@@ -49,7 +49,7 @@ func TestConfigureCmdFlags(t *testing.T) {
 	}
 }
 
-func TestConfigureCreateWithNoArgAndNoFlags(t *testing.T) {
+func TestConfigureCreate(t *testing.T) {
 	// need to remove global tecli configuration directory
 	dir := aid.GetAppInfo().AppDir
 	err := os.RemoveAll(dir)
