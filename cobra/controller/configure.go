@@ -126,7 +126,7 @@ func configureRun(cmd *cobra.Command, args []string) error {
 		if err != nil {
 			return fmt.Errorf("unable to delete profile\n%v", err)
 		}
-		cmd.Printf("profile %s delete successfully\n", profile)
+		cmd.Printf("profile %s deleted successfully\n", profile)
 
 	default:
 		return fmt.Errorf("unknown argument provided")
