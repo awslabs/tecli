@@ -12,8 +12,7 @@ tecli/test/configure:
 	@cd tests/commands && go test -run ConfigureList
 	@cd tests/commands && go test -run ConfigureRead
 	@cd tests/commands && go test -run ConfigureUpdate
-
-# @cd tests/commands && go test -run ConfigureDelete
+	@cd tests/commands && go test -run ConfigureDelete
 
 # @cd tests/commands && export TFC_TEAM_TOKEN=$(TFC_TEAM_TOKEN) && go test helper.go ssh_key_test.go
 
