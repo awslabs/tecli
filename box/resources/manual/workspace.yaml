@@ -6,16 +6,14 @@ use: |-
 example: |-
   # How to
   ## Create a workspace:
-    tecli workspace create --organization-name <value> --workspace-name <value>
+    tecli workspace create --organization <value> --name <value>
 
   ## Create a workspace and specify a VCS provider and repository:
     ### Get the OAuth Token ID first:
-      tecli oauth list --organization terraform-cloud-pipeline
+      tecli oauth list --organization <value>
     ### Create the workspace and specify the OAuth Token ID:
       tecli workspace create --vcs-repo-oauth-token-id <oauth-token-id> --vcs-repo-identifier <org/repo> --organization <organization> --name <workspace>
 
-  If you want to delete a named profile:
-    tecli configure delete --profile work
 short: Workspaces represent running infrastructure managed by Terraform.
 long: |-
   Workspaces represent running infrastructure managed by Terraform.
