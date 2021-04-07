@@ -55,12 +55,46 @@ func TestConfigureCreateWithNoArgAndNoFlags(t *testing.T) {
 	err := os.RemoveAll(dir)
 	assert.Nil(t, err)
 
-	// cleanup after test ends
-	defer os.RemoveAll(dir)
-
 	// TODO: need to find a way to run/debug test in interactive mode
 	args := []string{"configure", "create", "--mode", "non-interactive"}
 	out, err := executeCommandOnly(t, controller.ConfigureCmd(), args)
 	assert.Nil(t, err)
 	assert.Contains(t, out, "created successfully")
+}
+
+func TestConfigureList(t *testing.T) {
+	// TODO: need to find a way to run/debug test in interactive mode
+	args := []string{"configure", "list"}
+	out, err := executeCommandOnly(t, controller.ConfigureCmd(), args)
+	assert.Nil(t, err)
+	assert.Contains(t, out, "\"Name\": \"default\"")
+}
+
+func TestConfigureRead(t *testing.T) {
+	// TODO: need to find a way to run/debug test in interactive mode
+	args := []string{"configure", "read"}
+	out, err := executeCommandOnly(t, controller.ConfigureCmd(), args)
+	assert.Nil(t, err)
+	assert.Contains(t, out, "\"Name\": \"default\"")
+}
+
+func TestConfigureUpdate(t *testing.T) {
+	// TODO: need to find a way to run/debug test in interactive mode
+	args := []string{"configure", "update", "--new-name", "default2", "--mode", "non-interactive"}
+	out, err := executeCommandOnly(t, controller.ConfigureCmd(), args)
+	assert.Nil(t, err)
+	assert.Contains(t, out, "profile default updated successfully")
+
+	args = []string{"configure", "read", "--profile", "default2"}
+	out, err = executeCommandOnly(t, controller.ConfigureCmd(), args)
+	assert.Nil(t, err)
+	assert.Contains(t, out, "\"Name\": \"default2\"")
+}
+
+func TestConfigureDelete(t *testing.T) {
+	// TODO: need to find a way to run/debug test in interactive mode
+	args := []string{"configure", "delete", "--profile", "default2"}
+	out, err := executeCommandOnly(t, controller.ConfigureCmd(), args)
+	assert.Nil(t, err)
+	assert.Contains(t, out, "profile default2 deleted successfully")
 }
