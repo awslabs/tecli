@@ -4,8 +4,14 @@ include lib/make/*/Makefile
 
 .PHONY: tecli/test
 tecli/test: go/generate ## Execute Golang tests
-	@cd tests/commands && go test helper.go configure_test.go
-	@cd tests/commands && export TFC_TEAM_TOKEN=$(TFC_TEAM_TOKEN) && go test helper.go ssh_key_test.go
+	@cd tests/commands && go test -run ConfigureCmdFlags
+	@cd tests/commands && go test -run ConfigureCreate
+	@cd tests/commands && go test -run ConfigureList
+	@cd tests/commands && go test -run ConfigureRead
+	@cd tests/commands && go test -run ConfigureUpdate
+	@cd tests/commands && go test -run ConfigureDelete
+
+# @cd tests/commands && export TFC_TEAM_TOKEN=$(TFC_TEAM_TOKEN) && go test helper.go ssh_key_test.go
 
 .PHONY: tecli/build
 tecli/build: tecli/clean go/mod/tidy go/version go/get go/fmt go/generate go/build tecli/update-readme ## Builds the app
