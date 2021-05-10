@@ -50,6 +50,9 @@ func ConfigurationVersionCmd() *cobra.Command {
 
 	aid.SetConfigurationVersionFlags(cmd)
 
+	cmd.SetOut(os.Stdout)
+	cmd.SetErr(os.Stderr)
+
 	return cmd
 }
 
