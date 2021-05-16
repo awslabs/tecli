@@ -93,7 +93,10 @@ func variablePreRun(cmd *cobra.Command, args []string) error {
 func variableRun(cmd *cobra.Command, args []string) error {
 	logrus.Tracef("start: variableRun")
 
-	token := dao.GetTeamToken(profile)
+	// organization token manages variables on workspace
+	// https://www.terraform.io/docs/cloud/users-teams-organizations/api-tokens.html#team-api-tokens
+
+	token := dao.GetOrganizationToken(profile)
 	client := aid.GetTFEClient(token)
 
 	fArg := args[0]

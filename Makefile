@@ -17,7 +17,7 @@ tecli/test/configure:
 # @cd tests/commands && export TFC_TEAM_TOKEN=$(TFC_TEAM_TOKEN) && go test helper.go ssh_key_test.go
 
 .PHONY: tecli/build
-tecli/build: tecli/clean go/mod/tidy go/version go/get go/fmt go/generate go/build tecli/update-readme ## Builds the app
+tecli/build: tecli/clean go/mod/tidy go/version go/get go/fmt go/generate go/install tecli/update-readme ## Builds the app
 
 .PHONY: tecli/install
 tecli/install: go/get go/fmt go/generate go/install ## Builds the app and install all dependencies
@@ -79,7 +79,7 @@ tecli/update-readme: ## Renders template readme.tmpl with additional documents
 	@echo "Generate COMMANDS.md"
 	@echo "## Commands" > COMMANDS.md
 	@echo '```' >> COMMANDS.md
-	@build/tecli --help >> COMMANDS.md
+	@tecli --help >> COMMANDS.md
 	@echo '```' >> COMMANDS.md
 	@echo "COMMANDS.md generated successfully"
 	@clencli render template --name readme
