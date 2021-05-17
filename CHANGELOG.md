@@ -2,4 +2,8 @@
 
 ## Bugfix
 
-Fix access levels for commands: workspace, o-auth-client, o-auth-token and variable.
+Fix access levels for commands: workspace.
+
+## Feature
+
+Add new option to update workspace variable by using its keys.
