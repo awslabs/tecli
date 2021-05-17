@@ -188,3 +188,18 @@ func PrintVariableList(list *tfe.VariableList) {
 		}
 	}
 }
+
+func FindVariableByKey(list *tfe.VariableList, cmd *cobra.Command) (*tfe.Variable, error) {
+	key, err := cmd.Flags().GetString("key")
+	if err != nil {
+		return &tfe.Variable{}, fmt.Errorf("unable to get flag key")
+	}
+
+	for _, item := range list.Items {
+		if item.Key == key {
+			return item, nil
+		}
+	}
+
+	return &tfe.Variable{}, fmt.Errorf("variable %s not found", key)
+}

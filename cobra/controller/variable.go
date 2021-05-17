@@ -33,6 +33,7 @@ var variableValidArgs = []string{
 	"create",
 	"read",
 	"update",
+	"update-by-key",
 	"delete",
 	"delete-all",
 }
@@ -80,6 +81,11 @@ func variablePreRun(cmd *cobra.Command, args []string) error {
 		}
 
 		if err := helper.ValidateCmdFlagString(cmd, "workspace-id"); err != nil {
+			return err
+		}
+
+	case "update-by-key":
+		if err := helper.ValidateCmdFlagString(cmd, "key"); err != nil {
 			return err
 		}
 
@@ -139,6 +145,28 @@ func variableRun(cmd *cobra.Command, args []string) error {
 		options := aid.GetVariableUpdateOptions(cmd)
 
 		variable, err := variableUpdate(client, workspaceID, id, options)
+		if err == nil && variable.ID != "" {
+			fmt.Println(aid.ToJSON(variable))
+		} else {
+			return fmt.Errorf("unable to update variable\n%v", err)
+		}
+
+	case "update-by-key":
+		workspaceID := helper.GetCmdFlagString(cmd, "workspace-id")
+
+		list, err := variableList(client, workspaceID, tfe.VariableListOptions{})
+		if err != nil && len(list.Items) == 0 {
+			return fmt.Errorf("variable list is empty")
+		}
+
+		found, err := aid.FindVariableByKey(list, cmd)
+		if err != nil {
+			return err
+		}
+
+		options := aid.GetVariableUpdateOptions(cmd)
+		variable, err := variableUpdate(client, workspaceID, found.ID, options)
+
 		if err == nil && variable.ID != "" {
 			fmt.Println(aid.ToJSON(variable))
 		} else {
