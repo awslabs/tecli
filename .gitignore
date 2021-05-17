@@ -251,8 +251,6 @@ downloads/
 generated-*/
 bin/*
 dist/*
-# Ignore the examples folder (also used as a branch)
-examples/* 
 test/*
 *debug_bin*
 terminalizer-*.yml

@@ -1,0 +1,207 @@
+image: ubuntu:20.04
+
+variables:
+  ENVIRONMENT: ${CI_COMMIT_REF_NAME}
+  AWS_ACCESS_KEY_ID: ${NP_AWS_ACCESS_KEY_ID}
+  AWS_SECRET_ACCESS_KEY: ${NP_AWS_SECRET_ACCESS_KEY}
+  AWS_SESSION_TOKEN: ${NP_AWS_SESSION_TOKEN}
+  TFC_WORKSPACE_NAME: my-workspace-${AWS_DEFAULT_REGION}-${CI_COMMIT_REF_NAME}
+
+stages:
+  - meta
+  - validate
+  - tools
+  - workspace
+  - plan
+  - apply
+  - outputs
+
+account:
+  stage: meta
+  script:
+    - if [ "${ENVIRONMENT}" == "prd" ]; then AWS_ACCESS_KEY_ID="${P_AWS_ACCESS_KEY_ID}"; fi
+    - if [ "${ENVIRONMENT}" == "prd" ]; then AWS_SECRET_ACCESS_KEY="${P_AWS_SECRET_ACCESS_KEY}"; fi
+    - if [ "${ENVIRONMENT}" == "prd" ]; then AWS_SESSION_TOKEN="${P_AWS_SESSION_TOKEN}"; fi
+
+vars:
+  stage: meta
+  script:
+    - echo "ENVIRONMENT=${ENVIRONMENT}"
+    - echo "TFC_WORKSPACE_NAME=${TFC_WORKSPACE_NAME}"
+
+gitlab:
+  stage: meta
+  script:
+    - export
+
+before_script:
+  - export TFC_ORGANIZATION_TOKEN=${TFC_ORGANIZATION_TOKEN}
+  - export TFC_TEAM_TOKEN=${TFC_TEAM_TOKEN}
+  - export DEBIAN_FRONTEND="noninteractive"
+  - apt-get -qq update -y > /dev/null 2>&1
+  - apt-get -qq install -y wget jq ca-certificates > /dev/null 2>&1
+
+# code:
+#   stage: validate
+#   image:
+#     name: hashicorp/terraform:light
+#     entrypoint: [""] # force an empty entrypoint
+#   script:
+#     - /bin/terraform validate
+
+tecli:
+  stage: tools
+  script:
+    - 'wget --quiet https://github.com/awslabs/tecli/releases/download/0.3.0/tecli-linux-amd64 -O tecli'
+    - chmod +x tecli
+  artifacts:
+    paths:
+      - "tecli"
+
+workspace:
+  stage: workspace
+  script:
+    # finding workspace
+    - ./tecli workspace find-by-name --organization=${TFC_ORGANIZATION} --name=${TFC_WORKSPACE_NAME} > workspace.json || true
+
+    - |
+      if grep -q -e "not found" "workspace.json"; then
+        echo "WORKSPACE NOT FOUND, CREATING..."
+        ./tecli workspace create --organization=${TFC_ORGANIZATION} --name=${TFC_WORKSPACE_NAME} --allow-destroy-plan=true > workspace.json
+        STATUS="CREATED"
+        VARIABLE_OPTION="create"
+      else
+        STATUS="FOUND"
+        VARIABLE_OPTION="update-by-key"
+      fi
+
+      cat workspace.json | jq -r '.Name' > workspace_name.txt
+      cat workspace.json | jq -r '.ID' > workspace_id.txt
+      W_NAME=$(cat workspace_name.txt)
+      W_ID=$(cat workspace_id.txt)
+
+      echo "WORKSPACE ${W_NAME} (${W_ID}) ${STATUS}"
+    
+    - |
+      echo "${VARIABLE_OPTION} variable: AWS_ACCESS_KEY_ID"
+      ./tecli variable ${VARIABLE_OPTION} --workspace-id=${W_ID} --key=AWS_ACCESS_KEY_ID --value=${AWS_ACCESS_KEY_ID} --category=env --sensitive=true > /dev/null 2>&1
+      
+      echo "${VARIABLE_OPTION} variable: AWS_SECRET_ACCESS_KEY"
+      ./tecli variable ${VARIABLE_OPTION} --workspace-id=${W_ID} --key=AWS_SECRET_ACCESS_KEY --value=${AWS_SECRET_ACCESS_KEY} --category=env --sensitive=true > /dev/null 2>&1
+      
+      echo "${VARIABLE_OPTION} variable: AWS_SESSION_TOKEN"
+      ./tecli variable ${VARIABLE_OPTION} --workspace-id=${W_ID} --key=AWS_SESSION_TOKEN --value=${AWS_SESSION_TOKEN} --category=env --sensitive=true > /dev/null 2>&1
+      
+      echo "${VARIABLE_OPTION} variable: AWS_DEFAULT_REGION"
+      ./tecli variable ${VARIABLE_OPTION} --workspace-id=${W_ID} --key=AWS_DEFAULT_REGION --value=${AWS_DEFAULT_REGION} --category=env  > /dev/null 2>&1
+  artifacts:
+    paths:
+      - workspace_name.txt
+      - workspace_id.txt
+
+create:
+  stage: plan
+  script:
+    - W_NAME=$(cat workspace_name.txt)
+    - W_ID=$(cat workspace_id.txt)
+    
+    - if [[ -z ${W_NAME} ]] || [[ -z ${W_ID} ]]; then echo "WORKSPACE NOT FOUND, FAILING..." && exit 1; fi
+    - echo "CREATING PLAN FOR WORKSPACE ${W_NAME} (${W_ID})"
+
+    # Before uploading the configuration files, you must create a configuration-version to associate uploaded content with the workspace.
+    - ./tecli configuration-version create --workspace-id="${W_ID}" > configuration_version.json
+    - cat configuration_version.json | jq -r '.UploadURL'
+    - cat configuration_version.json | jq -r '.ID'
+
+    - CV_UPLOAD_URL=$(cat configuration_version.json | jq -r '.UploadURL')
+    - CV_ID=$(cat configuration_version.json | jq -r '.ID')
+    - if [[ -z ${CV_ID} ]] || [[ -z ${CV_UPLOAD_URL} ]]; then echo "SOMETHING WENT WRONG, FAILING ..." && exit 1; fi
+
+    # Next, upload the configuration version tar.gz file to the upload URL extracted from the previous step. If a file is not uploaded, the configuration version will not be usable, since it will have no Terraform configuration files.
+    # Terraform Cloud automatically creates a new run with a plan once the new file is uploaded. If the workspace is configured to auto-apply, it will also apply if the plan succeeds; otherwise, an apply can be triggered via the Run Apply API. If the API token used for the upload lacks permission to apply runs for the workspace, the run can't be auto-applied. (More about permissions.)
+    - ./tecli configuration-version upload --url=${CV_UPLOAD_URL} --path=./
+
+    # Create plan
+    - COMMENT="Planned by ${GITLAB_USER_NAME} (${GITLAB_USER_EMAIL}) at ${TIMESTAMP}<br/>Commit message:<br/>${CI_COMMIT_MESSAGE}<br/>Commit:${CI_BUILD_REF}"
+    - ./tecli run create --workspace-id=${W_ID} --comment="${COMMENT}"  > run.json
+
+    # Check Run status; 'PENDING' is not ready to show any logs yet
+    - RUN_ID=$(cat run.json | jq -r '.ID')
+    - if [[ -z ${RUN_ID} ]]; then echo "SOMETHING WENT WRONG, FAILING ..." && exit 1; fi
+    - while true; do STATUS=$(./tecli run read --id=${RUN_ID} | jq -r ".Status"); if [ "${STATUS}" != "pending" ]; then break; else echo "RUN STATUS:${STATUS}, SLEEP 5 seconds" && sleep 5; fi; done
+
+    # Show plan logs
+    - PLAN_ID=$(cat run.json | jq -r '.Plan.ID')
+    - if [[ -z ${PLAN_ID} ]]; then echo "SOMETHING WENT WRONG, FAILING ..." && exit 1; fi
+    - echo ---------------------------------------------------
+    - ./tecli plan logs --id=${PLAN_ID}
+  artifacts:
+    paths:
+      - "run.json"
+
+destroy:
+  stage: plan
+  script:
+    - W_NAME=$(cat workspace_name.txt)
+    - W_ID=$(cat workspace_id.txt)
+    - if [[ -z ${W_NAME} ]] || [[ -z ${W_ID} ]]; then echo "WORKSPACE NOT FOUND, FAILING..." && exit 1; fi
+    - echo "CREATING DESTROY PLAN FOR WORKSPACE ${W_NAME} (${W_ID})"
+
+    # Create destroy plan
+    - COMMENT="Destroy planned by ${GITLAB_USER_NAME} (${GITLAB_USER_EMAIL}) at ${TIMESTAMP}<br/>Commit message:<br/>${CI_COMMIT_MESSAGE}<br/>Commit:${CI_BUILD_REF}"
+    - ./tecli run create --workspace-id=${W_ID} --comment="${COMMENT}" --is-destroy=true > run.json
+
+    # Check Run status; 'PENDING' is not ready to show any logs yet
+    - RUN_ID=$(cat run.json | jq -r '.ID')
+    - if [[ -z ${RUN_ID} ]]; then echo "SOMETHING WENT WRONG, FAILING ..." && exit 1; fi
+    - while true; do STATUS=$(./tecli run read --id=${RUN_ID} | jq -r ".Status"); if [ "${STATUS}" != "pending" ]; then break; else echo "RUN STATUS:${STATUS}, SLEEP 5 seconds" && sleep 5; fi; done
+
+    # Show plan logs
+    - PLAN_ID=$(cat run.json | jq -r '.Plan.ID')
+    - if [[ -z ${PLAN_ID} ]]; then echo "SOMETHING WENT WRONG, FAILING ..." && exit 1; fi
+    - echo ---------------------------------------------------
+    - ./tecli plan logs --id=${PLAN_ID}
+  artifacts:
+    paths:
+      - "run.json"
+  when: manual
+
+discard:
+  stage: apply
+  script:
+    - RUN_ID=$(cat run.json | jq -r '.ID')
+    - if [[ -z ${RUN_ID} ]]; then echo "SOMETHING WENT WRONG, FAILING ..." && exit 1; fi
+    - echo "DISCARDING RUN ${RUN_ID}..."
+    - ./tecli run discard --id=${RUN_ID}
+  when: manual
+
+discard/all:
+  stage: apply
+  script:
+    - W_NAME=$(cat workspace_name.txt)
+    - W_ID=$(cat workspace_id.txt)
+    - if [[ -z ${W_NAME} ]] || [[ -z ${W_ID} ]]; then echo "WORKSPACE NOT FOUND, FAILING..." && exit 1; fi
+    - echo "CANCELLING/DISCARDING ALL RUNS FOR WORKSPACE ${W_NAME} (${W_ID})"
+    - ./tecli run discard-all --workspace-id=${W_ID}
+  when: manual
+
+apply:
+  stage: apply
+  script:
+    - RUN_ID=$(cat run.json | jq -r '.ID')
+    - if [[ -z ${RUN_ID} ]]; then echo "SOMETHING WENT WRONG, FAILING ..." && exit 1; fi
+    - TIMESTAMP=$(date +"%d/%m/%Y %H:%M:%S")
+    - COMMENT="Applied by ${GITLAB_USER_NAME} (${GITLAB_USER_EMAIL}) at ${TIMESTAMP}<br/>Commit message:<br/>${CI_COMMIT_MESSAGE}<br/>Commit ID:${CI_BUILD_REF}"
+    - ./tecli run apply --id=${RUN_ID} --comment="${COMMENT}"
+
+    # Check Run status; 'PENDING' is not ready to show any logs yet
+    - RUN_ID=$(cat run.json | jq -r '.ID')
+    - if [[ -z ${RUN_ID} ]]; then echo "SOMETHING WENT WRONG, FAILING ..." && exit 1; fi
+    - while true; do STATUS=$(./tecli run read --id=${RUN_ID} | jq -r ".Status"); if [ "${STATUS}" != "pending" ]; then break; else echo "RUN STATUS:${STATUS}, SLEEP 5 seconds" && sleep 5; fi; done
+
+    # show logs
+    - APPLY_ID=$(cat run.json | jq -r '.Apply.ID')
+    - if [[ -z ${APPLY_ID} ]]; then echo "SOMETHING WENT WRONG, FAILING ..." && exit 1; fi
+    - echo ---------------------------------------------------
+    - ./tecli apply logs --id=${APPLY_ID}
+  when: manual
