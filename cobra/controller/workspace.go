@@ -119,7 +119,7 @@ func workspacePreRun(cmd *cobra.Command, args []string) error {
 
 func workspaceRun(cmd *cobra.Command, args []string) error {
 
-	token := dao.GetTeamToken(profile)
+	token := dao.GetOrganizationToken(profile)
 	client := aid.GetTFEClient(token)
 
 	fArg := args[0]
