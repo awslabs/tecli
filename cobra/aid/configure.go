@@ -20,9 +20,9 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"runtime"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/awslabs/tecli/cobra/model"
 	"github.com/awslabs/tecli/helper"
@@ -41,9 +41,6 @@ func SetConfigureFlags(cmd *cobra.Command) {
 
 	usage = `A short description`
 	cmd.Flags().String("description", "", usage)
-
-	usage = `Enable or disable the entire profile`
-	cmd.Flags().Bool("enabled", false, usage)
 
 	usage = `API tokens may belong directly to a user. User tokens are the most flexible token type because they inherit permissions from the user they are associated with.`
 	cmd.Flags().String("user-token", "", usage)
@@ -87,17 +84,6 @@ func GetCredentialProfileFlags(cmd *cobra.Command) model.CredentialProfile {
 		cp.Description = description
 	}
 
-	// enable profile by default, if user hasn't provide input for it
-	if !cmd.Flags().Changed("enabled") {
-		cp.Enabled = true
-	} else {
-		enabled, err := cmd.Flags().GetBool("enabled")
-		if err != nil {
-			logrus.Fatalf("unable to get flag enabled\n%v", err)
-		}
-		cp.Enabled = enabled
-	}
-
 	userToken, err := cmd.Flags().GetString("user-token")
 	if err != nil {
 		logrus.Fatalf("unable to get flag user-token\n%v", err)
@@ -129,36 +115,34 @@ func GetCredentialProfileFlags(cmd *cobra.Command) model.CredentialProfile {
 }
 
 // UpdateCredentialProfile update credential profile based on input flags
-func UpdateCredentialProfile(cmd *cobra.Command, old model.CredentialProfile) model.CredentialProfile {
+func UpdateCredentialProfile(cmd *cobra.Command, cp model.CredentialProfile) model.CredentialProfile {
 	f := GetCredentialProfileFlags(cmd)
 
-	if f.Name != "" && f.Name != old.Name {
-		old.Name = f.Name
+	if f.Name != "" && f.Name != cp.Name {
+		cp.Name = f.Name
 	}
 
-	if f.Description != "" && f.Description != old.Description {
-		old.Description = f.Description
+	if f.Description != "" && f.Description != cp.Description {
+		cp.Description = f.Description
 	}
 
-	if cmd.Flags().Changed("enabled") {
-		old.Enabled = f.Enabled
+	if f.Organization != "" && f.Organization != cp.Organization {
+		cp.Organization = f.Organization
 	}
 
-	old.UpdatedAt = time.Now().String()
-
-	if f.UserToken != "" && f.UserToken != old.UserToken {
-		old.UserToken = f.UserToken
+	if f.UserToken != "" && f.UserToken != cp.UserToken {
+		cp.UserToken = f.UserToken
 	}
 
-	if f.TeamToken != "" && f.TeamToken != old.TeamToken {
-		old.TeamToken = f.TeamToken
+	if f.TeamToken != "" && f.TeamToken != cp.TeamToken {
+		cp.TeamToken = f.TeamToken
 	}
 
-	if f.OrganizationToken != "" && f.OrganizationToken != old.OrganizationToken {
-		old.OrganizationToken = f.OrganizationToken
+	if f.OrganizationToken != "" && f.OrganizationToken != cp.OrganizationToken {
+		cp.OrganizationToken = f.OrganizationToken
 	}
 
-	return old
+	return cp
 }
 
 // CheckAppDirAndFile checks if configuration directory and file exist
@@ -178,7 +162,7 @@ func CheckAppDirAndFile() error {
 
 // DeleteConfigurationsDirectory delete the configurations directory
 func DeleteConfigurationsDirectory() error {
-	return os.RemoveAll(GetAppInfo().AppDir)
+	return os.RemoveAll(GetAppInfo().ConfigurationsDir)
 }
 
 // GetSensitiveUserInput get sensitive input as string
@@ -210,21 +194,34 @@ func GetSensitiveUserInputAsString(cmd *cobra.Command, text string, info string)
 	return info
 }
 
-func getUserInput(cmd *cobra.Command, text string, info string) (string, error) {
+func getInput() (string, error) {
+
 	reader := bufio.NewReader(os.Stdin)
 
-	if info == "" {
-		fmt.Print(text + ": ")
-	} else {
-		fmt.Print(text + " [" + info + "]: ")
+	text, err := reader.ReadString('\n')
+	if err != nil {
+		return "", err
 	}
 
-	input, err := reader.ReadString('\n')
-	// convert CRLF to LF
-	input = strings.Replace(input, "\n", "", -1)
-	if err != nil {
-		return input, fmt.Errorf("unable to read user input\n%v", err)
+	if runtime.GOOS == "windows" {
+		// convert LF to CRLF
+		text = strings.Replace(text, "\r\n", "", -1)
+	} else {
+		// convert CRLF to LF
+		text = strings.Replace(text, "\n", "", -1)
 	}
+
+	return text, nil
+}
+
+func getUserInput(cmd *cobra.Command, text string, info string) (string, error) {
+	if info == "" {
+		cmd.Print(text + ": ")
+	} else {
+		cmd.Print(text + " [" + info + "]: ")
+	}
+
+	input, err := getInput()
 
 	return input, err
 }
@@ -271,7 +268,7 @@ func HasCreatedAppDir(cmd *cobra.Command) (bool, error) {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
 			// not found anywhere, crea dir
 
-			dirPath := GetAppInfo().AppDir
+			dirPath := GetAppInfo().ConfigurationsDir
 			if helper.MkDirsIfNotExist(dirPath) {
 				fmt.Printf("tecli configuration directory created at %s\n", dirPath)
 
@@ -283,7 +280,7 @@ func HasCreatedAppDir(cmd *cobra.Command) (bool, error) {
 				f.Close()
 
 				// reload viper
-				LoadViper("")
+				LoadViper()
 
 				return true, nil
 			}
