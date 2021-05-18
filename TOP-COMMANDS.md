@@ -7,9 +7,11 @@ To export environment variables:
 
 ```
 # on Linux:
+export TFC_ORGANIZATION_TOKEN=XXX
 export TFC_TEAM_TOKEN=XXX
 
 # on Windows (powershell):
+$Env:TFC_ORGANIZATION_TOKEN="XXX"
 $Env:TFC_TEAM_TOKEN="XXX"
 ```
 
