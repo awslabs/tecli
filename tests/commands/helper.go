@@ -56,8 +56,7 @@ func GetTFEClient() *tfe.Client {
 
 	client, err := tfe.NewClient(config)
 	if err != nil {
-		logrus.Errorln("unable to get terraform cloud api client")
-		logrus.Fatalln(err)
+		logrus.Fatalf("unable to get terraform cloud api client\n%v", err)
 	}
 
 	return client

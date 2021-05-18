@@ -7,7 +7,6 @@ require (
 	github.com/hashicorp/go-slug v0.6.0 // indirect
 	github.com/hashicorp/go-tfe v0.12.0
 	github.com/magiconair/properties v1.8.1 // indirect
-	github.com/mitchellh/go-homedir v1.1.0
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/sirupsen/logrus v1.2.0
 	github.com/spf13/afero v1.3.4 // indirect

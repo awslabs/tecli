@@ -14,12 +14,28 @@
             "args": [""]
         },
         {
+            "name": "d-workspace-list",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${workspaceFolder}/main.go",
+            "args": ["workspace", "list"]
+        },
+        {
             "name": "workspace",
             "type": "go",
             "request": "launch",
             "mode": "debug",
             "program": "${workspaceFolder}/main.go",
             "args": ["workspace", "list", "--organization", "foo-org"]
+        },
+        {
+            "name": "workspace-create",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${workspaceFolder}/main.go",
+            "args": ["workspace", "--profile", "foo-org-demo", "create", "--organization", "foo-org-demo", "--name", "demo1"]
         },
         {
             "name": "configure-create",

@@ -51,7 +51,7 @@ func TestConfigureCmdFlags(t *testing.T) {
 
 func TestConfigureCreate(t *testing.T) {
 	// need to remove global tecli configuration directory
-	dir := aid.GetAppInfo().AppDir
+	dir := aid.GetAppInfo().ConfigurationsDir
 	err := os.RemoveAll(dir)
 	assert.Nil(t, err)
 
