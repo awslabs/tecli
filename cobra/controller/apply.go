@@ -41,14 +41,15 @@ func ApplyCmd() *cobra.Command {
 	}
 
 	cmd := &cobra.Command{
-		Use:       man.Use,
-		Short:     man.Short,
-		Long:      man.Long,
-		Example:   man.Example,
-		ValidArgs: applyValidArgs,
-		Args:      cobra.OnlyValidArgs,
-		PreRunE:   applyPreRun,
-		RunE:      applyRun,
+		Use:          man.Use,
+		Short:        man.Short,
+		Long:         man.Long,
+		Example:      man.Example,
+		ValidArgs:    applyValidArgs,
+		Args:         cobra.OnlyValidArgs,
+		PreRunE:      applyPreRun,
+		RunE:         applyRun,
+		SilenceUsage: true,
 	}
 
 	aid.SetApplyFlags(cmd)
