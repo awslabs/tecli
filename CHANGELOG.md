@@ -2,8 +2,10 @@
 
 ## Bugfix
 
-Fix access levels for commands: workspace.
+* Fix bugfixes when executing `tecli configure create` command.
 
 ## Feature
 
-Add new option to update workspace variable by using its keys.
+* Add organization into the credentials file.
+* Allow `TFC_ORGANIZATION` to be used to define the terraform cloud organization name.
+* Silece command usage when an error occurs.
