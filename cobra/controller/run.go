@@ -49,14 +49,15 @@ func RunCmd() *cobra.Command {
 	}
 
 	cmd := &cobra.Command{
-		Use:       man.Use,
-		Short:     man.Short,
-		Long:      man.Long,
-		Example:   man.Example,
-		ValidArgs: runValidArgs,
-		Args:      cobra.OnlyValidArgs,
-		PreRunE:   runPreRun,
-		RunE:      runRun,
+		Use:          man.Use,
+		Short:        man.Short,
+		Long:         man.Long,
+		Example:      man.Example,
+		ValidArgs:    runValidArgs,
+		Args:         cobra.OnlyValidArgs,
+		PreRunE:      runPreRun,
+		RunE:         runRun,
+		SilenceUsage: true,
 	}
 
 	aid.SetRunFlags(cmd)

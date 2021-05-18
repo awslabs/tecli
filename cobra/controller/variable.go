@@ -47,14 +47,15 @@ func VariableCmd() *cobra.Command {
 	}
 
 	cmd := &cobra.Command{
-		Use:       man.Use,
-		Short:     man.Short,
-		Long:      man.Long,
-		Example:   man.Example,
-		ValidArgs: variableValidArgs,
-		Args:      cobra.OnlyValidArgs,
-		PreRunE:   variablePreRun,
-		RunE:      variableRun,
+		Use:          man.Use,
+		Short:        man.Short,
+		Long:         man.Long,
+		Example:      man.Example,
+		ValidArgs:    variableValidArgs,
+		Args:         cobra.OnlyValidArgs,
+		PreRunE:      variablePreRun,
+		RunE:         variableRun,
+		SilenceUsage: true,
 	}
 
 	aid.SetVariableFlags(cmd)

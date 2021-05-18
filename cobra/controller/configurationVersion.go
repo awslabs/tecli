@@ -38,14 +38,15 @@ func ConfigurationVersionCmd() *cobra.Command {
 	}
 
 	cmd := &cobra.Command{
-		Use:       man.Use,
-		Short:     man.Short,
-		Long:      man.Long,
-		Example:   man.Example,
-		ValidArgs: configurationVersionValidArgs,
-		Args:      cobra.OnlyValidArgs,
-		PreRunE:   configurationVersionPreRun,
-		RunE:      configurationVersionRun,
+		Use:          man.Use,
+		Short:        man.Short,
+		Long:         man.Long,
+		Example:      man.Example,
+		ValidArgs:    configurationVersionValidArgs,
+		Args:         cobra.OnlyValidArgs,
+		PreRunE:      configurationVersionPreRun,
+		RunE:         configurationVersionRun,
+		SilenceUsage: true,
 	}
 
 	aid.SetConfigurationVersionFlags(cmd)

@@ -35,10 +35,11 @@ func VersionCmd() *cobra.Command {
 	}
 
 	return &cobra.Command{
-		Use:   man.Use,
-		Short: man.Short,
-		Long:  man.Long,
-		RunE:  versionRun,
+		Use:          man.Use,
+		Short:        man.Short,
+		Long:         man.Long,
+		RunE:         versionRun,
+		SilenceUsage: true,
 	}
 }
 

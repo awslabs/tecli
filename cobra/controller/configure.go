@@ -18,7 +18,6 @@ package controller
 import (
 	"fmt"
 	"os"
-	"time"
 
 	"github.com/awslabs/tecli/cobra/aid"
 	"github.com/awslabs/tecli/cobra/dao"
@@ -40,14 +39,15 @@ func ConfigureCmd() *cobra.Command {
 	}
 
 	cmd := &cobra.Command{
-		Use:       man.Use,
-		Short:     man.Short,
-		Long:      man.Long,
-		Example:   man.Example,
-		ValidArgs: configureValidArgs,
-		Args:      cobra.OnlyValidArgs,
-		PreRunE:   configurePreRun,
-		RunE:      configureRun,
+		Use:          man.Use,
+		Short:        man.Short,
+		Long:         man.Long,
+		Example:      man.Example,
+		ValidArgs:    configureValidArgs,
+		Args:         cobra.OnlyValidArgs,
+		PreRunE:      configurePreRun,
+		RunE:         configureRun,
+		SilenceUsage: true,
 	}
 
 	aid.SetConfigureFlags(cmd)
@@ -156,8 +156,6 @@ func configureCreateCredentials(cmd *cobra.Command, mode string) error {
 			creds = view.CreateCredentials(cmd, profile, model.Credentials{})
 		} else if mode == "non-interactive" {
 			c := aid.GetCredentialProfileFlags(cmd)
-			c.CreatedAt = time.Now().String()
-			c.UpdatedAt = time.Now().String()
 			creds.Profiles = append(creds.Profiles, c)
 		}
 

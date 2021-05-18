@@ -41,14 +41,15 @@ func PlanCmd() *cobra.Command {
 	}
 
 	cmd := &cobra.Command{
-		Use:       man.Use,
-		Short:     man.Short,
-		Long:      man.Long,
-		Example:   man.Example,
-		ValidArgs: planValidArgs,
-		Args:      cobra.OnlyValidArgs,
-		PreRunE:   planPreRun,
-		RunE:      planRun,
+		Use:          man.Use,
+		Short:        man.Short,
+		Long:         man.Long,
+		Example:      man.Example,
+		ValidArgs:    planValidArgs,
+		Args:         cobra.OnlyValidArgs,
+		PreRunE:      planPreRun,
+		RunE:         planRun,
+		SilenceUsage: true,
 	}
 
 	aid.SetPlanFlags(cmd)
