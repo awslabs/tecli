@@ -25,9 +25,7 @@ type Credentials struct {
 type CredentialProfile struct {
 	Name              string `yaml:"name"`
 	Description       string `yaml:"description,omitempty"`
-	Enabled           bool   `yaml:"enabled"`
-	CreatedAt         string `yaml:"createdAt"`
-	UpdatedAt         string `yaml:"updatedAt"`
+	Organization      string `yaml:"organization"`
 	UserToken         string `yaml:"userToken"`
 	TeamToken         string `yaml:"teamToken"`
 	OrganizationToken string `yaml:"organizationToken"`

@@ -22,6 +22,7 @@ import (
 	"github.com/awslabs/tecli/cobra/model"
 	"github.com/awslabs/tecli/helper"
 	"github.com/sirupsen/logrus"
+
 	"github.com/spf13/viper"
 )
 
@@ -52,7 +53,7 @@ func GetCredentialProfile(name string) (model.CredentialProfile, error) {
 	}
 
 	for _, profile := range credentials.Profiles {
-		if profile.Name == name && profile.Enabled {
+		if profile.Name == name {
 			return profile, err
 		}
 	}
@@ -60,17 +61,57 @@ func GetCredentialProfile(name string) (model.CredentialProfile, error) {
 	return (model.CredentialProfile{}), err
 }
 
-// GetTeamToken return the team token from credentials file
+// GetOrganization return the team token
+func GetOrganization(name string) string {
+	// from ENV variable
+	organization := viper.GetString("ORGANIZATION")
+	if organization != "" {
+		fmt.Println("environment variable TFC_ORGANIZATION found, will be used...")
+		return organization
+	}
+
+	// from credentials file
+	cp, err := GetCredentialProfile(name)
+	if err != nil {
+		logrus.Errorf("unable to read organization from credentials\n%v", err)
+	}
+
+	return cp.Organization
+}
+
+// GetUserToken return the team token
+func GetUserToken(name string) string {
+
+	// from ENV variable
+	userToken := viper.GetString("USER_TOKEN")
+	if userToken != "" {
+		fmt.Println("environment variable USER_TOKEN found, will be used...")
+		return userToken
+	}
+
+	// from credentials file
+	cp, err := GetCredentialProfile(name)
+	if err != nil {
+		logrus.Errorf("unable to read user token from credentials\n%v", err)
+	}
+
+	return cp.UserToken
+}
+
+// GetTeamToken return the team token
 func GetTeamToken(name string) string {
+
+	// from ENV variable
 	teamToken := viper.GetString("TEAM_TOKEN")
 	if teamToken != "" {
+		fmt.Println("environment variable TEAM_TOKEN found, will be used...")
 		return teamToken
 	}
 
+	// from credentials file
 	cp, err := GetCredentialProfile(name)
 	if err != nil {
-		logrus.Errorln("unable to read team token from credentials")
-		logrus.Fatalf("%v", err)
+		logrus.Errorf("unable to read team token from credentials\n%v", err)
 	}
 
 	return cp.TeamToken
@@ -78,15 +119,20 @@ func GetTeamToken(name string) string {
 
 // GetOrganizationToken return the organization token from credentials file
 func GetOrganizationToken(name string) string {
+
+	// from ENV variable
 	orgToken := viper.GetString("ORGANIZATION_TOKEN")
 	if orgToken != "" {
+		fmt.Println("environment variable ORGANIZATION_TOKEN found, will be used...")
 		return orgToken
 	}
 
+	// from credentials file
 	cp, err := GetCredentialProfile(name)
 	if err != nil {
-		logrus.Fatalf("unable to read organization token from configurations\n%v\n", err)
+		logrus.Errorf("unable to read organization token from configurations\n%v\n", err)
 	}
+
 	return cp.OrganizationToken
 }
 

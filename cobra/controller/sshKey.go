@@ -39,14 +39,15 @@ func SSHKeyCmd() *cobra.Command {
 	}
 
 	cmd := &cobra.Command{
-		Use:       man.Use,
-		Short:     man.Short,
-		Long:      man.Long,
-		Example:   man.Example,
-		ValidArgs: sshKeyValidArgs,
-		Args:      cobra.OnlyValidArgs,
-		PreRunE:   sshKeyPreRun,
-		RunE:      sshKeyRun,
+		Use:          man.Use,
+		Short:        man.Short,
+		Long:         man.Long,
+		Example:      man.Example,
+		ValidArgs:    sshKeyValidArgs,
+		Args:         cobra.OnlyValidArgs,
+		PreRunE:      sshKeyPreRun,
+		RunE:         sshKeyRun,
+		SilenceUsage: true,
 	}
 
 	usage := `SSH key ID. Required for read and delete.`
@@ -68,15 +69,7 @@ func sshKeyPreRun(cmd *cobra.Command, args []string) error {
 
 	fArg := args[0]
 	switch fArg {
-	case "list":
-		if err := helper.ValidateCmdArgAndFlag(cmd, args, "ssh-key", fArg, "organization"); err != nil {
-			return err
-		}
 	case "create":
-		if err := helper.ValidateCmdArgAndFlag(cmd, args, "ssh-key", fArg, "organization"); err != nil {
-			return err
-		}
-
 		if err := helper.ValidateCmdArgAndFlag(cmd, args, "ssh-key", fArg, "name"); err != nil {
 			return err
 		}
@@ -126,6 +119,7 @@ func sshKeyRun(cmd *cobra.Command, args []string) error {
 	fArg := args[0]
 	switch fArg {
 	case "list":
+		organization := dao.GetOrganization(profile)
 		list, err := sshKeyList(client, organization)
 		if err == nil {
 			cmd.Println(aid.ToJSON(list))
@@ -134,8 +128,9 @@ func sshKeyRun(cmd *cobra.Command, args []string) error {
 		}
 
 	case "create":
+		organization := dao.GetOrganization(profile)
 		options := aid.GetSSHKeysCreateOptions(cmd)
-		sshKey, err = sshKeyCreate(client, options)
+		sshKey, err = sshKeyCreate(client, organization, options)
 		if err != nil {
 			logrus.Errorln("unable to create ssh key")
 			return err
@@ -192,7 +187,7 @@ func sshKeyList(client *tfe.Client, organization string) (*tfe.SSHKeyList, error
 }
 
 // Create is used to create a new sshKey.
-func sshKeyCreate(client *tfe.Client, options tfe.SSHKeyCreateOptions) (*tfe.SSHKey, error) {
+func sshKeyCreate(client *tfe.Client, organization string, options tfe.SSHKeyCreateOptions) (*tfe.SSHKey, error) {
 	return client.SSHKeys.Create(context.Background(), organization, options)
 }
 

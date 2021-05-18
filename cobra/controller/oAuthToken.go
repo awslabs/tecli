@@ -43,14 +43,15 @@ func OAuthTokenCmd() *cobra.Command {
 	}
 
 	cmd := &cobra.Command{
-		Use:       man.Use,
-		Short:     man.Short,
-		Long:      man.Long,
-		Example:   man.Example,
-		ValidArgs: oAuthTokenValidArgs,
-		Args:      cobra.OnlyValidArgs,
-		PreRunE:   oAuthTokenPreRun,
-		RunE:      oAuthTokenRun,
+		Use:          man.Use,
+		Short:        man.Short,
+		Long:         man.Long,
+		Example:      man.Example,
+		ValidArgs:    oAuthTokenValidArgs,
+		Args:         cobra.OnlyValidArgs,
+		PreRunE:      oAuthTokenPreRun,
+		RunE:         oAuthTokenRun,
+		SilenceUsage: true,
 	}
 
 	aid.SetOAuthTokenFlags(cmd)
@@ -65,10 +66,6 @@ func oAuthTokenPreRun(cmd *cobra.Command, args []string) error {
 
 	fArg := args[0]
 	switch fArg {
-	case "list":
-		if err := helper.ValidateCmdArgAndFlag(cmd, args, "o-auth-token", fArg, "organization"); err != nil {
-			return err
-		}
 	case "read", "update", "delete":
 		if err := helper.ValidateCmdArgAndFlag(cmd, args, "o-auth-token", fArg, "id"); err != nil {
 			return err
@@ -86,7 +83,8 @@ func oAuthTokenRun(cmd *cobra.Command, args []string) error {
 	fArg := args[0]
 	switch fArg {
 	case "list":
-		list, err := oAuthTokenList(client)
+		organization := dao.GetOrganization(profile)
+		list, err := oAuthTokenList(client, organization)
 		if err == nil {
 			aid.PrintOAuthTokenList(list)
 		} else {
@@ -135,7 +133,7 @@ func oAuthTokenRun(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func oAuthTokenList(client *tfe.Client) (*tfe.OAuthTokenList, error) {
+func oAuthTokenList(client *tfe.Client, organization string) (*tfe.OAuthTokenList, error) {
 	return client.OAuthTokens.List(context.Background(), organization, tfe.OAuthTokenListOptions{})
 }
 

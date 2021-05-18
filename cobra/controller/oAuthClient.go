@@ -43,14 +43,15 @@ func OAuthClientCmd() *cobra.Command {
 	}
 
 	cmd := &cobra.Command{
-		Use:       man.Use,
-		Short:     man.Short,
-		Long:      man.Long,
-		Example:   man.Example,
-		ValidArgs: oAuthClientValidArgs,
-		Args:      cobra.OnlyValidArgs,
-		PreRunE:   oAuthClientPreRun,
-		RunE:      oAuthClientRun,
+		Use:          man.Use,
+		Short:        man.Short,
+		Long:         man.Long,
+		Example:      man.Example,
+		ValidArgs:    oAuthClientValidArgs,
+		Args:         cobra.OnlyValidArgs,
+		PreRunE:      oAuthClientPreRun,
+		RunE:         oAuthClientRun,
+		SilenceUsage: true,
 	}
 
 	aid.SetOAuthClientFlags(cmd)
@@ -65,14 +66,7 @@ func oAuthClientPreRun(cmd *cobra.Command, args []string) error {
 
 	fArg := args[0]
 	switch fArg {
-	case "list":
-		if err := helper.ValidateCmdArgAndFlag(cmd, args, "o-auth-client", fArg, "organization"); err != nil {
-			return err
-		}
 	case "create":
-		if err := helper.ValidateCmdArgAndFlag(cmd, args, "o-auth-client", fArg, "organization"); err != nil {
-			return err
-		}
 
 		if err := helper.ValidateCmdArgAndFlag(cmd, args, "o-auth-client", fArg, "api-url"); err != nil {
 			return err
@@ -106,7 +100,8 @@ func oAuthClientRun(cmd *cobra.Command, args []string) error {
 	fArg := args[0]
 	switch fArg {
 	case "list":
-		list, err := oAuthClientList(client)
+		organization := dao.GetOrganization(profile)
+		list, err := oAuthClientList(client, organization)
 		if err == nil {
 			aid.PrintOAuthClientList(list)
 		} else {
@@ -114,8 +109,9 @@ func oAuthClientRun(cmd *cobra.Command, args []string) error {
 		}
 
 	case "create":
+		organization := dao.GetOrganization(profile)
 		options := aid.GetOAuthClientCreateOptions(cmd)
-		oAuthClient, err := oAuthClientCreate(client, options)
+		oAuthClient, err := oAuthClientCreate(client, organization, options)
 
 		if err == nil && oAuthClient.ID != "" {
 			fmt.Println(aid.ToJSON(oAuthClient))
@@ -151,12 +147,12 @@ func oAuthClientRun(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func oAuthClientList(client *tfe.Client) (*tfe.OAuthClientList, error) {
+func oAuthClientList(client *tfe.Client, organization string) (*tfe.OAuthClientList, error) {
 	return client.OAuthClients.List(context.Background(), organization, tfe.OAuthClientListOptions{})
 }
 
 // Create is used to create a new oAuthClient.
-func oAuthClientCreate(client *tfe.Client, options tfe.OAuthClientCreateOptions) (*tfe.OAuthClient, error) {
+func oAuthClientCreate(client *tfe.Client, organization string, options tfe.OAuthClientCreateOptions) (*tfe.OAuthClient, error) {
 	return client.OAuthClients.Create(context.Background(), organization, options)
 }
 

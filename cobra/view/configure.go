@@ -18,7 +18,6 @@ package view
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/awslabs/tecli/cobra/aid"
 	"github.com/awslabs/tecli/cobra/dao"
@@ -41,10 +40,6 @@ func createCredentialProfile(cmd *cobra.Command, name string) model.CredentialPr
 	var cp model.CredentialProfile
 	cp.Name = name
 	cp.Description = "managed by tecli"
-	cp.Enabled = true // enabling profile by default
-	cp.CreatedAt = time.Now().String()
-	cp.UpdatedAt = time.Now().String()
-
 	return AskAboutCredentialProfile(cmd, cp)
 }
 
@@ -53,11 +48,10 @@ func AskAboutCredentialProfile(cmd *cobra.Command, cp model.CredentialProfile) m
 	fmt.Println(">> Profile: " + cp.Name)
 	cp.Name = aid.GetUserInputAsString(cmd, ">> Name", cp.Name)
 	cp.Description = aid.GetUserInputAsString(cmd, ">> Description", cp.Description)
-	cp.Enabled = aid.GetUserInputAsBool(cmd, ">> Enabled", cp.Enabled)
+	cp.Organization = aid.GetUserInputAsString(cmd, ">> Organization", cp.Organization)
 	cp.UserToken = aid.GetUserInputAsString(cmd, ">> User Token", cp.UserToken)
 	cp.TeamToken = aid.GetUserInputAsString(cmd, ">> Team Token", cp.TeamToken)
 	cp.OrganizationToken = aid.GetUserInputAsString(cmd, ">> Organization Token", cp.OrganizationToken)
-	cp.UpdatedAt = time.Now().String()
 
 	return cp
 }

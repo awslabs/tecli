@@ -54,14 +54,15 @@ func WorkspaceCmd() *cobra.Command {
 	}
 
 	cmd := &cobra.Command{
-		Use:       man.Use,
-		Short:     man.Short,
-		Long:      man.Long,
-		Example:   man.Example,
-		ValidArgs: workspaceValidArgs,
-		Args:      cobra.OnlyValidArgs,
-		PreRunE:   workspacePreRun,
-		RunE:      workspaceRun,
+		Use:          man.Use,
+		Short:        man.Short,
+		Long:         man.Long,
+		Example:      man.Example,
+		ValidArgs:    workspaceValidArgs,
+		Args:         cobra.OnlyValidArgs,
+		PreRunE:      workspacePreRun,
+		RunE:         workspaceRun,
+		SilenceUsage: true,
 	}
 
 	aid.SetWorkspaceFlags(cmd)
@@ -78,9 +79,8 @@ func workspacePreRun(cmd *cobra.Command, args []string) error {
 	switch fArg {
 
 	case "list":
-		if err := helper.ValidateCmdArgAndFlag(cmd, args, "workspace", fArg, "organization"); err != nil {
-			return err
-		}
+		// skipping...
+		return nil
 
 	case "create",
 		"read",
@@ -88,10 +88,6 @@ func workspacePreRun(cmd *cobra.Command, args []string) error {
 		"delete",
 		"find-by-name",
 		"remove-vcs-connection":
-
-		if err := helper.ValidateCmdArgAndFlag(cmd, args, "workspace", fArg, "organization"); err != nil {
-			return err
-		}
 
 		if err := helper.ValidateCmdArgAndFlag(cmd, args, "workspace", fArg, "name"); err != nil {
 			return err
@@ -125,15 +121,17 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 	fArg := args[0]
 	switch fArg {
 	case "list":
+		organization := dao.GetOrganization(profile)
 		options := aid.GetWorkspaceListOptions(cmd)
-		list, err := workspaceList(client, options)
+		list, err := workspaceList(client, organization, options)
 		if err == nil {
 			aid.PrintWorkspaceList(list)
 		} else {
 			return fmt.Errorf("no workspace was found")
 		}
 	case "find-by-name":
-		list, err := workspaceList(client, tfe.WorkspaceListOptions{})
+		organization := dao.GetOrganization(profile)
+		list, err := workspaceList(client, organization, tfe.WorkspaceListOptions{})
 		if err == nil {
 			w, err := workspaceFindByName(list, cmd)
 			if err != nil {
@@ -144,8 +142,9 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 			return fmt.Errorf("no workspace was found")
 		}
 	case "create":
+		organization := dao.GetOrganization(profile)
 		options := aid.GetWorkspaceCreateOptions(cmd)
-		workspace, err := workspaceCreate(client, options)
+		workspace, err := workspaceCreate(client, organization, options)
 
 		if err == nil && workspace.ID != "" {
 			fmt.Println(aid.ToJSON(workspace))
@@ -158,7 +157,8 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 			return err
 		}
 
-		workspace, err := workspaceRead(client, name)
+		organization := dao.GetOrganization(profile)
+		workspace, err := workspaceRead(client, organization, name)
 		if err == nil {
 			fmt.Println(aid.ToJSON(workspace))
 		} else {
@@ -182,8 +182,9 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 			return err
 		}
 
+		organization := dao.GetOrganization(profile)
 		options := aid.GetWorkspaceUpdateOptions(cmd)
-		workspace, err := workspaceUpdate(client, name, options)
+		workspace, err := workspaceUpdate(client, organization, name, options)
 		if err == nil && workspace.ID != "" {
 			fmt.Println(aid.ToJSON(workspace))
 		} else {
@@ -208,7 +209,8 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 			return err
 		}
 
-		err = workspaceDelete(client, name)
+		organization := dao.GetOrganization(profile)
+		err = workspaceDelete(client, organization, name)
 		if err == nil {
 			fmt.Printf("workspace %s deleted successfully\n", name)
 		} else {
@@ -232,7 +234,8 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 			return err
 		}
 
-		workspace, err := workspaceRemoveVCSConnection(client, name)
+		organization := dao.GetOrganization(profile)
+		workspace, err := workspaceRemoveVCSConnection(client, organization, name)
 		if err == nil {
 			fmt.Println(aid.ToJSON(workspace))
 		} else {
@@ -316,7 +319,7 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func workspaceList(client *tfe.Client, options tfe.WorkspaceListOptions) (*tfe.WorkspaceList, error) {
+func workspaceList(client *tfe.Client, organization string, options tfe.WorkspaceListOptions) (*tfe.WorkspaceList, error) {
 	return client.Workspaces.List(context.Background(), organization, options)
 }
 
@@ -337,12 +340,12 @@ func workspaceFindByName(list *tfe.WorkspaceList, cmd *cobra.Command) (*tfe.Work
 }
 
 // Create is used to create a new workspace.
-func workspaceCreate(client *tfe.Client, options tfe.WorkspaceCreateOptions) (*tfe.Workspace, error) {
+func workspaceCreate(client *tfe.Client, organization string, options tfe.WorkspaceCreateOptions) (*tfe.Workspace, error) {
 	return client.Workspaces.Create(context.Background(), organization, options)
 }
 
 // Read a workspace by its name.
-func workspaceRead(client *tfe.Client, workspace string) (*tfe.Workspace, error) {
+func workspaceRead(client *tfe.Client, organization string, workspace string) (*tfe.Workspace, error) {
 	return client.Workspaces.Read(context.Background(), organization, workspace)
 }
 
@@ -352,7 +355,7 @@ func workspaceReadByID(client *tfe.Client, workspaceID string) (*tfe.Workspace, 
 }
 
 // Update settings of an existing workspace.
-func workspaceUpdate(client *tfe.Client, workspace string, options tfe.WorkspaceUpdateOptions) (*tfe.Workspace, error) {
+func workspaceUpdate(client *tfe.Client, organization string, workspace string, options tfe.WorkspaceUpdateOptions) (*tfe.Workspace, error) {
 	return client.Workspaces.Update(context.Background(), organization, workspace, options)
 }
 
@@ -362,7 +365,7 @@ func workspaceUpdateByID(client *tfe.Client, workspaceID string, options tfe.Wor
 }
 
 // // Delete a workspace by its name.
-func workspaceDelete(client *tfe.Client, workspace string) error {
+func workspaceDelete(client *tfe.Client, organization string, workspace string) error {
 	return client.Workspaces.Delete(context.Background(), organization, workspace)
 }
 
@@ -372,7 +375,7 @@ func workspaceDeleteByID(client *tfe.Client, workspaceID string) error {
 }
 
 // RemoveVCSConnection from a workspace.
-func workspaceRemoveVCSConnection(client *tfe.Client, workspace string) (*tfe.Workspace, error) {
+func workspaceRemoveVCSConnection(client *tfe.Client, organization string, workspace string) (*tfe.Workspace, error) {
 	return client.Workspaces.RemoveVCSConnection(context.Background(), organization, workspace)
 }
 
