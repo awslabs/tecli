@@ -66,7 +66,7 @@ func GetOrganization(name string) string {
 	// from ENV variable
 	organization := viper.GetString("ORGANIZATION")
 	if organization != "" {
-		fmt.Println("environment variable TFC_ORGANIZATION found, will be used...")
+		// fmt.Println("environment variable TFC_ORGANIZATION found, will be used...")
 		return organization
 	}
 
@@ -85,7 +85,7 @@ func GetUserToken(name string) string {
 	// from ENV variable
 	userToken := viper.GetString("USER_TOKEN")
 	if userToken != "" {
-		fmt.Println("environment variable USER_TOKEN found, will be used...")
+		// fmt.Println("environment variable USER_TOKEN found, will be used...")
 		return userToken
 	}
 
@@ -104,7 +104,7 @@ func GetTeamToken(name string) string {
 	// from ENV variable
 	teamToken := viper.GetString("TEAM_TOKEN")
 	if teamToken != "" {
-		fmt.Println("environment variable TEAM_TOKEN found, will be used...")
+		// fmt.Println("environment variable TEAM_TOKEN found, will be used...")
 		return teamToken
 	}
 
@@ -123,7 +123,7 @@ func GetOrganizationToken(name string) string {
 	// from ENV variable
 	orgToken := viper.GetString("ORGANIZATION_TOKEN")
 	if orgToken != "" {
-		fmt.Println("environment variable ORGANIZATION_TOKEN found, will be used...")
+		// fmt.Println("environment variable ORGANIZATION_TOKEN found, will be used...")
 		return orgToken
 	}
 
