@@ -12,7 +12,7 @@ jobs:
       - run: go version 
       - run: go env
       - run: go generate ./...
-      - name: Run go test
-        run: make github/test
+      # - name: Run go test
+        # run: make github/test
       - name: Run go build
         run: make github/build
