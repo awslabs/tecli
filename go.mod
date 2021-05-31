@@ -5,7 +5,7 @@ go 1.15
 require (
 	github.com/hashicorp/go-retryablehttp v0.6.8 // indirect
 	github.com/hashicorp/go-slug v0.6.0 // indirect
-	github.com/hashicorp/go-tfe v0.12.0
+	github.com/hashicorp/go-tfe v0.15.0
 	github.com/magiconair/properties v1.8.1 // indirect
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/sirupsen/logrus v1.2.0

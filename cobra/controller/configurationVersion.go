@@ -116,7 +116,7 @@ func configurationVersionRun(cmd *cobra.Command, args []string) error {
 		cv, err := configurationVersionCreate(client, workspaceID, options)
 
 		if err == nil && cv.ID != "" {
-			cmd.Println(aid.ToJSON(cv))
+			fmt.Println(aid.ToJSON(cv))
 		} else {
 			return fmt.Errorf("unable to create configuration version\n%v", err)
 		}
@@ -128,7 +128,7 @@ func configurationVersionRun(cmd *cobra.Command, args []string) error {
 
 		cv, err := configurationVersionRead(client, id)
 		if err == nil {
-			cmd.Println(aid.ToJSON(cv))
+			fmt.Println(aid.ToJSON(cv))
 		} else {
 			return fmt.Errorf("configuration version %s not found\n%v", id, err)
 		}
@@ -146,7 +146,7 @@ func configurationVersionRun(cmd *cobra.Command, args []string) error {
 
 		err = configurationVersionUpload(client, url, path)
 		if err == nil {
-			cmd.Println("upload completed successfully")
+			fmt.Println("upload completed successfully")
 		} else {
 			return fmt.Errorf("unable to upload to configuration version\n%v", err)
 		}

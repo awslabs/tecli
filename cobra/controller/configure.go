@@ -98,7 +98,7 @@ func configureRun(cmd *cobra.Command, args []string) error {
 		if err != nil {
 			logrus.Fatalf("unable to list credentials\n%v", err)
 		}
-		cmd.Println(aid.ToJSON(creds))
+		fmt.Println(aid.ToJSON(creds))
 
 	case "create":
 		err = configureCreateCredentials(cmd, mode)
@@ -112,7 +112,7 @@ func configureRun(cmd *cobra.Command, args []string) error {
 		if err != nil {
 			return fmt.Errorf("unable to read credential")
 		}
-		cmd.Println(aid.ToJSON(c))
+		fmt.Println(aid.ToJSON(c))
 
 	case "update":
 		err = configureUpdateCredentials(cmd, mode)

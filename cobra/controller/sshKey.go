@@ -122,7 +122,7 @@ func sshKeyRun(cmd *cobra.Command, args []string) error {
 		organization := dao.GetOrganization(profile)
 		list, err := sshKeyList(client, organization)
 		if err == nil {
-			cmd.Println(aid.ToJSON(list))
+			fmt.Println(aid.ToJSON(list))
 		} else {
 			return fmt.Errorf("no ssh key was found")
 		}
@@ -137,7 +137,7 @@ func sshKeyRun(cmd *cobra.Command, args []string) error {
 		}
 
 		if err == nil && sshKey.ID != "" {
-			cmd.Println(aid.ToJSON(sshKey))
+			fmt.Println(aid.ToJSON(sshKey))
 		}
 	case "read":
 		id, err := cmd.Flags().GetString("id")
@@ -147,7 +147,7 @@ func sshKeyRun(cmd *cobra.Command, args []string) error {
 
 		sshKey, err := sshKeyRead(client, id)
 		if err == nil {
-			cmd.Println(aid.ToJSON(sshKey))
+			fmt.Println(aid.ToJSON(sshKey))
 		} else {
 			return fmt.Errorf("ssh key %s not found\n%v", id, err)
 		}
@@ -161,7 +161,7 @@ func sshKeyRun(cmd *cobra.Command, args []string) error {
 		options := aid.GetSSHKeysUpdateOptions(cmd)
 		sshKey, err = sshKeyUpdate(client, id, options)
 		if err == nil && sshKey.ID != "" {
-			cmd.Println(aid.ToJSON(sshKey))
+			fmt.Println(aid.ToJSON(sshKey))
 		} else {
 			return fmt.Errorf("unable to update ssh key\n%v", err)
 		}
