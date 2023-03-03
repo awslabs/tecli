@@ -1,0 +1,5 @@
+{
+	"name": "TECLI",
+	"image": "mcr.microsoft.com/devcontainers/go:0-1-bullseye",
+	"postCreateCommand": ".devcontainer/post-create.sh"
+}
