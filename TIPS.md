@@ -58,3 +58,34 @@ aws_region = "us-east-1"
 ```
 tecli workspace list --organization=terraform-cloud-pipeline | grep "ID" | grep "ws-" | awk '{ print $2}' | sed 's,",,g' | sed 's/,//g'
 ```
+
+### How to update o-auth-token
+
+```
+$ private_ssh_key='-----BEGIN -----
+.. shorten for brevity
+> -----END RSA PRIVATE KEY-----
+> '
+$ tecli o-auth-token update --id=ot-XXX --private-ssh-key "${private_ssh_key}"
+{
+  "ID": "ot-XXX",
+  "UID": "",
+  "CreatedAt": "2021-01-28T22:49:10.805Z",
+  "HasSSHKey": true,
+  "ServiceProviderUser": "valter-silva-au",
+  "OAuthClient": {
+    "ID": "oc-XXX",
+    "APIURL": "",
+    "CallbackURL": "",
+    "ConnectPath": "",
+    "CreatedAt": "0001-01-01T00:00:00Z",
+    "HTTPURL": "",
+    "Key": "",
+    "RSAPublicKey": "",
+    "ServiceProvider": "",
+    "ServiceProviderName": "",
+    "Organization": null,
+    "OAuthTokens": null
+  }
+}
+```
