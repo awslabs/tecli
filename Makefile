@@ -1,6 +1,10 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
-include lib/make/*/Makefile
+export WORKSPACE=$(shell pwd)
+export HABITS = $(WORKSPACE)/habits
+
+include $(HABITS)/lib/make/Makefile
+include $(HABITS)/lib/make/*/Makefile
 
 .PHONY: tecli/test
 tecli/test: go/generate tecli/test/configure ## Execute Golang tests sequentially
@@ -64,30 +68,3 @@ tecli/clean: ## Removes unnecessary files and directories
 .PHONY: tecli/clean/all
 tecli/clean/all: tecli/clean ## Clean and remove configurations directory
 	rm -rf .tecli ~/.tecli
-
-.PHONY: tecli/terminalizer
-tecli/terminalizer:
-ifdef command
-	terminalizer record terminalizer-$(command) --config clencli/terminalizer.yml --skip-sharing
-	terminalizer render terminalizer-$(command) --output clencli/terminalizer/$(command).gif
-else
-	@echo 'Need to pass "command" parameter'
-endif	
-
-.PHONY: tecli/update-readme
-tecli/update-readme: ## Renders template readme.tmpl with additional documents
-	@echo "Generate COMMANDS.md"
-	@echo "## Commands" > COMMANDS.md
-	@echo '```' >> COMMANDS.md
-	@tecli --help >> COMMANDS.md
-	@echo '```' >> COMMANDS.md
-	@echo "COMMANDS.md generated successfully"
-	@clencli render template --name readme
-
-.DEFAULT_GOAL := help
-
-# TODO: create  target that for every build detects if there's unstaged files, then forces user to commit the changes, then uses that and tags to generate a version on VERSION file
-
-.PHONY: help
-help: ## This HELP message
-	@fgrep -h ": ##" $(MAKEFILE_LIST) | sed -e 's/\(\:.*\#\#\)/\:\ /' | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'

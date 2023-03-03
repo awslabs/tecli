@@ -1,27 +1,25 @@
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "cleanup",
-            "type": "shell",
-            "command": "make tecli/clean",
-        },
-        {
-            "label": "cleanup-configure-create",
-            "type": "shell",
-            "command": "make tecli/clean/all && make go/generate",
-        },
-        {
-            "label": "build",
-            "type": "shell",
-            "command": "make tecli/build",
-            "problemMatcher": [],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
-        }
-    ]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "cleanup",
+      "type": "shell",
+      "command": "make tecli/clean"
+    },
+    {
+      "label": "cleanup-configure-create",
+      "type": "shell",
+      "command": "make tecli/clean/all && make go/generate"
+    },
+    {
+      "label": "build",
+      "type": "shell",
+      "command": "make tecli/build",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
 }
