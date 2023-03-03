@@ -50,3 +50,17 @@ repos:
     rev: "v2.7.1"
     hooks:
       - id: prettier
+
+  - repo: https://github.com/dnephin/pre-commit-golang
+    rev: v0.5.0
+    hooks:
+      # trigger automatically formats Go source code of your whole project.
+      - id: go-fmt
+      # automatically update your Go import lines (add missing and remove unreferenced imports).
+      - id: go-imports
+      # finding and warning which files does not have test cover.
+      - id: no-go-testing
+      # run linter.
+      - id: golangci-lint
+      # run go test command.
+      - id: go-unit-tests
