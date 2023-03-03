@@ -28,6 +28,7 @@ repos:
       - id: destroyed-symlinks
       # Detects the presence of private keys
       - id: detect-private-key
+        exclude: TIPS.md
       # Ensures that a file is either empty, or ends with one newline.
       - id: end-of-file-fixer
         exclude: README.md
