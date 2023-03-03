@@ -3,21 +3,21 @@ logo:
   label: Photo by [Gabriel Menchaca](https://unsplash.com/gabrielmenchaca) on [Unsplash](https://unsplash.com)
 shields:
   badges:
-  - description: GitHub issues
-    image: https://img.shields.io/github/issues/awslabs/tecli
-    url: https://github.com/awslabs/tecli/issues
-  - description: GitHub forks
-    image: https://img.shields.io/github/forks/awslabs/tecli
-    url: https://github.com/awslabs/tecli/network
-  - description: GitHub stars
-    image: https://img.shields.io/github/stars/awslabs/tecli
-    url: https://github.com/awslabs/tecli/stargazers
-  - description: GitHub license
-    image: https://img.shields.io/github/license/awslabs/tecli
-    url: https://github.com/awslabs/tecli/blob/master/LICENSE
-  - description: Twitter
-    image: https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Fawslabs%2Ftecli
-    url: https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fawslabs%2Ftecli
+    - description: GitHub issues
+      image: https://img.shields.io/github/issues/awslabs/tecli
+      url: https://github.com/awslabs/tecli/issues
+    - description: GitHub forks
+      image: https://img.shields.io/github/forks/awslabs/tecli
+      url: https://github.com/awslabs/tecli/network
+    - description: GitHub stars
+      image: https://img.shields.io/github/stars/awslabs/tecli
+      url: https://github.com/awslabs/tecli/stargazers
+    - description: GitHub license
+      image: https://img.shields.io/github/license/awslabs/tecli
+      url: https://github.com/awslabs/tecli/blob/master/LICENSE
+    - description: Twitter
+      image: https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Fawslabs%2Ftecli
+      url: https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fawslabs%2Ftecli
 app:
   name: Command Line Interface for Terraform Enterprise/Cloud
   function: |-
@@ -25,58 +25,58 @@ app:
     TECLI increases teams productivity by facilitating such interaction and by providing easy commands that can be executed on a terminal or on CI/CD systems.
   id: tecli
 screenshots:
-- caption: How to configure
-  label: how-to-configure
-  url: clencli/terminalizer/configure.gif
-- caption: How to create a workspace
-  label: how-to-create-a-workspace
-  url: clencli/terminalizer/workspace-create.gif
-- caption: How to create a workspace linked to a repository
-  label: how-to-create-a-workspace-linked-to-a-repository
-  url: clencli/terminalizer/workspace-with-vcs-repo.gif
-- caption: How to create a run
-  label: how-to-create-a-run
-  url: clencli/terminalizer/run-create.gif
-- caption: How to read plan logs
-  label: how-to-read-plan-logs
-  url: clencli/terminalizer/plan-logs.gif
-- caption: How to read apply logs
-  label: how-to-read-apply-logs
-  url: clencli/terminalizer/apply-logs.gif
-- caption: How to delete a workspace
-  label: how-to-delete-a-workspace
-  url: clencli/terminalizer/workspace-delete.gif
-usage: '`tecli --help`'
+  - caption: How to configure
+    label: how-to-configure
+    url: clencli/terminalizer/configure.gif
+  - caption: How to create a workspace
+    label: how-to-create-a-workspace
+    url: clencli/terminalizer/workspace-create.gif
+  - caption: How to create a workspace linked to a repository
+    label: how-to-create-a-workspace-linked-to-a-repository
+    url: clencli/terminalizer/workspace-with-vcs-repo.gif
+  - caption: How to create a run
+    label: how-to-create-a-run
+    url: clencli/terminalizer/run-create.gif
+  - caption: How to read plan logs
+    label: how-to-read-plan-logs
+    url: clencli/terminalizer/plan-logs.gif
+  - caption: How to read apply logs
+    label: how-to-read-apply-logs
+    url: clencli/terminalizer/apply-logs.gif
+  - caption: How to delete a workspace
+    label: how-to-delete-a-workspace
+    url: clencli/terminalizer/workspace-delete.gif
+usage: "`tecli --help`"
 prerequisites:
-- description: Pre-Requisites
-  name: pre-requisites
-  url: https://github.com/awslabs/tecli/wiki/Pre-Requisites
+  - description: Pre-Requisites
+    name: pre-requisites
+    url: https://github.com/awslabs/tecli/wiki/Pre-Requisites
 installing: |-
   Look for the latest [release published](https://github.com/awslabs/tecli/releases) and download the binary according to your OS and platform.
   For more information, check the [Installation](https://github.com/awslabs/tecli/wiki/Installation) Wiki page.
 include:
-- COMMANDS.md
-- TOP-COMMANDS.md
+  - COMMANDS.md
+  - TOP-COMMANDS.md
 contributors:
-- name: Silva, Valter
-  role: AWS Professional Services - Cloud Architect
-  email: valterh@amazon.com
-- name: Dhingra, Prashit
-  role: AWS Professional Services - Cloud Architect
-  email: ""
+  - name: Silva, Valter
+    role: AWS Professional Services - Cloud Architect
+    email: valterh@amazon.com
+  - name: Dhingra, Prashit
+    role: AWS Professional Services - Cloud Architect
+    email: ""
 references:
-- description: Terraform Cloud is an application that helps teams use Terraform together.
-  name: Terraform Cloud
-  url: https://www.terraform.io/docs/cloud/index.html
-- description: The official Go API client for Terraform Cloud/Enterprise.
-  name: Terraform Cloud/Enterprise Go Client
-  url: https://github.com/hashicorp/go-tfe
-- description: Cloud Engineer CLI
-  name: clencli
-  url: https://github.com/awslabs/clencli
-- description: |
-    Record your terminal and generate animated gif images or share a web player link terminalizer.com
-  name: terminalizer
-  url: https://github.com/faressoft/terminalizer
+  - description: Terraform Cloud is an application that helps teams use Terraform together.
+    name: Terraform Cloud
+    url: https://www.terraform.io/docs/cloud/index.html
+  - description: The official Go API client for Terraform Cloud/Enterprise.
+    name: Terraform Cloud/Enterprise Go Client
+    url: https://github.com/hashicorp/go-tfe
+  - description: Cloud Engineer CLI
+    name: clencli
+    url: https://github.com/awslabs/clencli
+  - description: |
+      Record your terminal and generate animated gif images or share a web player link terminalizer.com
+    name: terminalizer
+    url: https://github.com/faressoft/terminalizer
 license: This project is licensed under the Apache License 2.0.
 copyright: Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.

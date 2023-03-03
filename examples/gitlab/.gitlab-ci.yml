@@ -52,7 +52,7 @@ before_script:
 tecli:
   stage: tools
   script:
-    - 'wget --quiet https://github.com/awslabs/tecli/releases/download/0.3.0/tecli-linux-amd64 -O tecli'
+    - "wget --quiet https://github.com/awslabs/tecli/releases/download/0.3.0/tecli-linux-amd64 -O tecli"
     - chmod +x tecli
   artifacts:
     paths:
@@ -81,17 +81,17 @@ workspace:
       W_ID=$(cat workspace_id.txt)
 
       echo "WORKSPACE ${W_NAME} (${W_ID}) ${STATUS}"
-    
+
     - |
       echo "${VARIABLE_OPTION} variable: AWS_ACCESS_KEY_ID"
       ./tecli variable ${VARIABLE_OPTION} --workspace-id=${W_ID} --key=AWS_ACCESS_KEY_ID --value=${AWS_ACCESS_KEY_ID} --category=env --sensitive=true > /dev/null 2>&1
-      
+
       echo "${VARIABLE_OPTION} variable: AWS_SECRET_ACCESS_KEY"
       ./tecli variable ${VARIABLE_OPTION} --workspace-id=${W_ID} --key=AWS_SECRET_ACCESS_KEY --value=${AWS_SECRET_ACCESS_KEY} --category=env --sensitive=true > /dev/null 2>&1
-      
+
       echo "${VARIABLE_OPTION} variable: AWS_SESSION_TOKEN"
       ./tecli variable ${VARIABLE_OPTION} --workspace-id=${W_ID} --key=AWS_SESSION_TOKEN --value=${AWS_SESSION_TOKEN} --category=env --sensitive=true > /dev/null 2>&1
-      
+
       echo "${VARIABLE_OPTION} variable: AWS_DEFAULT_REGION"
       ./tecli variable ${VARIABLE_OPTION} --workspace-id=${W_ID} --key=AWS_DEFAULT_REGION --value=${AWS_DEFAULT_REGION} --category=env  > /dev/null 2>&1
   artifacts:
@@ -104,7 +104,7 @@ create:
   script:
     - W_NAME=$(cat workspace_name.txt)
     - W_ID=$(cat workspace_id.txt)
-    
+
     - if [[ -z ${W_NAME} ]] || [[ -z ${W_ID} ]]; then echo "WORKSPACE NOT FOUND, FAILING..." && exit 1; fi
     - echo "CREATING PLAN FOR WORKSPACE ${W_NAME} (${W_ID})"
 
