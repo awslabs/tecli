@@ -1,5 +1,10 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
+export WORKSPACE=$(shell pwd)
+export HABITS = $(WORKSPACE)/habits
+
+include $(HABITS)/lib/make/Makefile
+include $(HABITS)/lib/make/*/Makefile
 include lib/make/*/Makefile
 
 .PHONY: tecli/test
