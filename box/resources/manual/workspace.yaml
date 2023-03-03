@@ -20,4 +20,3 @@ long: |-
   Viewing a workspace (individually or in a list) requires permission to read runs.
   Changing settings and force-unlocking require admin access to the workspace.
   Locking and unlocking a workspace requires permission to lock and unlock the workspace.
-  

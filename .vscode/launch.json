@@ -1,107 +1,161 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-
-        {
-            "name": "root",
-            "type": "go",
-            "request": "launch",
-            "mode": "debug",
-            "program": "${workspaceFolder}/main.go",
-            "args": [""]
-        },
-        {
-            "name": "d-workspace-list",
-            "type": "go",
-            "request": "launch",
-            "mode": "debug",
-            "program": "${workspaceFolder}/main.go",
-            "args": ["workspace", "list"]
-        },
-        {
-            "name": "d-ssh-key-list",
-            "type": "go",
-            "request": "launch",
-            "mode": "debug",
-            "program": "${workspaceFolder}/main.go",
-            "args": ["ssh-key", "list"]
-        },
-        {
-            "name": "workspace",
-            "type": "go",
-            "request": "launch",
-            "mode": "debug",
-            "program": "${workspaceFolder}/main.go",
-            "args": ["workspace", "list", "--organization", "foo-org"]
-        },
-        {
-            "name": "workspace-create",
-            "type": "go",
-            "request": "launch",
-            "mode": "debug",
-            "program": "${workspaceFolder}/main.go",
-            "args": ["workspace", "--profile", "foo-org-demo", "create", "--organization", "foo-org-demo", "--name", "demo1"]
-        },
-        {
-            "name": "configure-create",
-            "type": "go",
-            "request": "launch",
-            "mode": "debug",
-            "preLaunchTask": "cleanup-configure-create",
-            "program": "${workspaceFolder}/main.go",
-            "args": ["configure", "create", "--mode", "non-interactive"]
-        },
-        {
-            "name": "configure",
-            "type": "go",
-            "request": "launch",
-            "mode": "debug",
-            "program": "${workspaceFolder}/main.go",
-            "args": ["configure", "create", "--profile",  "gitlab", "--team-token", "your-token", "--new-name", "new-gitlab"]
-        },
-        {
-            "name": "configure-create-1",
-            "type": "go",
-            "request": "launch",
-            "mode": "debug",
-            "program": "${workspaceFolder}/main.go",
-            "args": ["configure", "create", "--config", "generated-config", "--profile", "test1"]
-        },
-        {
-            "name": "configure-create-2",
-            "type": "go",
-            "request": "launch",
-            "mode": "debug",
-            "program": "${workspaceFolder}/main.go",
-            "args": ["configure", "create", "--config", "generated-config", "--profile", "test2"]
-        },
-        {
-            "name": "list",
-            "type": "go",
-            "request": "launch",
-            "mode": "debug",
-            "program": "${workspaceFolder}/main.go",
-            "args": ["workspace", "list",  "--profile", "bhp-app-migration", "--organization", "devops-ga-awsappteam", "--enabled", "true"]
-        },
-        {
-            "name": "find-by-name",
-            "type": "go",
-            "request": "launch",
-            "mode": "debug",
-            "program": "${workspaceFolder}/main.go",
-            "args": ["workspace", "find-by-name", "--name", "terraform-dummy", "--profile", "foo", "--organization", "foo-org"]
-        },
-        {
-            "name": "run-create",
-            "type": "go",
-            "request": "launch",
-            "mode": "debug",
-            "program": "${workspaceFolder}/main.go",
-            "args": ["run", "create", "--workspace-id", "ws-yxnpTvagYRdNiFf8", "--configuration-version-id", "cv-qeYg8Uz7ZxEjRg63", "--profile", "foo"]
-        }
-        // tecli run create --workspace-id=ws-yxnpTvagYRdNiFf8 --configuration-version-id=cv-qeYg8Uz7ZxEjRg63 --profile=foo --verbosity=trace
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "root",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "program": "${workspaceFolder}/main.go",
+      "args": [""]
+    },
+    {
+      "name": "d-workspace-list",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "program": "${workspaceFolder}/main.go",
+      "args": ["workspace", "list"]
+    },
+    {
+      "name": "d-ssh-key-list",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "program": "${workspaceFolder}/main.go",
+      "args": ["ssh-key", "list"]
+    },
+    {
+      "name": "workspace",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "program": "${workspaceFolder}/main.go",
+      "args": ["workspace", "list", "--organization", "foo-org"]
+    },
+    {
+      "name": "workspace-create",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "program": "${workspaceFolder}/main.go",
+      "args": [
+        "workspace",
+        "--profile",
+        "foo-org-demo",
+        "create",
+        "--organization",
+        "foo-org-demo",
+        "--name",
+        "demo1"
+      ]
+    },
+    {
+      "name": "configure-create",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "preLaunchTask": "cleanup-configure-create",
+      "program": "${workspaceFolder}/main.go",
+      "args": ["configure", "create", "--mode", "non-interactive"]
+    },
+    {
+      "name": "configure",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "program": "${workspaceFolder}/main.go",
+      "args": [
+        "configure",
+        "create",
+        "--profile",
+        "gitlab",
+        "--team-token",
+        "your-token",
+        "--new-name",
+        "new-gitlab"
+      ]
+    },
+    {
+      "name": "configure-create-1",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "program": "${workspaceFolder}/main.go",
+      "args": [
+        "configure",
+        "create",
+        "--config",
+        "generated-config",
+        "--profile",
+        "test1"
+      ]
+    },
+    {
+      "name": "configure-create-2",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "program": "${workspaceFolder}/main.go",
+      "args": [
+        "configure",
+        "create",
+        "--config",
+        "generated-config",
+        "--profile",
+        "test2"
+      ]
+    },
+    {
+      "name": "list",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "program": "${workspaceFolder}/main.go",
+      "args": [
+        "workspace",
+        "list",
+        "--profile",
+        "bhp-app-migration",
+        "--organization",
+        "devops-ga-awsappteam",
+        "--enabled",
+        "true"
+      ]
+    },
+    {
+      "name": "find-by-name",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "program": "${workspaceFolder}/main.go",
+      "args": [
+        "workspace",
+        "find-by-name",
+        "--name",
+        "terraform-dummy",
+        "--profile",
+        "foo",
+        "--organization",
+        "foo-org"
+      ]
+    },
+    {
+      "name": "run-create",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "program": "${workspaceFolder}/main.go",
+      "args": [
+        "run",
+        "create",
+        "--workspace-id",
+        "ws-yxnpTvagYRdNiFf8",
+        "--configuration-version-id",
+        "cv-qeYg8Uz7ZxEjRg63",
+        "--profile",
+        "foo"
+      ]
+    }
+  ]
 }

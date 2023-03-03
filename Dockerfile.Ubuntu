@@ -1,7 +1,0 @@
-FROM ubuntu:20.04
-
-RUN apt-get -qq update -y
-RUN apt-get -qq install wget jq ca-certificates
-
-WORKDIR /opt/
-COPY dist/docker/tecli .
