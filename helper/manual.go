@@ -17,7 +17,7 @@ type Manual struct {
 	Long    string `yaml:"long,omitempty"`
 }
 
-//GetManual returns the command's manuall
+// GetManual returns the command's manuall
 func GetManual(command string, args []string) (Manual, error) {
 	var man Manual
 	var err error
