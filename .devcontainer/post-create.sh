@@ -13,6 +13,7 @@ sudo apt-get -y install --no-install-recommends \
 
 pip3 install --user -r "${WORKSPACE}/.devcontainer/requirements.txt"
 
-clear
+export GOPROXY=direct
+go install golang.org/x/tools/cmd/goimports@latest
 
-devcontainer-info
+clear && devcontainer-info
