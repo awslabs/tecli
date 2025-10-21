@@ -1,5 +1,8 @@
 name: Build
 on: [push]
+permissions:
+  contents: read
+
 jobs:
   linux-build:
     runs-on: ubuntu-latest
