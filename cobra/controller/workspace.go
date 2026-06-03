@@ -130,17 +130,21 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 			return fmt.Errorf("no workspace was found")
 		}
 	case "find-by-name":
-		organization := dao.GetOrganization(profile)
-		list, err := workspaceList(client, organization, tfe.WorkspaceListOptions{})
-		if err == nil {
-			w, err := workspaceFindByName(list, cmd)
-			if err != nil {
-				return err
-			}
-			fmt.Println(aid.ToJSON(w))
-		} else {
-			return fmt.Errorf("no workspace was found")
+		name, err := cmd.Flags().GetString("name")
+		if err != nil {
+			return err
 		}
+
+		organization := dao.GetOrganization(profile)
+		// Use the exact-name Read endpoint (GET /organizations/{org}/workspaces/{name})
+		// instead of listing and filtering client-side. The list endpoint paginates
+		// at 20 results per page by default, which previously caused workspaces past
+		// the first page to report as "not found". See issue #12.
+		w, err := workspaceFindByName(client, organization, name)
+		if err != nil {
+			return fmt.Errorf("workspace %s not found\n%v", name, err)
+		}
+		fmt.Println(aid.ToJSON(w))
 	case "create":
 		organization := dao.GetOrganization(profile)
 		options := aid.GetWorkspaceCreateOptions(cmd)
@@ -323,20 +327,14 @@ func workspaceList(client *tfe.Client, organization string, options tfe.Workspac
 	return client.Workspaces.List(context.Background(), organization, &options)
 }
 
-func workspaceFindByName(list *tfe.WorkspaceList, cmd *cobra.Command) (*tfe.Workspace, error) {
-
-	name, err := cmd.Flags().GetString("name")
-	if err != nil {
-		return &tfe.Workspace{}, fmt.Errorf("unable to get flag name")
+// workspaceFindByName looks up a workspace by exact name using the
+// dedicated read endpoint, which avoids the 20-per-page pagination
+// limit of the list endpoint that caused issue #12.
+func workspaceFindByName(client *tfe.Client, organization, name string) (*tfe.Workspace, error) {
+	if name == "" {
+		return nil, fmt.Errorf("workspace name is required")
 	}
-
-	for _, item := range list.Items {
-		if item.Name == name {
-			return item, nil
-		}
-	}
-
-	return &tfe.Workspace{}, fmt.Errorf("workspace %s not found", name)
+	return client.Workspaces.Read(context.Background(), organization, name)
 }
 
 // Create is used to create a new workspace.
