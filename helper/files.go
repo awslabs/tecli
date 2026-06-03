@@ -27,7 +27,7 @@ func WriteFile(filename string, data []byte) bool {
 	err := ioutil.WriteFile(filename, data, os.ModePerm)
 
 	if err != nil {
-		logrus.Fatal(err)
+		logrus.Errorf("unable to write file %s: %v", filename, err)
 		return false
 	}
 
@@ -167,10 +167,7 @@ func FileSize(path string) (int64, error) {
 	if FileExists(path) {
 		info, err := os.Stat(path)
 		if err != nil {
-			if err != nil {
-				return size, fmt.Errorf("unable to obtain information about file: %s\n%s", path, err)
-			}
-			return size, err
+			return size, fmt.Errorf("unable to obtain information about file: %s\n%v", path, err)
 		}
 		size = info.Size()
 	} else {
@@ -180,11 +177,13 @@ func FileSize(path string) (int64, error) {
 }
 
 // ListFiles list of all file names in the given directory. Pass "." if you want to list at the current directory.
+// Returns a nil slice if the directory cannot be read; the error is logged.
 func ListFiles(dir string) []os.FileInfo {
 	files, err := ioutil.ReadDir(dir)
 
 	if err != nil {
-		logrus.Fatal(err)
+		logrus.Errorf("unable to list files in %s: %v", dir, err)
+		return nil
 	}
 
 	return files

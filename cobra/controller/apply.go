@@ -26,7 +26,6 @@ import (
 	"github.com/awslabs/tecli/cobra/dao"
 	"github.com/awslabs/tecli/helper"
 	"github.com/hashicorp/go-tfe"
-	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -100,7 +99,7 @@ func applyRun(cmd *cobra.Command, args []string) error {
 
 		logs, err := applyLogs(client, id)
 		if err != nil {
-			logrus.Fatalf("unable to read apply logs\n%v", err)
+			return fmt.Errorf("unable to read apply logs\n%w", err)
 		}
 		fmt.Println(StreamToString(logs))
 	}

@@ -53,6 +53,11 @@ func SetConfigureFlags(cmd *cobra.Command) {
 }
 
 // GetCredentialProfileFlags TODO ...
+//
+// The Fatalf calls in this function fire only when a cobra flag is not
+// registered, which is a compile-time / wiring bug rather than a runtime
+// error. Returning a zero-valued profile would silently mask such bugs and
+// produce confusing downstream failures, so we keep Fatalf here.
 func GetCredentialProfileFlags(cmd *cobra.Command) model.CredentialProfile {
 	var cp model.CredentialProfile
 
