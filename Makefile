@@ -1,70 +1,121 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+#
+# Modernized Makefile (Go 1.25). The previous version included files from a
+# `habits/lib/make/` tree that is no longer present in the repository, which
+# made every target fail. This rewrite keeps the same target names where they
+# are referenced by docs / CI but implements them inline.
 
-export WORKSPACE=$(shell pwd)
-export HABITS = $(WORKSPACE)/habits
+SHELL := /bin/bash
 
-include $(HABITS)/lib/make/Makefile
-include $(HABITS)/lib/make/*/Makefile
+WORKSPACE := $(shell pwd)
+DIST_DIR  := $(WORKSPACE)/dist
+BINARY    := tecli
+MAIN      := main.go
 
-.PHONY: tecli/test
-tecli/test: go/generate tecli/test/configure ## Execute Golang tests sequentially
+GO        ?= go
+GOFLAGS   ?=
 
-.PHONY: tecli/test/configure
-tecli/test/configure:
-	@cd tests/commands && go test -run ConfigureCmdFlags
-	@cd tests/commands && go test -run ConfigureCreate
-	@cd tests/commands && go test -run ConfigureList
-	@cd tests/commands && go test -run ConfigureRead
-	@cd tests/commands && go test -run ConfigureUpdate
-	@cd tests/commands && go test -run ConfigureDelete
+# Cross-compile target list: GOOS/GOARCH pairs used by `tecli/compile`.
+PLATFORMS := \
+	darwin/amd64 \
+	solaris/amd64 \
+	freebsd/386 freebsd/amd64 freebsd/arm \
+	openbsd/386 openbsd/amd64 openbsd/arm \
+	linux/386 linux/amd64 linux/arm \
+	windows/386 windows/amd64
 
-# @cd tests/commands && export TFC_TEAM_TOKEN=$(TFC_TEAM_TOKEN) && go test helper.go ssh_key_test.go
+.DEFAULT_GOAL := help
+
+# ---------------------------------------------------------------------------
+# Help
+# ---------------------------------------------------------------------------
+
+.PHONY: help
+help: ## Show this help.
+	@awk 'BEGIN {FS = ":.*?## "; printf "Usage: make <target>\n\nTargets:\n"} \
+	/^[a-zA-Z0-9_\/\-]+:.*?## / {printf "  \033[36m%-28s\033[0m %s\n", $$1, $$2}' \
+	$(MAKEFILE_LIST)
+
+# ---------------------------------------------------------------------------
+# Build / install
+# ---------------------------------------------------------------------------
 
 .PHONY: tecli/build
-tecli/build: tecli/clean go/mod/tidy go/version go/get go/fmt go/generate go/install tecli/update-readme ## Builds the app
+tecli/build: tecli/clean go/tidy go/fmt go/vet go/generate go/install ## Build the CLI for the host platform and install it.
 
 .PHONY: tecli/install
-tecli/install: go/get go/fmt go/generate go/install ## Builds the app and install all dependencies
+tecli/install: go/fmt go/generate go/install ## Build and install the CLI on the host platform.
 
 .PHONY: tecli/run
-tecli/run: go/fmt ## Run a Cobra command
-ifdef command
-	make go/run command='$(command)'
-else
-	make go/run
-endif
+tecli/run: go/fmt ## Run the CLI. Pass `command='args...'` to forward args.
+	@$(GO) run $(MAIN) $(command)
 
 .PHONY: tecli/compile
-tecli/compile: ## Compile to multiple architectures
-	@mkdir -p dist
+tecli/compile: ## Cross-compile to every supported OS/arch into ./dist.
+	@mkdir -p $(DIST_DIR)
 	@echo "Compiling for every OS and Platform"
-	GOOS=darwin GOARCH=amd64 go build -o dist/tecli-darwin-amd64 main.go
-	GOOS=solaris GOARCH=amd64 go build -o dist/tecli-solaris-amd64 main.go
+	@for p in $(PLATFORMS); do \
+		os=$${p%/*}; arch=$${p#*/}; \
+		out=$(DIST_DIR)/$(BINARY)-$$os-$$arch; \
+		if [ "$$os" = "windows" ]; then out=$$out.exe; fi; \
+		echo "  -> GOOS=$$os GOARCH=$$arch -> $$out"; \
+		GOOS=$$os GOARCH=$$arch CGO_ENABLED=0 $(GO) build $(GOFLAGS) -o $$out $(MAIN) || exit 1; \
+	done
 
-	GOOS=freebsd GOARCH=386 go build -o dist/tecli-freebsd-386 main.go
-	GOOS=freebsd GOARCH=amd64 go build -o dist/tecli-freebsd-amd64 main.go
-	GOOS=freebsd GOARCH=arm go build -o dist/tecli-freebsd-arm main.go
+# ---------------------------------------------------------------------------
+# Test
+# ---------------------------------------------------------------------------
 
-	GOOS=openbsd GOARCH=386 go build -o dist/tecli-openbsd-386 main.go
-	GOOS=openbsd GOARCH=amd64 go build -o dist/tecli-openbsd-amd64 main.go
-	GOOS=openbsd GOARCH=arm go build -o dist/tecli-openbsd-arm main.go
+.PHONY: tecli/test
+tecli/test: go/generate ## Run all Go tests.
+	@$(GO) test ./...
 
-	GOOS=linux GOARCH=386 go build -o dist/tecli-linux-386 main.go
-	GOOS=linux GOARCH=amd64 go build -o dist/tecli-linux-amd64 main.go
-	GOOS=linux GOARCH=arm go build -o dist/tecli-linux-arm main.go
+.PHONY: tecli/test/configure
+tecli/test/configure: ## Run the `configure` command integration tests.
+	@cd tests/commands && $(GO) test -run ConfigureCmdFlags
+	@cd tests/commands && $(GO) test -run ConfigureCreate
+	@cd tests/commands && $(GO) test -run ConfigureList
+	@cd tests/commands && $(GO) test -run ConfigureRead
+	@cd tests/commands && $(GO) test -run ConfigureUpdate
+	@cd tests/commands && $(GO) test -run ConfigureDelete
 
-	GOOS=windows GOARCH=386 go build -o dist/tecli-windows-386.exe main.go
-	GOOS=windows GOARCH=amd64 go build -o dist/tecli-windows-amd64.exe main.go
+# ---------------------------------------------------------------------------
+# Clean
+# ---------------------------------------------------------------------------
 
 .PHONY: tecli/clean
-tecli/clean: ## Removes unnecessary files and directories
-	rm -rf downloads/
-	rm -rf generated-*/
-	rm -rf dist/
-	rm -rf build/
-	rm -f box/blob.go
-	rm -f clencli/log.json
+tecli/clean: ## Remove build artifacts.
+	@rm -rf downloads/ generated-*/ dist/ build/
+	@rm -f box/blob.go clencli/log.json
 
 .PHONY: tecli/clean/all
-tecli/clean/all: tecli/clean ## Clean and remove configurations directory
-	rm -rf .tecli ~/.tecli
+tecli/clean/all: tecli/clean ## Remove build artifacts AND user config dirs.
+	@rm -rf .tecli ~/.tecli
+
+# ---------------------------------------------------------------------------
+# Go helpers
+# ---------------------------------------------------------------------------
+
+.PHONY: go/tidy
+go/tidy: ## Tidy go.mod / go.sum.
+	@$(GO) mod tidy
+
+.PHONY: go/fmt
+go/fmt: ## Run gofmt.
+	@$(GO) fmt ./...
+
+.PHONY: go/vet
+go/vet: ## Run go vet.
+	@$(GO) vet ./...
+
+.PHONY: go/generate
+go/generate: ## Run go generate.
+	@$(GO) generate ./...
+
+.PHONY: go/install
+go/install: ## go install the module to $GOBIN.
+	@$(GO) install ./...
+
+.PHONY: go/build
+go/build: ## go build all packages (sanity check).
+	@$(GO) build ./...
