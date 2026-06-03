@@ -134,7 +134,7 @@ func oAuthTokenRun(cmd *cobra.Command, args []string) error {
 }
 
 func oAuthTokenList(client *tfe.Client, organization string) (*tfe.OAuthTokenList, error) {
-	return client.OAuthTokens.List(context.Background(), organization, tfe.OAuthTokenListOptions{})
+	return client.OAuthTokens.List(context.Background(), organization, &tfe.OAuthTokenListOptions{})
 }
 
 // Read an OAuth client by its ID.

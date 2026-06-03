@@ -93,7 +93,7 @@ func GetRunReadOptions(cmd *cobra.Command) tfe.RunReadOptions {
 	}
 
 	if include != "" {
-		options.Include = include
+		options.Include = []tfe.RunIncludeOpt{tfe.RunIncludeOpt(include)}
 	}
 
 	return options

@@ -320,7 +320,7 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 }
 
 func workspaceList(client *tfe.Client, organization string, options tfe.WorkspaceListOptions) (*tfe.WorkspaceList, error) {
-	return client.Workspaces.List(context.Background(), organization, options)
+	return client.Workspaces.List(context.Background(), organization, &options)
 }
 
 func workspaceFindByName(list *tfe.WorkspaceList, cmd *cobra.Command) (*tfe.Workspace, error) {

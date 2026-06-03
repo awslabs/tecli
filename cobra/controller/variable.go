@@ -209,7 +209,7 @@ func variableRun(cmd *cobra.Command, args []string) error {
 }
 
 func variableList(client *tfe.Client, workspaceID string, options tfe.VariableListOptions) (*tfe.VariableList, error) {
-	return client.Variables.List(context.Background(), workspaceID, options)
+	return client.Variables.List(context.Background(), workspaceID, &options)
 }
 
 func variableCreate(client *tfe.Client, workspaceID string, options tfe.VariableCreateOptions) (*tfe.Variable, error) {

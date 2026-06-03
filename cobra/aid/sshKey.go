@@ -71,13 +71,12 @@ func GetSSHKeysUpdateOptions(cmd *cobra.Command) tfe.SSHKeyUpdateOptions {
 		options.Name = &name
 	}
 
-	value, err := cmd.Flags().GetString("value")
-	if err != nil {
+	// NOTE: go-tfe v1.x removed the Value field from SSHKeyUpdateOptions.
+	// SSH key contents are now immutable post-creation; only Name can be updated.
+	// The "value" flag is preserved on the command surface for backward compatibility
+	// but is silently ignored on updates.
+	if _, err := cmd.Flags().GetString("value"); err != nil {
 		logrus.Fatalf("unable to get flag value\n%v\n", err)
-	}
-
-	if value != "" {
-		options.Value = &value
 	}
 
 	return options

@@ -148,7 +148,7 @@ func oAuthClientRun(cmd *cobra.Command, args []string) error {
 }
 
 func oAuthClientList(client *tfe.Client, organization string) (*tfe.OAuthClientList, error) {
-	return client.OAuthClients.List(context.Background(), organization, tfe.OAuthClientListOptions{})
+	return client.OAuthClients.List(context.Background(), organization, &tfe.OAuthClientListOptions{})
 }
 
 // Create is used to create a new oAuthClient.

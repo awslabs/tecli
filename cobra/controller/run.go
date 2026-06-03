@@ -292,7 +292,7 @@ func runRun(cmd *cobra.Command, args []string) error {
 
 // List all the runs of the given workspace.
 func runList(client *tfe.Client, workspaceID string, options tfe.RunListOptions) (*tfe.RunList, error) {
-	return client.Runs.List(context.Background(), workspaceID, options)
+	return client.Runs.List(context.Background(), workspaceID, &options)
 }
 
 // Create a new run with the given options.

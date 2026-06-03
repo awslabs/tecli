@@ -36,7 +36,7 @@ func TestSSHKeyList(t *testing.T) {
 
 func getSSHKeyID() string {
 	client := GetTFEClient()
-	list, err := client.SSHKeys.List(context.Background(), "tecli-test-org", tfe.SSHKeyListOptions{})
+	list, err := client.SSHKeys.List(context.Background(), "tecli-test-org", &tfe.SSHKeyListOptions{})
 	if err != nil {
 		logrus.Fatalln(err)
 	}

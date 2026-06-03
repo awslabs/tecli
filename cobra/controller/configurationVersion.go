@@ -157,7 +157,7 @@ func configurationVersionRun(cmd *cobra.Command, args []string) error {
 
 // List returns all configuration versions of a workspace.
 func configurationVersionList(client *tfe.Client, workspaceID string, options tfe.ConfigurationVersionListOptions) (*tfe.ConfigurationVersionList, error) {
-	return client.ConfigurationVersions.List(context.Background(), workspaceID, options)
+	return client.ConfigurationVersions.List(context.Background(), workspaceID, &options)
 }
 
 // Create is used to create a new configuration version. The created

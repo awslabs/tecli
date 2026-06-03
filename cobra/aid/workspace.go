@@ -105,7 +105,7 @@ func GetWorkspaceListOptions(cmd *cobra.Command) tfe.WorkspaceListOptions {
 	}
 
 	if search != "" {
-		options.Search = &search
+		options.Search = search
 	}
 
 	include, err := cmd.Flags().GetString("include")
@@ -114,7 +114,7 @@ func GetWorkspaceListOptions(cmd *cobra.Command) tfe.WorkspaceListOptions {
 	}
 
 	if include != "" {
-		options.Include = &include
+		options.Include = []tfe.WSIncludeOpt{tfe.WSIncludeOpt(include)}
 	}
 
 	return options

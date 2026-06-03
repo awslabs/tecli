@@ -183,7 +183,7 @@ func sshKeyRun(cmd *cobra.Command, args []string) error {
 }
 
 func sshKeyList(client *tfe.Client, organization string) (*tfe.SSHKeyList, error) {
-	return client.SSHKeys.List(context.Background(), organization, tfe.SSHKeyListOptions{})
+	return client.SSHKeys.List(context.Background(), organization, &tfe.SSHKeyListOptions{})
 }
 
 // Create is used to create a new sshKey.
