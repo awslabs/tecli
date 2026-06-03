@@ -155,11 +155,11 @@ func CheckAppDirAndFile() error {
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
 			// Config file not found
-			return fmt.Errorf("configuration file not found\n%v", err)
+			return fmt.Errorf("configuration file not found\n%w", err)
 		}
 
 		// Config file was found but another error was produced
-		return fmt.Errorf("unable to read config file\n%v", err)
+		return fmt.Errorf("unable to read config file\n%w", err)
 	}
 
 	return nil
@@ -280,7 +280,7 @@ func HasCreatedAppDir(cmd *cobra.Command) (bool, error) {
 				// necessary to create an empty file for Viper
 				f, err := os.Create(GetAppInfo().CredentialsFilePath)
 				if err != nil {
-					return false, fmt.Errorf("unable to create empty credentials file\n%v", err)
+					return false, fmt.Errorf("unable to create empty credentials file\n%w", err)
 				}
 				f.Close()
 

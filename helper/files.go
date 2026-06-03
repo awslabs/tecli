@@ -58,7 +58,7 @@ func WriteInterfaceToFile(in interface{}, path string) error {
 
 	err = ioutil.WriteFile(path, b, os.ModePerm)
 	if err != nil {
-		return fmt.Errorf("unable to update:%s\n%v", path, err)
+		return fmt.Errorf("unable to update:%s\n%w", path, err)
 	}
 
 	return err
@@ -167,7 +167,7 @@ func FileSize(path string) (int64, error) {
 	if FileExists(path) {
 		info, err := os.Stat(path)
 		if err != nil {
-			return size, fmt.Errorf("unable to obtain information about file: %s\n%v", path, err)
+			return size, fmt.Errorf("unable to obtain information about file: %s\n%w", path, err)
 		}
 		size = info.Size()
 	} else {

@@ -33,12 +33,12 @@ func GetCredentials() (model.Credentials, error) {
 	var creds model.Credentials
 	err := viper.ReadInConfig()
 	if err != nil {
-		return creds, fmt.Errorf("unable to read credentials\n%v", err)
+		return creds, fmt.Errorf("unable to read credentials\n%w", err)
 	}
 
 	err = viper.Unmarshal(&creds)
 	if err != nil {
-		return creds, fmt.Errorf("unable to unmarshall credentials\n%v", err)
+		return creds, fmt.Errorf("unable to unmarshall credentials\n%w", err)
 	}
 
 	return creds, err

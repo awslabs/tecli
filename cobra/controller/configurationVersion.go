@@ -96,7 +96,7 @@ func configurationVersionRun(cmd *cobra.Command, args []string) error {
 	case "list":
 		workspaceID, err := cmd.Flags().GetString("workspace-id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag workspace-id\n%v", err)
+			return fmt.Errorf("unable to get flag workspace-id\n%w", err)
 		}
 
 		list, err := configurationVersionList(client, workspaceID, tfe.ConfigurationVersionListOptions{})
@@ -109,7 +109,7 @@ func configurationVersionRun(cmd *cobra.Command, args []string) error {
 	case "create":
 		workspaceID, err := cmd.Flags().GetString("workspace-id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag workspace-id\n%v", err)
+			return fmt.Errorf("unable to get flag workspace-id\n%w", err)
 		}
 
 		options := aid.GetConfigurationVersionCreateOptions(cmd)
@@ -118,37 +118,37 @@ func configurationVersionRun(cmd *cobra.Command, args []string) error {
 		if err == nil && cv.ID != "" {
 			fmt.Println(aid.ToJSON(cv))
 		} else {
-			return fmt.Errorf("unable to create configuration version\n%v", err)
+			return fmt.Errorf("unable to create configuration version\n%w", err)
 		}
 	case "read":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag id\n%v", err)
+			return fmt.Errorf("unable to get flag id\n%w", err)
 		}
 
 		cv, err := configurationVersionRead(client, id)
 		if err == nil {
 			fmt.Println(aid.ToJSON(cv))
 		} else {
-			return fmt.Errorf("configuration version %s not found\n%v", id, err)
+			return fmt.Errorf("configuration version %s not found\n%w", id, err)
 		}
 
 	case "upload":
 		url, err := cmd.Flags().GetString("url")
 		if err != nil {
-			return fmt.Errorf("unable to get flag url\n%v", err)
+			return fmt.Errorf("unable to get flag url\n%w", err)
 		}
 
 		path, err := cmd.Flags().GetString("path")
 		if err != nil {
-			return fmt.Errorf("unable to get flag path\n%v", err)
+			return fmt.Errorf("unable to get flag path\n%w", err)
 		}
 
 		err = configurationVersionUpload(client, url, path)
 		if err == nil {
 			fmt.Println("upload completed successfully")
 		} else {
-			return fmt.Errorf("unable to upload to configuration version\n%v", err)
+			return fmt.Errorf("unable to upload to configuration version\n%w", err)
 		}
 	}
 

@@ -82,19 +82,19 @@ func applyRun(cmd *cobra.Command, args []string) error {
 	case "read":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag id\n%v", err)
+			return fmt.Errorf("unable to get flag id\n%w", err)
 		}
 
 		apply, err := applyRead(client, id)
 		if err == nil {
 			fmt.Println(aid.ToJSON(apply))
 		} else {
-			return fmt.Errorf("apply %s not found\n%v", id, err)
+			return fmt.Errorf("apply %s not found\n%w", id, err)
 		}
 	case "logs":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag id\n%v", err)
+			return fmt.Errorf("unable to get flag id\n%w", err)
 		}
 
 		logs, err := applyLogs(client, id)

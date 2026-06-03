@@ -71,7 +71,7 @@ func SetupLoggingOutput(path string) error {
 
 	file, err := os.OpenFile(path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, os.ModePerm)
 	if err != nil {
-		return fmt.Errorf("unable to open log file\n%v", err)
+		return fmt.Errorf("unable to open log file\n%w", err)
 	}
 
 	logrus.SetFormatter(&logrus.JSONFormatter{})
@@ -108,7 +108,7 @@ func LoadViper() {
 func SetupLoggingLevel(level string) error {
 	lvl, err := logrus.ParseLevel(level)
 	if err != nil {
-		return fmt.Errorf("unable to set log level\n%v", err)
+		return fmt.Errorf("unable to set log level\n%w", err)
 	}
 
 	logrus.SetLevel(lvl)

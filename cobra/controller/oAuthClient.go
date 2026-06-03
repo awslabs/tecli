@@ -116,31 +116,31 @@ func oAuthClientRun(cmd *cobra.Command, args []string) error {
 		if err == nil && oAuthClient.ID != "" {
 			fmt.Println(aid.ToJSON(oAuthClient))
 		} else {
-			return fmt.Errorf("unable to create o-auth-client\n%v", err)
+			return fmt.Errorf("unable to create o-auth-client\n%w", err)
 		}
 	case "read":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag id\n%v", err)
+			return fmt.Errorf("unable to get flag id\n%w", err)
 		}
 
 		oAuthClient, err := oAuthClientRead(client, id)
 		if err == nil {
 			fmt.Println(aid.ToJSON(oAuthClient))
 		} else {
-			return fmt.Errorf("o-auth-client %s not found\n%v", id, err)
+			return fmt.Errorf("o-auth-client %s not found\n%w", id, err)
 		}
 	case "delete":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag id\n%v", err)
+			return fmt.Errorf("unable to get flag id\n%w", err)
 		}
 
 		err = oAuthClientDelete(client, id)
 		if err == nil {
 			fmt.Printf("o-auth-client %s deleted successfully\n", id)
 		} else {
-			return fmt.Errorf("unable to delete o-auth-client %s\n%v", id, err)
+			return fmt.Errorf("unable to delete o-auth-client %s\n%w", id, err)
 		}
 	}
 
