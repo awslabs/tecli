@@ -1,15 +1,22 @@
+name: Release Please
 on:
   push:
     branches:
       - main
 
-name: Release
+# Default to least-privilege; release-please opts in to write below.
+permissions:
+  contents: read
+
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # to create release commits and tags
+      pull-requests: write # to open the release-please PR
     steps:
-      - uses: google-github-actions/release-please-action@v3
+      - uses: googleapis/release-please-action@5792afc6b46e9bb55deda9eda973a18c226bc3fc # v4.1.5
         with:
-          release-type: python
-          package-name: aws-auto-inventory
-          token: ${{ secrets.TOKEN }}
+          release-type: go
+          # Token is provided by Actions; only override if a fine-grained PAT is required.
+          token: ${{ secrets.GITHUB_TOKEN }}
