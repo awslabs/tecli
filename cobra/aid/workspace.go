@@ -82,7 +82,7 @@ func SetVCSRepoFlags(cmd *cobra.Command) {
 	// created without a VCS repo. If included, you must specify at least the
 	// oauth-token-id and identifier keys below.`
 
-	usage := `The repository branch that Terraform will execute from. If omitted or submitted as an empty string, this defaults to the repository's default branch (e.g. master).`
+	usage := `The repository branch that Terraform will execute from. If omitted or submitted as an empty string, this defaults to the repository's default branch (e.g. main).`
 	cmd.Flags().String("vcs-repo-branch", "", usage)
 
 	usage = `A reference to your VCS repository in the format :org/:repo where :org and :repo refer to the organization and repository in your VCS provider. The format for Azure DevOps is :org/:project/_git/:repo.`
