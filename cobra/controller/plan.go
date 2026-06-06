@@ -26,7 +26,6 @@ import (
 	"github.com/awslabs/tecli/cobra/dao"
 	"github.com/awslabs/tecli/helper"
 	"github.com/hashicorp/go-tfe"
-	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -83,24 +82,24 @@ func planRun(cmd *cobra.Command, args []string) error {
 	case "read":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag id\n%v", err)
+			return fmt.Errorf("unable to get flag id\n%w", err)
 		}
 
 		plan, err := planRead(client, id)
 		if err == nil {
 			fmt.Println(aid.ToJSON(plan))
 		} else {
-			return fmt.Errorf("plan %s not found\n%v", id, err)
+			return fmt.Errorf("plan %s not found\n%w", id, err)
 		}
 	case "logs":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag id\n%v", err)
+			return fmt.Errorf("unable to get flag id\n%w", err)
 		}
 
 		logs, err := planLogs(client, id)
 		if err != nil {
-			logrus.Fatalf("unable to read plan logs\n%v", err)
+			return fmt.Errorf("unable to read plan logs\n%w", err)
 		}
 		fmt.Println(StreamToString(logs))
 	}

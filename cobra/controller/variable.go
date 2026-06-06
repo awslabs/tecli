@@ -67,7 +67,7 @@ func variablePreRun(cmd *cobra.Command, args []string) error {
 	logrus.Tracef("start: variablePreRun")
 
 	if err := helper.ValidateCmdArgsV2(cmd, args); err != nil {
-		return fmt.Errorf("unexpected error\n%v", err)
+		return fmt.Errorf("unexpected error\n%w", err)
 	}
 
 	switch args[0] {
@@ -126,7 +126,7 @@ func variableRun(cmd *cobra.Command, args []string) error {
 		if err == nil && variable.ID != "" {
 			fmt.Println(aid.ToJSON(variable))
 		} else {
-			return fmt.Errorf("unable to create variable\n%v", err)
+			return fmt.Errorf("unable to create variable\n%w", err)
 		}
 
 	case "read":
@@ -137,7 +137,7 @@ func variableRun(cmd *cobra.Command, args []string) error {
 		if err == nil {
 			fmt.Println(aid.ToJSON(variable))
 		} else {
-			return fmt.Errorf("variable %s not found\n%v", id, err)
+			return fmt.Errorf("variable %s not found\n%w", id, err)
 		}
 
 	case "update":
@@ -149,7 +149,7 @@ func variableRun(cmd *cobra.Command, args []string) error {
 		if err == nil && variable.ID != "" {
 			fmt.Println(aid.ToJSON(variable))
 		} else {
-			return fmt.Errorf("unable to update variable\n%v", err)
+			return fmt.Errorf("unable to update variable\n%w", err)
 		}
 
 	case "update-by-key":
@@ -171,7 +171,7 @@ func variableRun(cmd *cobra.Command, args []string) error {
 		if err == nil && variable.ID != "" {
 			fmt.Println(aid.ToJSON(variable))
 		} else {
-			return fmt.Errorf("unable to update variable\n%v", err)
+			return fmt.Errorf("unable to update variable\n%w", err)
 		}
 
 	case "delete":
@@ -182,21 +182,21 @@ func variableRun(cmd *cobra.Command, args []string) error {
 		if err == nil {
 			fmt.Printf("variable %s deleted successfully\n", id)
 		} else {
-			return fmt.Errorf("unable to delete variable %s\n%v", id, err)
+			return fmt.Errorf("unable to delete variable %s\n%w", id, err)
 		}
 
 	case "delete-all":
 		workspaceID := helper.GetCmdFlagString(cmd, "workspace-id")
 		list, err := variableList(client, workspaceID, tfe.VariableListOptions{})
 		if err != nil {
-			return fmt.Errorf("no variable was found\n%v", err)
+			return fmt.Errorf("no variable was found\n%w", err)
 		}
 
 		for _, v := range list.Items {
 			fmt.Printf("attempting to delete variable %s (%s)\n", v.Key, v.ID)
 			err := variableDelete(client, workspaceID, v.ID)
 			if err != nil {
-				return fmt.Errorf("unable to delete variable %s (%s)\n%v", v.Key, v.ID, err)
+				return fmt.Errorf("unable to delete variable %s (%s)\n%w", v.Key, v.ID, err)
 			}
 
 			fmt.Printf("variable %s (%s) deleted successfully\n", v.Key, v.ID)

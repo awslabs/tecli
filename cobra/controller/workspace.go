@@ -153,7 +153,7 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 		if err == nil && workspace.ID != "" {
 			fmt.Println(aid.ToJSON(workspace))
 		} else {
-			return fmt.Errorf("unable to create workspace\n%v", err)
+			return fmt.Errorf("unable to create workspace\n%w", err)
 		}
 	case "read":
 		name, err := cmd.Flags().GetString("name")
@@ -166,19 +166,19 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 		if err == nil {
 			fmt.Println(aid.ToJSON(workspace))
 		} else {
-			return fmt.Errorf("workspace %s not found\n%v", name, err)
+			return fmt.Errorf("workspace %s not found\n%w", name, err)
 		}
 	case "read-by-id":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag id\n%v", err)
+			return fmt.Errorf("unable to get flag id\n%w", err)
 		}
 
 		workspace, err := workspaceReadByID(client, id)
 		if err == nil {
 			fmt.Println(aid.ToJSON(workspace))
 		} else {
-			return fmt.Errorf("workspace %s not found\n%v", id, err)
+			return fmt.Errorf("workspace %s not found\n%w", id, err)
 		}
 	case "update":
 		name, err := cmd.Flags().GetString("name")
@@ -192,12 +192,12 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 		if err == nil && workspace.ID != "" {
 			fmt.Println(aid.ToJSON(workspace))
 		} else {
-			return fmt.Errorf("unable to update workspace\n%v", err)
+			return fmt.Errorf("unable to update workspace\n%w", err)
 		}
 	case "update-by-id":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag id\n%v", err)
+			return fmt.Errorf("unable to get flag id\n%w", err)
 		}
 
 		options := aid.GetWorkspaceUpdateOptions(cmd)
@@ -205,7 +205,7 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 		if err == nil && workspace.ID != "" {
 			fmt.Println(aid.ToJSON(workspace))
 		} else {
-			return fmt.Errorf("unable to update workspace\n%v", err)
+			return fmt.Errorf("unable to update workspace\n%w", err)
 		}
 	case "delete":
 		name, err := cmd.Flags().GetString("name")
@@ -218,19 +218,19 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 		if err == nil {
 			fmt.Printf("workspace %s deleted successfully\n", name)
 		} else {
-			return fmt.Errorf("unable to delete workspace %s\n%v", name, err)
+			return fmt.Errorf("unable to delete workspace %s\n%w", name, err)
 		}
 	case "delete-by-id":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag id\n%v", err)
+			return fmt.Errorf("unable to get flag id\n%w", err)
 		}
 
 		err = workspaceDeleteByID(client, id)
 		if err == nil {
 			fmt.Printf("workspace %s deleted successfully\n", id)
 		} else {
-			return fmt.Errorf("unable to delete workspace %s\n%v", id, err)
+			return fmt.Errorf("unable to delete workspace %s\n%w", id, err)
 		}
 	case "remove-vcs-connection":
 		name, err := cmd.Flags().GetString("name")
@@ -243,29 +243,29 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 		if err == nil {
 			fmt.Println(aid.ToJSON(workspace))
 		} else {
-			return fmt.Errorf("unable to remove vcs connection\n%v", err)
+			return fmt.Errorf("unable to remove vcs connection\n%w", err)
 		}
 	case "remove-vcs-connection-by-id":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag id\n%v", err)
+			return fmt.Errorf("unable to get flag id\n%w", err)
 		}
 
 		workspace, err := workspaceRemoveVCSConnectionByID(client, id)
 		if err == nil {
 			fmt.Println(aid.ToJSON(workspace))
 		} else {
-			return fmt.Errorf("unable to remove vcs connection\n%v", err)
+			return fmt.Errorf("unable to remove vcs connection\n%w", err)
 		}
 	case "lock":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag id\n%v", err)
+			return fmt.Errorf("unable to get flag id\n%w", err)
 		}
 
 		workspace, err := workspaceLock(client, id)
 		if err != nil {
-			return fmt.Errorf("unable to lock workspace\n%v", err)
+			return fmt.Errorf("unable to lock workspace\n%w", err)
 		}
 
 		if workspace.Locked {
@@ -274,7 +274,7 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 	case "unlock":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag id\n%v", err)
+			return fmt.Errorf("unable to get flag id\n%w", err)
 		}
 
 		workspace, err := workspaceUnlock(client, id)
@@ -288,7 +288,7 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 	case "force-unlock":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag id\n%v", err)
+			return fmt.Errorf("unable to get flag id\n%w", err)
 		}
 
 		workspace, err := workspaceForceUnlock(client, id)
@@ -302,7 +302,7 @@ func workspaceRun(cmd *cobra.Command, args []string) error {
 	case "assign-ssh-key":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag id\n%v", err)
+			return fmt.Errorf("unable to get flag id\n%w", err)
 		}
 
 		options := aid.GetWorkspaceAssignSSHKeyOptions(cmd)

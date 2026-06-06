@@ -105,7 +105,7 @@ func sshKeyPreRun(cmd *cobra.Command, args []string) error {
 func sshKeyRun(cmd *cobra.Command, args []string) error {
 	// config, err := cmd.Flags().GetString("config")
 	// if err != nil {
-	// 	return fmt.Errorf("unable to get flag config\n%v", err)
+	// 	return fmt.Errorf("unable to get flag config\n%w", err)
 	// }
 
 	// aid.LoadViper(config)
@@ -142,20 +142,20 @@ func sshKeyRun(cmd *cobra.Command, args []string) error {
 	case "read":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag id\n%v", err)
+			return fmt.Errorf("unable to get flag id\n%w", err)
 		}
 
 		sshKey, err := sshKeyRead(client, id)
 		if err == nil {
 			fmt.Println(aid.ToJSON(sshKey))
 		} else {
-			return fmt.Errorf("ssh key %s not found\n%v", id, err)
+			return fmt.Errorf("ssh key %s not found\n%w", id, err)
 		}
 
 	case "update":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag id\n%v", err)
+			return fmt.Errorf("unable to get flag id\n%w", err)
 		}
 
 		options := aid.GetSSHKeysUpdateOptions(cmd)
@@ -163,19 +163,19 @@ func sshKeyRun(cmd *cobra.Command, args []string) error {
 		if err == nil && sshKey.ID != "" {
 			fmt.Println(aid.ToJSON(sshKey))
 		} else {
-			return fmt.Errorf("unable to update ssh key\n%v", err)
+			return fmt.Errorf("unable to update ssh key\n%w", err)
 		}
 	case "delete":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag id\n%v", err)
+			return fmt.Errorf("unable to get flag id\n%w", err)
 		}
 
 		err = sshKeyDelete(client, id)
 		if err == nil {
 			cmd.Printf("ssh key %s deleted successfully\n", id)
 		} else {
-			return fmt.Errorf("unable to delete ssh key %s\n%v", id, err)
+			return fmt.Errorf("unable to delete ssh key %s\n%w", id, err)
 		}
 	}
 

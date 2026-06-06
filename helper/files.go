@@ -26,7 +26,7 @@ func WriteFile(filename string, data []byte) bool {
 	err := os.WriteFile(filename, data, os.ModePerm)
 
 	if err != nil {
-		logrus.Fatal(err)
+		logrus.Errorf("unable to write file %s: %v", filename, err)
 		return false
 	}
 
@@ -57,7 +57,7 @@ func WriteInterfaceToFile(in interface{}, path string) error {
 
 	err = os.WriteFile(path, b, os.ModePerm)
 	if err != nil {
-		return fmt.Errorf("unable to update:%s\n%v", path, err)
+		return fmt.Errorf("unable to update:%s\n%w", path, err)
 	}
 
 	return err
@@ -166,10 +166,7 @@ func FileSize(path string) (int64, error) {
 	if FileExists(path) {
 		info, err := os.Stat(path)
 		if err != nil {
-			if err != nil {
-				return size, fmt.Errorf("unable to obtain information about file: %s\n%s", path, err)
-			}
-			return size, err
+			return size, fmt.Errorf("unable to obtain information about file: %s\n%w", path, err)
 		}
 		size = info.Size()
 	} else {
@@ -179,11 +176,13 @@ func FileSize(path string) (int64, error) {
 }
 
 // ListFiles list of all file names in the given directory. Pass "." if you want to list at the current directory.
+// Returns a nil slice if the directory cannot be read; the error is logged.
 func ListFiles(dir string) []os.FileInfo {
 	entries, err := os.ReadDir(dir)
 
 	if err != nil {
-		logrus.Fatal(err)
+		logrus.Errorf("unable to list files in %s: %v", dir, err)
+		return nil
 	}
 
 	files := make([]os.FileInfo, 0, len(entries))

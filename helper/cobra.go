@@ -58,7 +58,7 @@ func ValidateCmdArgsV2(cmd *cobra.Command, args []string) error {
 	err := cmd.ValidateArgs(args)
 	if err != nil {
 		logrus.Errorf("cobra unable to validate args")
-		return fmt.Errorf("invalid arguments\n%v", err)
+		return fmt.Errorf("invalid arguments\n%w", err)
 	}
 
 	if len(args) == 0 {
@@ -108,7 +108,7 @@ func ValidateCmdFlagString(cmd *cobra.Command, flag string) error {
 	logrus.Tracef("start: validate flag")
 	value, err := cmd.Flags().GetString(flag)
 	if err != nil {
-		return fmt.Errorf("unable to get flag %s\n%v", flag, err)
+		return fmt.Errorf("unable to get flag %s\n%w", flag, err)
 	}
 
 	if value == "" {

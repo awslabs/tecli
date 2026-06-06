@@ -25,7 +25,7 @@ func GetManual(command string, args []string) (Manual, error) {
 	if status {
 		err = yaml.Unmarshal(manualBlob, &man)
 		if err != nil {
-			return man, fmt.Errorf("unable to decode YAML file, error:\n%v", err)
+			return man, fmt.Errorf("unable to decode YAML file, error:\n%w", err)
 		}
 	} else {
 		logrus.Fatal("unable to read manual from box")

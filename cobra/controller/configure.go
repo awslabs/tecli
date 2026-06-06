@@ -74,7 +74,7 @@ func configurePreRun(cmd *cobra.Command, args []string) error {
 	if cmd.Flags().Changed("mode") {
 		mode, err := cmd.Flags().GetString("mode")
 		if err != nil {
-			return fmt.Errorf("unable to get flag mode\n%v", err)
+			return fmt.Errorf("unable to get flag mode\n%w", err)
 		}
 
 		if mode != "interactive" && mode != "non-interactive" {
@@ -88,7 +88,7 @@ func configurePreRun(cmd *cobra.Command, args []string) error {
 func configureRun(cmd *cobra.Command, args []string) error {
 	mode, err := cmd.Flags().GetString("mode")
 	if err != nil {
-		return fmt.Errorf("unable to get flag mode\n%v", err)
+		return fmt.Errorf("unable to get flag mode\n%w", err)
 	}
 
 	fArg := args[0]
@@ -103,7 +103,7 @@ func configureRun(cmd *cobra.Command, args []string) error {
 	case "create":
 		err = configureCreateCredentials(cmd, mode)
 		if err != nil {
-			return fmt.Errorf("unable to create profile\n%v", err)
+			return fmt.Errorf("unable to create profile\n%w", err)
 		}
 		cmd.Printf("profile %s created successfully\n", profile)
 
@@ -117,14 +117,14 @@ func configureRun(cmd *cobra.Command, args []string) error {
 	case "update":
 		err = configureUpdateCredentials(cmd, mode)
 		if err != nil {
-			return fmt.Errorf("unable to update profile\n%v", err)
+			return fmt.Errorf("unable to update profile\n%w", err)
 		}
 		cmd.Printf("profile %s updated successfully\n", profile)
 
 	case "delete":
 		err := configureDeleteCredential()
 		if err != nil {
-			return fmt.Errorf("unable to delete profile\n%v", err)
+			return fmt.Errorf("unable to delete profile\n%w", err)
 		}
 		cmd.Printf("profile %s deleted successfully\n", profile)
 

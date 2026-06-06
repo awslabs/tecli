@@ -92,7 +92,7 @@ func runRun(cmd *cobra.Command, args []string) error {
 	case "list":
 		workspaceID, err := cmd.Flags().GetString("workspace-id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag workspace-id\n%v", err)
+			return fmt.Errorf("unable to get flag workspace-id\n%w", err)
 		}
 
 		list, err := runList(client, workspaceID, tfe.RunListOptions{})
@@ -107,26 +107,26 @@ func runRun(cmd *cobra.Command, args []string) error {
 
 		workspaceID, err := cmd.Flags().GetString("workspace-id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag workspace-id\n%v", err)
+			return fmt.Errorf("unable to get flag workspace-id\n%w", err)
 		}
 
 		if workspaceID != "" {
 			workspace, err := workspaceReadByID(client, workspaceID)
 			if err != nil {
-				return fmt.Errorf("unable to find workspace %s\n%v", workspaceID, err)
+				return fmt.Errorf("unable to find workspace %s\n%w", workspaceID, err)
 			}
 			options.Workspace = workspace
 		}
 
 		cvID, err := cmd.Flags().GetString("configuration-version-id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag configuration-version-id\n%v", err)
+			return fmt.Errorf("unable to get flag configuration-version-id\n%w", err)
 		}
 
 		if cvID != "" {
 			cv, err := configurationVersionRead(client, cvID)
 			if err != nil {
-				return fmt.Errorf("unable to find configuration version %s\n%v", cvID, err)
+				return fmt.Errorf("unable to find configuration version %s\n%w", cvID, err)
 			}
 
 			if cv.ID != "" {
@@ -139,25 +139,25 @@ func runRun(cmd *cobra.Command, args []string) error {
 		if err == nil && run.ID != "" {
 			fmt.Println(aid.ToJSON(run))
 		} else {
-			return fmt.Errorf("unable to create run\n%v", err)
+			return fmt.Errorf("unable to create run\n%w", err)
 		}
 
 	case "read":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag id\n%v", err)
+			return fmt.Errorf("unable to get flag id\n%w", err)
 		}
 
 		run, err := runRead(client, id)
 		if err == nil {
 			fmt.Println(aid.ToJSON(run))
 		} else {
-			return fmt.Errorf("run %s not found\n%v", id, err)
+			return fmt.Errorf("run %s not found\n%w", id, err)
 		}
 	case "read-with-options":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag id\n%v", err)
+			return fmt.Errorf("unable to get flag id\n%w", err)
 		}
 
 		options := aid.GetRunReadOptions(cmd)
@@ -165,38 +165,38 @@ func runRun(cmd *cobra.Command, args []string) error {
 		if err == nil {
 			fmt.Println(aid.ToJSON(run))
 		} else {
-			return fmt.Errorf("run %s not found\n%v", id, err)
+			return fmt.Errorf("run %s not found\n%w", id, err)
 		}
 	case "apply":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag id\n%v", err)
+			return fmt.Errorf("unable to get flag id\n%w", err)
 		}
 
 		options := aid.GetRunApplyOptions(cmd)
 		err = runApply(client, id, options)
 		if err != nil {
-			return fmt.Errorf("unable to apply run\n%v", err)
+			return fmt.Errorf("unable to apply run\n%w", err)
 		}
 
 		fmt.Println("run applied successfully")
 	case "cancel":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag id\n%v", err)
+			return fmt.Errorf("unable to get flag id\n%w", err)
 		}
 
 		options := aid.GetRunCancelOptions(cmd)
 		err = runCancel(client, id, options)
 		if err != nil {
-			return fmt.Errorf("unable to cancel run\n%v", err)
+			return fmt.Errorf("unable to cancel run\n%w", err)
 		}
 
 		fmt.Println("run cancelled successfully")
 	case "cancel-all":
 		workspaceID, err := cmd.Flags().GetString("workspace-id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag workspace-id\n%v", err)
+			return fmt.Errorf("unable to get flag workspace-id\n%w", err)
 		}
 
 		list, err := runList(client, workspaceID, tfe.RunListOptions{})
@@ -220,20 +220,20 @@ func runRun(cmd *cobra.Command, args []string) error {
 	case "force-cancel":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag id\n%v", err)
+			return fmt.Errorf("unable to get flag id\n%w", err)
 		}
 
 		options := aid.GetRunForceCancelOptions(cmd)
 		err = runForceCancel(client, id, options)
 		if err != nil {
-			return fmt.Errorf("unable to force ancel run\n%v", err)
+			return fmt.Errorf("unable to force ancel run\n%w", err)
 		}
 
 		fmt.Println("run cancelled successfully")
 	case "force-cancel-all":
 		workspaceID, err := cmd.Flags().GetString("workspace-id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag workspace-id\n%v", err)
+			return fmt.Errorf("unable to get flag workspace-id\n%w", err)
 		}
 
 		list, err := runList(client, workspaceID, tfe.RunListOptions{})
@@ -256,18 +256,18 @@ func runRun(cmd *cobra.Command, args []string) error {
 	case "discard":
 		id, err := cmd.Flags().GetString("id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag id\n%v", err)
+			return fmt.Errorf("unable to get flag id\n%w", err)
 		}
 
 		options := aid.GetRunDiscardOptions(cmd)
 		err = runDiscard(client, id, options)
 		if err != nil {
-			return fmt.Errorf("unable to discard run\n%v", err)
+			return fmt.Errorf("unable to discard run\n%w", err)
 		}
 	case "discard-all":
 		workspaceID, err := cmd.Flags().GetString("workspace-id")
 		if err != nil {
-			return fmt.Errorf("unable to get flag workspace-id\n%v", err)
+			return fmt.Errorf("unable to get flag workspace-id\n%w", err)
 		}
 
 		list, err := runList(client, workspaceID, tfe.RunListOptions{})

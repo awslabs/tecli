@@ -31,6 +31,8 @@ func GetAppInfo() model.App {
 
 	configDir, err := os.UserConfigDir()
 	if err != nil {
+		// Fatal here is acceptable: without the user config directory we
+		// cannot locate credentials or logs and there is no recovery path.
 		logrus.Fatalf("unable to read user configuration directory\n%v", err)
 	}
 
@@ -51,6 +53,8 @@ func GetAppInfo() model.App {
 
 	app.WorkingDir, err = os.Getwd()
 	if err != nil {
+		// Exit here is acceptable: without a working directory, none of the
+		// downstream config/file operations can resolve relative paths.
 		fmt.Printf("Unable to detect the current directory\n%v", err)
 		os.Exit(1)
 	}
@@ -67,7 +71,7 @@ func SetupLoggingOutput(path string) error {
 
 	file, err := os.OpenFile(path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, os.ModePerm)
 	if err != nil {
-		return fmt.Errorf("unable to open log file\n%v", err)
+		return fmt.Errorf("unable to open log file\n%w", err)
 	}
 
 	logrus.SetFormatter(&logrus.JSONFormatter{})
@@ -104,7 +108,7 @@ func LoadViper() {
 func SetupLoggingLevel(level string) error {
 	lvl, err := logrus.ParseLevel(level)
 	if err != nil {
-		return fmt.Errorf("unable to set log level\n%v", err)
+		return fmt.Errorf("unable to set log level\n%w", err)
 	}
 
 	logrus.SetLevel(lvl)
@@ -130,7 +134,9 @@ func getTFENewClient(config *tfe.Config) (*tfe.Client, error) {
 	return client, err
 }
 
-// GetTFEClient returns a new terraform api client given a token
+// GetTFEClient returns a new terraform api client given a token.
+// Fatal here is acceptable: without a working TFE client every command in
+// this CLI is a no-op, and there is no useful recovery path.
 func GetTFEClient(token string) *tfe.Client {
 	config := getTFEConfig(token)
 	client, err := getTFENewClient(config)
