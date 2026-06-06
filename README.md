@@ -37,6 +37,7 @@ In a world where infrastructure as code is becoming the standard, TECLI bridges 
 - [Common Workflows](#-common-workflows)
 - [Screenshots](#-screenshots)
 - [Contributing](#-contributing)
+- [History](#-history)
 - [References](#-references)
 - [License](#-license)
 
@@ -46,20 +47,32 @@ In a world where infrastructure as code is becoming the standard, TECLI bridges 
 
 Before installing TECLI, ensure you have:
 
-- A Terraform Cloud/Enterprise account
+- A Terraform Cloud or Terraform Enterprise account
 - Appropriate API tokens (user, team, or organization)
+- Go 1.25 or later (only required if building from source)
 
 For more detailed prerequisites, visit our [Pre-Requisites Wiki](https://github.com/awslabs/tecli/wiki/Pre-Requisites).
 
-### Installation Steps
+### Install a pre-built binary
 
 1. Download the latest [release](https://github.com/awslabs/tecli/releases) for your operating system and platform.
-2. Extract the binary to a location in your PATH.
+2. Extract the binary to a location in your `PATH`.
 3. Verify the installation:
 
 ```bash
 tecli version
 ```
+
+### Build from source
+
+```bash
+git clone https://github.com/awslabs/tecli.git
+cd tecli
+go build -o tecli ./...
+./tecli version
+```
+
+`go build` requires Go 1.25+. The Terraform Cloud/Enterprise client used internally is [hashicorp/go-tfe v1.108+](https://pkg.go.dev/github.com/hashicorp/go-tfe).
 
 For more detailed installation instructions, visit our [Installation Wiki](https://github.com/awslabs/tecli/wiki/Installation).
 
@@ -287,10 +300,25 @@ We welcome contributions to TECLI! Please read our [Contributing Guidelines](CON
 | Silva, Valter | valterh@amazon.com | AWS Professional Services - Cloud Architect |
 | Dhingra, Prashit | | AWS Professional Services - Cloud Architect |
 
+## 🕒 History
+
+See [`CHANGELOG.md`](CHANGELOG.md) for the full release history.
+
+### Modernization 2026-06
+
+A toolchain modernization pass was completed in June 2026 (tracked in PR [#27](https://github.com/awslabs/tecli/pull/27) and follow-up PRs):
+
+- Bumped `go.mod` to **Go 1.25**.
+- Migrated `hashicorp/go-tfe` from `v0.15.0` to `v1.108.0`.
+- Refreshed all transitive dependencies (cobra, viper, logrus, testify, x/crypto, afero, go-slug, go-retryablehttp).
+- Audited and rewrote the docs (this README, [`CHANGELOG.md`](CHANGELOG.md), [`COMMANDS.md`](COMMANDS.md), [`CONTRIBUTING.md`](CONTRIBUTING.md), and the new [`ARCHITECTURE.md`](ARCHITECTURE.md) and [`docs/RELEASING.md`](docs/RELEASING.md)).
+
+The wiki pages under <https://github.com/awslabs/tecli/wiki> were last refreshed before the modernization; some links there may describe older Go/go-tfe versions.
+
 ## 🔗 References
 
 - [Terraform Cloud](https://www.terraform.io/docs/cloud/index.html) - Terraform Cloud is an application that helps teams use Terraform together.
-- [Terraform Cloud/Enterprise Go Client](https://github.com/hashicorp/go-tfe) - The official Go API client for Terraform Cloud/Enterprise.
+- [Terraform Cloud/Enterprise Go Client](https://github.com/hashicorp/go-tfe) - The official Go API client for Terraform Cloud/Enterprise (v1.108+ as of the modernization).
 - [clencli](https://github.com/awslabs/clencli) - Cloud Engineer CLI
 - [terminalizer](https://github.com/faressoft/terminalizer) - Record your terminal and generate animated gif images or share a web player link terminalizer.com
 
