@@ -7,7 +7,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/awslabs/tecli)](https://github.com/awslabs/tecli/issues)
 [![GitHub forks](https://img.shields.io/github/forks/awslabs/tecli)](https://github.com/awslabs/tecli/network)
 [![GitHub stars](https://img.shields.io/github/stars/awslabs/tecli)](https://github.com/awslabs/tecli/stargazers)
-[![GitHub license](https://img.shields.io/github/license/awslabs/tecli)](https://github.com/awslabs/tecli/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/awslabs/tecli)](https://github.com/awslabs/tecli/blob/main/LICENSE)
 [![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Fawslabs%2Ftecli)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fawslabs%2Ftecli)
 
 </div>
