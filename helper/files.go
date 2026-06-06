@@ -3,7 +3,6 @@ package helper
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"strings"
 
 	"io"
@@ -24,7 +23,7 @@ func BuildPath(path string) string {
 
 // WriteFile writes a file and return true if successful
 func WriteFile(filename string, data []byte) bool {
-	err := ioutil.WriteFile(filename, data, os.ModePerm)
+	err := os.WriteFile(filename, data, os.ModePerm)
 
 	if err != nil {
 		logrus.Fatal(err)
@@ -56,7 +55,7 @@ func WriteInterfaceToFile(in interface{}, path string) error {
 		}
 	}
 
-	err = ioutil.WriteFile(path, b, os.ModePerm)
+	err = os.WriteFile(path, b, os.ModePerm)
 	if err != nil {
 		return fmt.Errorf("unable to update:%s\n%v", path, err)
 	}
@@ -129,13 +128,13 @@ func DirOrFileExists(path string) bool {
 // CopyFile copies a file from source into a given destination path
 // https://github.com/mactsouk/opensource.com/blob/master/cp2.go
 func CopyFile(sourceFile string, destinationFile string) {
-	input, err := ioutil.ReadFile(sourceFile)
+	input, err := os.ReadFile(sourceFile)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
-	err = ioutil.WriteFile(destinationFile, input, 0644)
+	err = os.WriteFile(destinationFile, input, 0644)
 	if err != nil {
 		fmt.Println("Error creating", destinationFile)
 		fmt.Println(err)
@@ -145,13 +144,13 @@ func CopyFile(sourceFile string, destinationFile string) {
 
 // CopyFileTo copy a file from sourceFile location to destinationFile location
 func CopyFileTo(sourceFile string, destinationFile string) error {
-	input, err := ioutil.ReadFile(sourceFile)
+	input, err := os.ReadFile(sourceFile)
 	if err != nil {
 		logrus.Errorf("unable to copy file\n%v\n", err)
 		return err
 	}
 
-	err = ioutil.WriteFile(destinationFile, input, 0644)
+	err = os.WriteFile(destinationFile, input, 0644)
 	if err != nil {
 		logrus.Errorf("unable to write file\n%v\n", err)
 		return err
@@ -181,10 +180,19 @@ func FileSize(path string) (int64, error) {
 
 // ListFiles list of all file names in the given directory. Pass "." if you want to list at the current directory.
 func ListFiles(dir string) []os.FileInfo {
-	files, err := ioutil.ReadDir(dir)
+	entries, err := os.ReadDir(dir)
 
 	if err != nil {
 		logrus.Fatal(err)
+	}
+
+	files := make([]os.FileInfo, 0, len(entries))
+	for _, entry := range entries {
+		info, err := entry.Info()
+		if err != nil {
+			logrus.Fatal(err)
+		}
+		files = append(files, info)
 	}
 
 	return files

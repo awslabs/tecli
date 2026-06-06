@@ -7,8 +7,8 @@ import (
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/pem"
-	"io/ioutil"
 	"log"
+	"os"
 
 	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/ssh"
@@ -95,7 +95,7 @@ func GeneratePublicSSHKey(privatekey *rsa.PublicKey) ([]byte, error) {
 
 // WriteSSHKeyToFile writes keys to a file
 func WriteSSHKeyToFile(keyBytes []byte, saveFileTo string) error {
-	err := ioutil.WriteFile(saveFileTo, keyBytes, 0600)
+	err := os.WriteFile(saveFileTo, keyBytes, 0600)
 	if err != nil {
 		return err
 	}
