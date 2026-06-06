@@ -6,6 +6,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and the project loosely follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 (pre-1.0 releases use the `0.x-alpha` convention).
 
+## [0.5.0-alpha](https://github.com/awslabs/tecli/compare/0.4.2-alpha...v0.5.0-alpha) (2026-06-06)
+
+
+### Features
+
+* **deps:** migrate go-tfe v0.15.0 to v1.108.0 ([f4b3195](https://github.com/awslabs/tecli/commit/f4b319522f5b0162232c243f5f88ecf1c5cf3d81))
+* ignore TIPS.md file for private-keys ([eef146a](https://github.com/awslabs/tecli/commit/eef146a561f10da7651df163356c790ee809e641))
+* initial dev container configuration ([f18f936](https://github.com/awslabs/tecli/commit/f18f936e3b4f0a1acf28b51e7be9b1b9c7b96903))
+* initial google's release-please workflow ([4a92256](https://github.com/awslabs/tecli/commit/4a922562ed3aac7f99baba0a956ae85f9ab1231e))
+* initial pre-commit configuration ([f2c60dc](https://github.com/awslabs/tecli/commit/f2c60dc2555ffe68a4f93c6aede5c0612cd9ba88))
+* install goimports ([cf87dcb](https://github.com/awslabs/tecli/commit/cf87dcbd85fd2113211881c8d6fa61a423f94696))
+* introduce go pre-commit checks ([dc7c614](https://github.com/awslabs/tecli/commit/dc7c614df40ff31d8019631afd69d1752b476175))
+* introduce google's release-please workflow ([54a7198](https://github.com/awslabs/tecli/commit/54a71980a1c01cab14fe5e784d17e6715568252e))
+
+
+### Bug Fixes
+
+* migrate deprecated ioutil to os/io equivalents ([e36badc](https://github.com/awslabs/tecli/commit/e36badcc9d7a472852161bbcc7f17a582e962083))
+* **tests:** add helper.go to tests package so go vet passes ([8c257d1](https://github.com/awslabs/tecli/commit/8c257d1f0526585274297ab3ba52acae82a08af4))
+* use %w verb for error wrapping in fmt.Errorf calls ([bc9b74c](https://github.com/awslabs/tecli/commit/bc9b74c2d534e11d5726153acd77182c5a06ccec))
+* workspace find-by-name correctly handles paginated organizations ([608c5ac](https://github.com/awslabs/tecli/commit/608c5ac2a3bc1de81429646ea0897dff0aa1e3cc)), closes [#12](https://github.com/awslabs/tecli/issues/12)
+
 ## [Unreleased] - Modernization 2026-06
 
 Toolchain modernization. Tracked in PR [#27](https://github.com/awslabs/tecli/pull/27)
