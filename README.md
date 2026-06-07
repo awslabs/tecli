@@ -174,7 +174,21 @@ The `configure` command reads and writes the credentials file only. It does not 
 
 ## Architecture
 
-TECLI is a thin command-line wrapper around `hashicorp/go-tfe`. The `main` package calls `cmd.Execute()`, which builds a Cobra command tree. Each command validates flags, marshals them into `go-tfe` option structs, calls the Terraform Cloud API, and prints the JSON response. For components, data flow, and design decisions, see [ARCHITECTURE.md](ARCHITECTURE.md).
+TECLI is a thin command-line wrapper around `hashicorp/go-tfe`. The `main` package calls `cmd.Execute()`, which builds a Cobra command tree. Each command validates flags, marshals them into `go-tfe` option structs, calls the Terraform Cloud API, and prints the JSON response.
+
+```mermaid
+%% High-level request flow
+flowchart LR
+    user([You / CI pipeline]) --> cli["tecli<br/>Cobra command"]
+    cli --> resolve["Resolve org and token<br/>TFC_* env vars, then profile"]
+    config[("credentials.yaml<br/>+ TFC_* env vars")] --> resolve
+    resolve --> gotfe["hashicorp/go-tfe<br/>client"]
+    gotfe --> tfc[("Terraform Cloud /<br/>Enterprise API")]
+    tfc --> gotfe
+    gotfe --> out["JSON response<br/>printed to stdout"]
+```
+
+For components, data flow, and design decisions, see [ARCHITECTURE.md](ARCHITECTURE.md).
 
 ## Troubleshooting
 
