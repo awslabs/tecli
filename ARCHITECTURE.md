@@ -12,9 +12,39 @@ The command framework is [Cobra](https://github.com/spf13/cobra). Configuration 
 
 The dependency direction flows in one direction, from the command adapters down to the API client:
 
-```text
-cobra/cmd  -->  cobra/controller  -->  cobra/aid  -->  helper/, box/
-                                  -->  hashicorp/go-tfe
+```mermaid
+%% Component and dependency diagram
+flowchart TB
+    user([You / CI pipeline])
+
+    subgraph cli["tecli binary"]
+        main["main.go<br/>cmd.Execute()"]
+        cmd["cobra/cmd<br/>thin command adapters"]
+        controller["cobra/controller<br/>business logic, PreRunE / RunE"]
+        aid["cobra/aid<br/>flag builders, TFE client, Viper"]
+        dao["cobra/dao<br/>resolve org and tokens"]
+        view["cobra/view<br/>interactive prompts"]
+        helperbox["helper/, box/<br/>utilities and embedded manuals"]
+    end
+
+    gotfe["hashicorp/go-tfe<br/>Go client"]
+    tfc[("Terraform Cloud / Enterprise API")]
+
+    creds["credentials.yaml<br/>under os.UserConfigDir()"]
+    env["TFC_* environment variables"]
+
+    user --> cmd
+    main --> cmd
+    cmd --> controller
+    controller --> aid
+    controller --> dao
+    controller --> view
+    controller --> gotfe
+    aid --> helperbox
+    aid --> gotfe
+    dao --> creds
+    env --> dao
+    gotfe --> tfc
 ```
 
 Layers below `controller` do not import `cmd`. Layers below `aid` do not import `controller`.
@@ -45,6 +75,37 @@ A single command, such as `tecli workspace list`, flows through the layers:
 3. The matched controller runs `PreRunE` to validate the argument and its required flags.
 4. `RunE` reads the resolved token through `cobra/dao` (environment variable first, then the active profile), builds a `*tfe.Client` with `aid.GetTFEClient`, and calls the matching `go-tfe` method.
 5. The controller prints the API response as JSON.
+
+The following sequence shows `tecli workspace create --name my-workspace`:
+
+```mermaid
+%% Sequence for tecli workspace create
+sequenceDiagram
+    actor User
+    participant Cmd as cobra/cmd
+    participant Ctrl as cobra/controller
+    participant Aid as cobra/aid
+    participant Dao as cobra/dao
+    participant Tfe as hashicorp/go-tfe
+    participant TFC as Terraform Cloud API
+
+    User->>Cmd: tecli workspace create --name my-workspace
+    Cmd->>Ctrl: run matched command (initConfig loads Viper)
+    Ctrl->>Ctrl: PreRunE validates argument and --name flag
+    Ctrl->>Dao: GetOrganizationToken(profile)
+    Dao-->>Ctrl: token (TFC_* env var, else profile)
+    Ctrl->>Aid: GetTFEClient(token)
+    Aid-->>Ctrl: *tfe.Client
+    Ctrl->>Dao: GetOrganization(profile)
+    Dao-->>Ctrl: organization
+    Ctrl->>Aid: GetWorkspaceCreateOptions(cmd)
+    Aid-->>Ctrl: tfe.WorkspaceCreateOptions
+    Ctrl->>Tfe: Workspaces.Create(ctx, organization, options)
+    Tfe->>TFC: POST /organizations/{org}/workspaces
+    TFC-->>Tfe: workspace JSON
+    Tfe-->>Ctrl: *tfe.Workspace
+    Ctrl-->>User: print workspace as JSON
+```
 
 ## Design decisions
 
