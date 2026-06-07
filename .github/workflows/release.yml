@@ -15,7 +15,7 @@ jobs:
       contents: write # to create release commits and tags
       pull-requests: write # to open the release-please PR
     steps:
-      - uses: googleapis/release-please-action@5792afc6b46e9bb55deda9eda973a18c226bc3fc # v4.1.5
+      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
         with:
           release-type: go
           # Token is provided by Actions; only override if a fine-grained PAT is required.
