@@ -1,62 +1,43 @@
-# TECLI - Terraform Enterprise/Cloud Command Line Interface
+# TECLI
 
-<div align="center">
-
-![TECLI Logo](clencli/logo.jpeg)
+A command-line interface for the Terraform Cloud and Terraform Enterprise API.
 
 [![GitHub issues](https://img.shields.io/github/issues/awslabs/tecli)](https://github.com/awslabs/tecli/issues)
 [![GitHub forks](https://img.shields.io/github/forks/awslabs/tecli)](https://github.com/awslabs/tecli/network)
 [![GitHub stars](https://img.shields.io/github/stars/awslabs/tecli)](https://github.com/awslabs/tecli/stargazers)
 [![GitHub license](https://img.shields.io/github/license/awslabs/tecli)](https://github.com/awslabs/tecli/blob/main/LICENSE)
-[![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Fawslabs%2Ftecli)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fawslabs%2Ftecli)
 
-</div>
+## Overview
 
-## 📖 Overview
+TECLI (Terraform Enterprise/Cloud Command Line Interface) wraps the [Terraform Cloud API](https://www.terraform.io/docs/cloud/api/index.html) so you can manage Terraform Cloud (TFC) and Terraform Enterprise (TFE) resources from a terminal or a CI/CD pipeline. It is built on the official [`hashicorp/go-tfe`](https://github.com/hashicorp/go-tfe) Go client.
 
-TECLI is a powerful command-line interface designed to interact with [Terraform Cloud API](https://www.terraform.io/docs/cloud/api/index.html). It enhances team productivity by providing intuitive commands that can be executed in a terminal or integrated into CI/CD pipelines.
+You use TECLI to manage workspaces, runs, plans, applies, variables, configuration versions, SSH keys, and VCS (OAuth) connections without leaving the command line. Each command maps to a Terraform Cloud API resource, so the output is the JSON the API returns.
 
-In a world where infrastructure as code is becoming the standard, TECLI bridges the gap between your workflows and Terraform Cloud, making it easier to manage workspaces, runs, variables, and more.
+This tool is for platform engineers and infrastructure teams who automate Terraform Cloud or Terraform Enterprise operations.
 
-## 🚀 Features
+## Features
 
-- **Workspace Management**: Create, read, update, delete, and list Terraform workspaces
-- **Run Operations**: Create, apply, and discard Terraform runs
-- **Plan & Apply Management**: View logs for plan and apply operations
-- **Variable Management**: Create, update, and delete Terraform and environment variables
-- **VCS Integration**: Connect workspaces to version control repositories
-- **SSH Key Management**: Manage SSH keys for private module access
-- **OAuth Client Management**: Configure OAuth clients for VCS providers
+- Manage workspaces: list, create, read, update, delete, lock, unlock, and connect to a VCS repository.
+- Manage runs: create, read, apply, cancel, force-cancel, and discard.
+- Read plan and apply logs.
+- Manage Terraform and environment variables on a workspace.
+- Upload configuration versions for a run.
+- Manage SSH keys for private module access.
+- Manage OAuth clients and tokens for VCS provider integrations.
+- Select between multiple Terraform Cloud organizations using named profiles.
 
-## 📋 Table of Contents
+## Prerequisites
 
-- [Installation](#-installation)
-- [Configuration](#-configuration)
-- [Usage Examples](#-usage-examples)
-- [Command Reference](#-command-reference)
-- [Common Workflows](#-common-workflows)
-- [Screenshots](#-screenshots)
-- [Contributing](#-contributing)
-- [History](#-history)
-- [References](#-references)
-- [License](#-license)
+- A Terraform Cloud or Terraform Enterprise account.
+- An API token. The token you need depends on the operation: a [user, team, or organization token](https://www.terraform.io/docs/cloud/users-teams-organizations/api-tokens.html). Most workspace and run operations use a team token.
+- Go 1.25 or later, only if you build from source.
 
-## 📥 Installation
-
-### Prerequisites
-
-Before installing TECLI, ensure you have:
-
-- A Terraform Cloud or Terraform Enterprise account
-- Appropriate API tokens (user, team, or organization)
-- Go 1.25 or later (only required if building from source)
-
-For more detailed prerequisites, visit our [Pre-Requisites Wiki](https://github.com/awslabs/tecli/wiki/Pre-Requisites).
+## Installation
 
 ### Install a pre-built binary
 
-1. Download the latest [release](https://github.com/awslabs/tecli/releases) for your operating system and platform.
-2. Extract the binary to a location in your `PATH`.
+1. Download the latest [release](https://github.com/awslabs/tecli/releases) for your operating system and architecture.
+2. Extract the binary to a directory on your `PATH`.
 3. Verify the installation:
 
 ```bash
@@ -68,268 +49,153 @@ tecli version
 ```bash
 git clone https://github.com/awslabs/tecli.git
 cd tecli
-go build -o tecli ./...
+go build -o tecli .
 ./tecli version
 ```
 
-`go build` requires Go 1.25+. The Terraform Cloud/Enterprise client used internally is [hashicorp/go-tfe v1.108+](https://pkg.go.dev/github.com/hashicorp/go-tfe).
+Building from source requires Go 1.25 or later. The Terraform Cloud client is [`hashicorp/go-tfe`](https://pkg.go.dev/github.com/hashicorp/go-tfe) v1.108.0.
 
-For more detailed installation instructions, visit our [Installation Wiki](https://github.com/awslabs/tecli/wiki/Installation).
+## Getting started
 
-## ⚙️ Configuration
-
-TECLI requires configuration before use. You can configure it in two ways:
-
-### Using the Configure Command
+1. Create a profile. The interactive prompt asks for your organization and tokens:
 
 ```bash
 tecli configure create
 ```
 
-This interactive command will guide you through setting up your profile with:
-- Organization name
-- User token
-- Team token
-- Organization token
-
-### Using Environment Variables
+2. List the workspaces in your organization to confirm the credentials work:
 
 ```bash
-# Linux/macOS
+tecli workspace list
+```
+
+TECLI reads the organization and tokens from the active profile or from environment variables. You do not pass the organization on the command line. See [Configuration](#configuration).
+
+## Usage
+
+A command follows this structure:
+
+```bash
+tecli <command> <argument> [flags]
+```
+
+`<command>` is a resource such as `workspace` or `run`. `<argument>` is the operation such as `list` or `create`. The persistent `--profile` flag selects which credentials profile to use.
+
+List all workspaces in the organization on the active profile:
+
+```bash
+tecli workspace list
+```
+
+Find a workspace by name:
+
+```bash
+tecli workspace find-by-name --name your-workspace-name
+```
+
+Create a workspace:
+
+```bash
+tecli workspace create --name your-workspace-name --allow-destroy-plan=true
+```
+
+Create a workspace connected to a VCS repository:
+
+```bash
+# List OAuth tokens to find the token ID
+tecli o-auth-token list
+
+# Create the workspace with the VCS connection
+tecli workspace create \
+  --name your-workspace-name \
+  --vcs-repo-oauth-token-id ot-XXXXXXXX \
+  --vcs-repo-identifier org/repo
+```
+
+Create and apply a run:
+
+```bash
+# Create a configuration version on the workspace
+tecli configuration-version create --workspace-id ws-XXXXXXXX
+
+# Upload the configuration files to the returned upload URL
+tecli configuration-version upload --url https://archivist.terraform.io/... --path ./
+
+# Create a run
+tecli run create --workspace-id ws-XXXXXXXX --message "Initial run"
+
+# Read the run status
+tecli run read --id run-XXXXXXXX
+
+# Apply the run
+tecli run apply --id run-XXXXXXXX --comment "Applying changes"
+```
+
+For the full command reference, see [COMMANDS.md](COMMANDS.md). For copy-paste recipes covering the most common tasks, see [TOP-COMMANDS.md](TOP-COMMANDS.md).
+
+## Configuration
+
+TECLI reads the organization and API tokens in this precedence order:
+
+1. `TFC_*` environment variables.
+2. The active profile in the credentials file.
+
+### Credentials file
+
+`tecli configure create` writes a YAML credentials file named `credentials.yaml` under the user configuration directory:
+
+- macOS: `~/Library/Application Support/tecli/credentials.yaml`
+- Linux: `~/.config/tecli/credentials.yaml` (or `$XDG_CONFIG_HOME/tecli/credentials.yaml`)
+- Windows: `%AppData%\tecli\credentials.yaml`
+
+Each profile holds an `organization`, `user-token`, `team-token`, and `organization-token`. You select a profile with the persistent `--profile`/`-p` flag (default `default`), so one host can target multiple organizations.
+
+### Environment variables
+
+Set the following environment variables to override the profile values. Environment variables take precedence over the credentials file.
+
+```bash
+# Linux and macOS
 export TFC_ORGANIZATION=your-organization
 export TFC_USER_TOKEN=your-user-token
 export TFC_TEAM_TOKEN=your-team-token
 export TFC_ORGANIZATION_TOKEN=your-organization-token
+```
 
+```powershell
 # Windows (PowerShell)
-$Env:TFC_ORGANIZATION="your-organization"
-$Env:TFC_USER_TOKEN="your-user-token"
-$Env:TFC_TEAM_TOKEN="your-team-token"
-$Env:TFC_ORGANIZATION_TOKEN="your-organization-token"
+$Env:TFC_ORGANIZATION = "your-organization"
+$Env:TFC_USER_TOKEN = "your-user-token"
+$Env:TFC_TEAM_TOKEN = "your-team-token"
+$Env:TFC_ORGANIZATION_TOKEN = "your-organization-token"
 ```
 
-## 🔍 Usage Examples
+The `configure` command reads and writes the credentials file only. It does not use environment variables.
 
-### Basic Command Structure
+## Architecture
 
-```bash
-tecli <resource> <action> [flags]
-```
+TECLI is a thin command-line wrapper around `hashicorp/go-tfe`. The `main` package calls `cmd.Execute()`, which builds a Cobra command tree. Each command validates flags, marshals them into `go-tfe` option structs, calls the Terraform Cloud API, and prints the JSON response. For components, data flow, and design decisions, see [ARCHITECTURE.md](ARCHITECTURE.md).
 
-### List All Workspaces
+## Troubleshooting
 
-```bash
-tecli workspace list --organization=your-organization
-```
+- **`workspace list` returns no workspaces or an authentication error.** Confirm the active profile has an organization and the matching token set, or that the `TFC_*` environment variables are exported in the current shell. Run `tecli configure read` to inspect the active profile.
+- **A command reports it cannot find a workspace by ID.** Commands that take `--id` or `--workspace-id` expect a Terraform Cloud resource ID (for example, `ws-XXXXXXXX`), not a name. Use `--name` with the name-based subcommands such as `workspace find-by-name`.
+- **The wrong organization is used.** The `TFC_ORGANIZATION` environment variable overrides the profile. Unset it to fall back to the profile value.
 
-### Find a Workspace by Name
+## Contributing
 
-```bash
-tecli workspace find-by-name --organization=your-organization --name=your-workspace-name
-```
+See [Contributing](CONTRIBUTING.md).
 
-### Create a Workspace
+## Security
 
-```bash
-tecli workspace create --organization=your-organization --name=your-workspace-name --allow-destroy-plan=true
-```
+See [Security](SECURITY.md) for vulnerability reporting.
 
-### Create a Workspace with VCS Repository
+## License
 
-```bash
-# First, get the OAuth Token ID
-tecli o-auth-token list --organization=your-organization
-
-# Then create the workspace with VCS connection
-tecli workspace create \
-  --organization=your-organization \
-  --name=your-workspace-name \
-  --vcs-repo-oauth-token-id=your-oauth-token-id \
-  --vcs-repo-identifier=org/repo
-```
-
-### Create and Apply a Run
-
-```bash
-# Create a configuration version
-tecli configuration-version create --workspace-id=your-workspace-id
-
-# Upload configuration files
-tecli configuration-version upload --url=your-upload-url --path=./
-
-# Create a run
-tecli run create --workspace-id=your-workspace-id --comment="Your comment"
-
-# Check run status
-tecli run read --id=your-run-id
-
-# Apply the run
-tecli run apply --id=your-run-id --comment="Apply comment"
-```
-
-### Manage Variables
-
-```bash
-# Create a sensitive Terraform variable
-tecli variable create \
-  --key=your-variable-key \
-  --value=your-variable-value \
-  --workspace-id=your-workspace-id \
-  --category=terraform \
-  --sensitive=true
-
-# Create AWS environment variables
-tecli variable create --key=AWS_ACCESS_KEY_ID --value=your-access-key --workspace-id=your-workspace-id --category=env --sensitive=true
-tecli variable create --key=AWS_SECRET_ACCESS_KEY --value=your-secret-key --workspace-id=your-workspace-id --category=env --sensitive=true
-tecli variable create --key=AWS_DEFAULT_REGION --value=your-region --workspace-id=your-workspace-id --category=env --sensitive=true
-```
-
-## 📚 Command Reference
-
-TECLI provides the following main commands:
-
-```
-Available Commands:
-  apply                 An apply represents the results of applying a Terraform Run's execution plan.
-  configuration-version A configuration version is a resource used to reference the uploaded configuration files.
-  configure             Configures tecli settings
-  help                  Help about any command
-  o-auth-client         An OAuth Client represents the connection between an organization and a VCS provider.
-  o-auth-token          The oauth-token object represents a VCS configuration which includes the OAuth connection and the associated OAuth token.
-  plan                  A plan represents the execution plan of a Run in a Terraform workspace.
-  run                   A run performs a plan and apply, using a configuration version and the workspace's current variables.
-  ssh-key               The ssh-key object represents an SSH key which includes a name and the SSH private key.
-  variable              Operations on variables.
-  version               Displays the version of tecli and all installed plugins
-  workspace             Workspaces represent running infrastructure managed by Terraform.
-```
-
-For detailed information about a specific command:
-
-```bash
-tecli [command] --help
-```
-
-## 🔄 Common Workflows
-
-### Complete Terraform Run Workflow
-
-```bash
-# Create a workspace
-tecli workspace create --organization=your-org --name=your-workspace
-
-# Create a configuration version
-tecli configuration-version create --workspace-id=your-workspace-id
-
-# Upload configuration files
-tecli configuration-version upload --url=your-upload-url --path=./
-
-# Create a run
-tecli run create --workspace-id=your-workspace-id --comment="Initial run"
-
-# Monitor run status
-tecli run read --id=your-run-id
-
-# View plan logs
-tecli plan logs --id=your-plan-id
-
-# Apply the run
-tecli run apply --id=your-run-id --comment="Applying changes"
-
-# View apply logs
-tecli apply logs --id=your-apply-id
-```
-
-### Monitoring and Waiting for Run Completion
-
-```bash
-# Bash script to wait for run completion
-while true; do 
-  STATUS=$(tecli run read --id=your-run-id | jq -r ".Status")
-  if [ "${STATUS}" != "pending" ]; then 
-    break
-  else 
-    echo "RUN STATUS:${STATUS}, IF 'pending' TRY DISCARD PREVIOUS PLANS. SLEEP 5 seconds" && sleep 5
-  fi
-done
-```
-
-## 📸 Screenshots
-
-<details>
-<summary>Click to expand screenshots</summary>
-
-| ![How to configure](clencli/terminalizer/configure.gif) |
-| :-----------------------------------------------------: |
-|                   _How to configure_                    |
-
-| ![How to create a workspace](clencli/terminalizer/workspace-create.gif) |
-| :---------------------------------------------------------------------: |
-|                       _How to create a workspace_                       |
-
-| ![How to create a workspace linked to a repository](clencli/terminalizer/workspace-with-vcs-repo.gif) |
-| :---------------------------------------------------------------------------------------------------: |
-|                          _How to create a workspace linked to a repository_                           |
-
-| ![How to create a run](clencli/terminalizer/run-create.gif) |
-| :---------------------------------------------------------: |
-|                    _How to create a run_                    |
-
-| ![How to read plan logs](clencli/terminalizer/plan-logs.gif) |
-| :----------------------------------------------------------: |
-|                   _How to read plan logs_                    |
-
-| ![How to read apply logs](clencli/terminalizer/apply-logs.gif) |
-| :------------------------------------------------------------: |
-|                    _How to read apply logs_                    |
-
-| ![How to delete a workspace](clencli/terminalizer/workspace-delete.gif) |
-| :---------------------------------------------------------------------: |
-|                       _How to delete a workspace_                       |
-
-</details>
-
-## 👥 Contributing
-
-We welcome contributions to TECLI! Please read our [Contributing Guidelines](CONTRIBUTING.md) for details on how to submit pull requests, report issues, and suggest improvements.
-
-### Contributors
-
-| Name | Email | Role |
-| :--: | :---: | :--: |
-| Silva, Valter | valterh@amazon.com | AWS Professional Services - Cloud Architect |
-| Dhingra, Prashit | | AWS Professional Services - Cloud Architect |
-
-## 🕒 History
-
-See [`CHANGELOG.md`](CHANGELOG.md) for the full release history.
-
-### Modernization 2026-06
-
-A toolchain modernization pass was completed in June 2026 (tracked in PR [#27](https://github.com/awslabs/tecli/pull/27) and follow-up PRs):
-
-- Bumped `go.mod` to **Go 1.25**.
-- Migrated `hashicorp/go-tfe` from `v0.15.0` to `v1.108.0`.
-- Refreshed all transitive dependencies (cobra, viper, logrus, testify, x/crypto, afero, go-slug, go-retryablehttp).
-- Audited and rewrote the docs (this README, [`CHANGELOG.md`](CHANGELOG.md), [`COMMANDS.md`](COMMANDS.md), [`CONTRIBUTING.md`](CONTRIBUTING.md), and the new [`ARCHITECTURE.md`](ARCHITECTURE.md) and [`docs/RELEASING.md`](docs/RELEASING.md)).
-
-The wiki pages under <https://github.com/awslabs/tecli/wiki> were last refreshed before the modernization; some links there may describe older Go/go-tfe versions.
-
-## 🔗 References
-
-- [Terraform Cloud](https://www.terraform.io/docs/cloud/index.html) - Terraform Cloud is an application that helps teams use Terraform together.
-- [Terraform Cloud/Enterprise Go Client](https://github.com/hashicorp/go-tfe) - The official Go API client for Terraform Cloud/Enterprise (v1.108+ as of the modernization).
-- [clencli](https://github.com/awslabs/clencli) - Cloud Engineer CLI
-- [terminalizer](https://github.com/faressoft/terminalizer) - Record your terminal and generate animated gif images or share a web player link terminalizer.com
-
-## 📄 License
-
-This project is licensed under the Apache License 2.0. For more information, please read [LICENSE](LICENSE).
+This project is licensed under the Apache License 2.0. See [LICENSE](LICENSE).
 
 ---
 
-```
+```text
 Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 ```
-
-> Photo by [Gabriel Menchaca](https://unsplash.com/gabrielmenchaca) on [Unsplash](https://unsplash.com)
