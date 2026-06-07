@@ -1,29 +1,57 @@
-## How-To
+# Tips
 
-### Create a workspace linked with a VCS repository
+This page collects task-oriented recipes that combine several TECLI commands. For the full command reference, see [COMMANDS.md](COMMANDS.md). For the most common single commands, see [TOP-COMMANDS.md](TOP-COMMANDS.md).
 
+All examples read the organization and tokens from the active profile or the `TFC_*` environment variables. See [Configuration](README.md#configuration).
+
+## Create a workspace linked to a VCS repository
+
+1. List the OAuth tokens to find the token ID for your VCS connection:
+
+```bash
+tecli o-auth-token list
 ```
-tecli oauth list --organization terraform-cloud-pipeline
-tecli workspace create --vcs-repo-oauth-token-id=ot-XXX --vcs-repo-identifier=valter-silva-au/terraform-dummy --organization=terraform-cloud-pipeline --name terraform-dummy-1
+
+2. Create the workspace and pass the OAuth token ID and repository identifier:
+
+```bash
+tecli workspace create \
+  --name terraform-dummy-1 \
+  --vcs-repo-oauth-token-id ot-XXXXXXXX \
+  --vcs-repo-identifier valter-silva-au/terraform-dummy
 ```
 
-### Create a plan and apply
+## Create a plan and apply
 
+1. Find the workspace ID:
+
+```bash
+tecli workspace list
 ```
-# Get the workspace ID you want to manage
-tecli workspace list --organization=terraform-cloud-pipeline
 
-# Create a run (plan) on the workspace and get the apply ID
-tecli run create --workspace-id ws-XXX
+2. Create a run on the workspace:
 
-# Apply the run by providing the ID
-tecli run apply --id=run-XXX
+```bash
+tecli run create --workspace-id ws-XXXXXXXX --message "Plan and apply"
+```
 
-# Read the apply by providing the apply ID
-tecli apply read --id=apply-XXX
+3. Apply the run by its ID:
 
+```bash
+tecli run apply --id run-XXXXXXXX --comment "Applying changes"
+```
+
+4. Read the apply by its ID:
+
+```bash
+tecli apply read --id apply-XXXXXXXX
+```
+
+Example output:
+
+```json
 {
-  "ID": "apply-XXX",
+  "ID": "apply-XXXXXXXX",
   "LogReadURL": "https://archivist.terraform.io/v1/object/...",
   "ResourceAdditions": 0,
   "ResourceChanges": 0,
@@ -38,10 +66,17 @@ tecli apply read --id=apply-XXX
     "started-at": "2021-01-28T23:39:17Z"
   }
 }
+```
 
-# Read the apply logs
-tecli apply logs --id=apply-XXX
+5. Read the apply logs:
 
+```bash
+tecli apply logs --id apply-XXXXXXXX
+```
+
+Example output:
+
+```text
 Terraform v0.14.5
 Initializing plugins and modules...
 
@@ -50,31 +85,38 @@ Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
 Outputs:
 
 aws_region = "us-east-1"
-
 ```
 
-### List all workspaces (and display only their ID)
+## List workspace IDs only
 
-```
-tecli workspace list --organization=terraform-cloud-pipeline | grep "ID" | grep "ws-" | awk '{ print $2}' | sed 's,",,g' | sed 's/,//g'
+Filter the `list` output down to the workspace IDs:
+
+```bash
+tecli workspace list | grep "ID" | grep "ws-" | awk '{ print $2 }' | sed 's,",,g' | sed 's/,//g'
 ```
 
-### How to update o-auth-token
+## Set an OAuth token's private SSH key
 
+Pass the key with a shell variable so the multi-line value is preserved:
+
+```bash
+private_ssh_key='-----BEGIN RSA PRIVATE KEY-----
+... shortened for brevity ...
+-----END RSA PRIVATE KEY-----'
+tecli o-auth-token update --id ot-XXXXXXXX --private-ssh-key "${private_ssh_key}"
 ```
-$ private_ssh_key='-----BEGIN -----
-.. shorten for brevity
-> -----END RSA PRIVATE KEY-----
-> '
-$ tecli o-auth-token update --id=ot-XXX --private-ssh-key "${private_ssh_key}"
+
+Example output:
+
+```json
 {
-  "ID": "ot-XXX",
+  "ID": "ot-XXXXXXXX",
   "UID": "",
   "CreatedAt": "2021-01-28T22:49:10.805Z",
   "HasSSHKey": true,
   "ServiceProviderUser": "valter-silva-au",
   "OAuthClient": {
-    "ID": "oc-XXX",
+    "ID": "oc-XXXXXXXX",
     "APIURL": "",
     "CallbackURL": "",
     "ConnectPath": "",
